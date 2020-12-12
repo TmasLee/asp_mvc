@@ -6,8 +6,9 @@ Eventually this web app will be used for ML practice using PyTorch.
 
 ### **To-Do**:
 
+* update front end to mimic default cshtml page
+* Hot load C#
 * Hook up backend to front end
- * Return html from backend 
  * Add script tag to html for module
  * Set up nav bar - static navbar - page content loaded dynamically
 * Set up back-end API
