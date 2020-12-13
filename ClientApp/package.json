@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/TmasLee/asp_mvc#readme",
   "dependencies": {
+    "axios": "^0.21.0",
     "bootstrap": "^4.5.3",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
