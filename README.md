@@ -6,7 +6,10 @@ Eventually this web app will be used for ML practice using PyTorch.
 
 ### **To-Do**:
 
-* Set up back-end API
+* Convert controllers to ApiControllers?
+* Exercises
+ * OOP
+ * Design patterns
 * MSSQL
 * Deploy to AWS
  * ECS? Secrets

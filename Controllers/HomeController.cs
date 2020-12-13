@@ -12,15 +12,23 @@ namespace asp_mvc.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IDateTime _dateTime;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IDateTime dateTime)
         {
             _logger = logger;
+            _dateTime = dateTime;
         }
 
         public IActionResult Index()
         {
-            return View();
+            Console.WriteLine(this._dateTime);
+            return Json(
+                new {
+                    page="Home",
+                    time=this._dateTime
+                }
+            );
         }
 
         public IActionResult Privacy()
