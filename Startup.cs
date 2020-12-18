@@ -25,8 +25,10 @@ namespace asp_mvc
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // services.AddDbContext<>()
             services.AddSingleton<IDateTime, SystemDateTime>();
-            services.AddControllersWithViews();
+            services.AddControllers();
+            // services.AddTransient<>(); // Gets new instance of specified service everytime
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -38,24 +40,27 @@ namespace asp_mvc
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/Index/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
 
+            // Serve static files like JS bundles from here
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = new PhysicalFileProvider(
-                    Path.Combine(env.ContentRootPath, "ClientApp/dist")),
+                    Path.Combine(env.ContentRootPath, "ClientApp/dist")
+                ),
                 RequestPath = "/dist"
             });
 
+            // Serve default index.html from here
             app.UseFileServer(new FileServerOptions
             {
                 FileProvider = new PhysicalFileProvider(
-                    Path.Combine(env.ContentRootPath, "ClientApp/public")),
-                RequestPath = ""
+                    Path.Combine(env.ContentRootPath, "ClientApp/public")
+                )
             });
 
             app.UseRouting();
@@ -64,9 +69,8 @@ namespace asp_mvc
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllers();
+                endpoints.MapFallbackToController("Index", "Index");
             });
         }
     }

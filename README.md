@@ -1,16 +1,16 @@
 # asp_mvc
 
-A portfolio-like project where I build a single page app from the ground up using a C# backend, a JS/React frontend, and everything I learned from work.
-
-Eventually this web app will be used for ML practice using PyTorch.
+A small web app project built from the ground up using a C# backend and a JS/React frontend.
 
 ### **To-Do**:
 
-* Convert controllers to ApiControllers?
-* Exercises
- * OOP
- * Design patterns
 * MSSQL
+
+* Error page
+* Exercises - Links to other endpoints that serve different static files?
+ * OOP - building / line / units?
+ * Design patterns
+
 * Deploy to AWS
  * ECS? Secrets
  * Set up SSL
