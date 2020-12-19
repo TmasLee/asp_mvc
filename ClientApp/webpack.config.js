@@ -3,8 +3,8 @@ const webpack = require("webpack");
 
 module.exports = {
   entry: {
-      client: "./src/Client/index.js",
-      building: "./src/Building/index.js"
+      client: "./Client/src/index.js",
+      building: "./Building/src/index.js"
     },
   mode: "development",
   module: {

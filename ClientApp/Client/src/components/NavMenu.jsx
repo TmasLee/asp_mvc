@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
 
-import '../../css/NavMenu.css';
+import '../../../css/NavMenu.css';
 
 export class NavMenu extends Component {
     constructor (props) {

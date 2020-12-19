@@ -23,7 +23,7 @@ namespace asp_mvc.Controllers
         // Catch all Action - Serve default index.html from here
         public IActionResult Index()
         {
-            var filePath = Path.Combine(_env.ContentRootPath, "ClientApp/public/Client/index.html");
+            var filePath = Path.Combine(_env.ContentRootPath, "ClientApp/Client/public/index.html");
             return PhysicalFile(filePath, "text/html");
         }
 
