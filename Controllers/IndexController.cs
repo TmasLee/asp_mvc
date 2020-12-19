@@ -10,21 +10,34 @@ using asp_mvc.Models;
 
 namespace asp_mvc.Controllers
 {
-    // Catch all Controller
     public class IndexController : Controller
     {
         private readonly IWebHostEnvironment _env;
-
-        public IndexController(IWebHostEnvironment env)
+        public readonly IDateTime _dateTime;
+        public IndexController(IWebHostEnvironment env, IDateTime dateTime)
         {
             _env = env;
+            _dateTime = dateTime;
         }
 
-        // Serve default index.html from here
+        // Catch all Action - Serve default index.html from here
         public IActionResult Index()
         {
             var filePath = Path.Combine(_env.ContentRootPath, "ClientApp/public/Client/index.html");
             return PhysicalFile(filePath, "text/html");
+        }
+
+        [HttpGet("[controller]/Exercises/ServerTime")]
+        [Produces("application/json")]
+        public IDateTime ServerTime()
+        {
+            return this._dateTime;
+        }
+
+        [HttpGet("Data")]
+        public async Task<IActionResult> Data()
+        {
+            return NoContent();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -6,10 +6,7 @@ import { Layout } from "../components/Layout";
 import {
     Home,
     AboutMe,
-    Exercises,
-    Library,
-    Upload,
-    Results
+    Exercises
 } from "../components/pages";
 
 import "../../css/App.css";
@@ -21,9 +18,6 @@ class App extends Component {
                 <Route exact path='/' component={Home} />
                 <Route path='/aboutme' component={AboutMe} />
                 <Route path='/exercises' component={Exercises} />
-                <Route path='/library' component={Library} />
-                <Route path='/upload' component={Upload} />
-                <Route path='/results' component={Results} />
             </Layout>
         );
     }

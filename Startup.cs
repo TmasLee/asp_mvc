@@ -46,7 +46,7 @@ namespace asp_mvc
             }
             app.UseHttpsRedirection();
 
-            // Serve static files like JS bundles from here
+            // Serve JS bundles from here
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = new PhysicalFileProvider(

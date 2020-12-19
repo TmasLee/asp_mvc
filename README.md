@@ -11,10 +11,6 @@ A small web app project built from the ground up using a C# backend and a JS/Rea
 * Error page
 
 * Deploy to AWS
- * ECS? Secrets
- * Set up SSL
- * Dockerize
-
-building - units - line
-building type?, line type?
-building / line factories?
+* ECS? Secrets
+* Set up SSL
+* Dockerize
