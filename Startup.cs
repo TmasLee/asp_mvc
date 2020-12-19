@@ -55,14 +55,6 @@ namespace asp_mvc
                 RequestPath = "/dist"
             });
 
-            // Serve default index.html from here
-            app.UseFileServer(new FileServerOptions
-            {
-                FileProvider = new PhysicalFileProvider(
-                    Path.Combine(env.ContentRootPath, "ClientApp/public")
-                )
-            });
-
             app.UseRouting();
 
             app.UseAuthorization();

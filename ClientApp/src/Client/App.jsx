@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Route } from "react-router";
 import { hot } from "react-hot-loader";
 
-import { Layout } from "./components/Layout";
+import { Layout } from "../components/Layout";
 import {
     Home,
     AboutMe,
@@ -10,9 +10,9 @@ import {
     Library,
     Upload,
     Results
-} from "./components/pages";
+} from "../components/pages";
 
-import "../css/App.css";
+import "../../css/App.css";
 
 class App extends Component {
     render(){

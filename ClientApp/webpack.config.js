@@ -2,7 +2,10 @@ const path = require("path");
 const webpack = require("webpack");
 
 module.exports = {
-  entry: "./src/index.js",
+  entry: {
+      client: "./src/Client/index.js",
+      building: "./src/Building/index.js"
+    },
   mode: "development",
   module: {
     rules: [
@@ -22,7 +25,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, "dist/"),
     publicPath: "/dist/",
-    filename: "bundle.js"
+    filename: "[name].bundle.js"
   },
   plugins: [new webpack.HotModuleReplacementPlugin()]
 };

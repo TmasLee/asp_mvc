@@ -10,6 +10,7 @@ using asp_mvc.Models;
 
 namespace asp_mvc.Controllers
 {
+    // Catch all Controller
     public class IndexController : Controller
     {
         private readonly IWebHostEnvironment _env;
@@ -19,9 +20,10 @@ namespace asp_mvc.Controllers
             _env = env;
         }
 
+        // Serve default index.html from here
         public IActionResult Index()
         {
-            var filePath = Path.Combine(_env.ContentRootPath, "ClientApp/public/index.html");
+            var filePath = Path.Combine(_env.ContentRootPath, "ClientApp/public/Client/index.html");
             return PhysicalFile(filePath, "text/html");
         }
 
