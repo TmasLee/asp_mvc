@@ -1,11 +1,9 @@
+using asp_mvc.Data;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.IO;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -22,10 +20,12 @@ namespace asp_mvc
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        // This method gets called by the runtime. Use this method to add services to the container via DI
         public void ConfigureServices(IServiceCollection services)
         {
-            // services.AddDbContext<>()
+            services.AddDbContext<BuildingContext>(options =>
+                options.UseSqlServer(Configuration["Buildings:ConnectionString"]));
+            services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddSingleton<IDateTime, SystemDateTime>();
             services.AddControllers();
             // services.AddTransient<>(); // Gets new instance of specified service everytime
