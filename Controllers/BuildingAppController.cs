@@ -23,7 +23,7 @@ namespace asp_mvc.Controllers
         [Route("[controller]")]
         public IActionResult BuildingAppIndex()
         {
-            var filePath = Path.Combine(_env.ContentRootPath, "ClientApp/public/Building/index.html");
+            var filePath = Path.Combine(_env.ContentRootPath, "ClientApp/Building/public/index.html");
             return PhysicalFile(filePath, "text/html");
         }
 

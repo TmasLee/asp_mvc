@@ -9,8 +9,8 @@ namespace asp_mvc.Data
         {
         }
 
-        public DbSet<User> Users { get; set; }
-        public DbSet<Building> Buildings { get; set; }
-        public DbSet<Line> Lines { get; set; }
+        public DbSet<User> User { get; set; }
+        public DbSet<Building> Building { get; set; }
+        public DbSet<Line> Line { get; set; }
     }
 }

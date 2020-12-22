@@ -14,22 +14,12 @@ namespace asp_mvc.Models
                 serviceProvider.GetRequiredService<
                     DbContextOptions<BuildingContext>>()))
             {
-                if (context.Buildings.Any())
+                if (context.Building.Any())
                 {
-                    Console.WriteLine("XD");
                     return;   // DB has been seeded
                 }
-                Console.WriteLine("XDs");
-                context.Buildings.AddRange(
-                    new Building
-                    {
-                        Id = 0
-                    },
-
-                    new Building
-                    {
-                        Id = 1
-                    }
+                context.Building.AddRange(
+                    new Building{}
                 );
                 context.SaveChanges();
             }
