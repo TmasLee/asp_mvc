@@ -8,8 +8,8 @@ using asp_mvc.Data;
 
 namespace asp_mvc.Migrations
 {
-    [DbContext(typeof(BuildingContext))]
-    partial class BuildingContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(MSAContext))]
+    partial class MSAContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -62,6 +62,9 @@ namespace asp_mvc.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Email");

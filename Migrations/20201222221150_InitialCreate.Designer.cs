@@ -9,8 +9,8 @@ using asp_mvc.Data;
 
 namespace asp_mvc.Migrations
 {
-    [DbContext(typeof(BuildingContext))]
-    [Migration("20201222155512_InitialCreate")]
+    [DbContext(typeof(MSAContext))]
+    [Migration("20201222221150_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -64,6 +64,9 @@ namespace asp_mvc.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Email");

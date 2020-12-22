@@ -10,16 +10,21 @@ namespace asp_mvc.Models
     {
         public static void Initialize(IServiceProvider serviceProvider)
         {
-            using (var context = new BuildingContext(
+            using (var context = new MSAContext(
                 serviceProvider.GetRequiredService<
-                    DbContextOptions<BuildingContext>>()))
+                    DbContextOptions<MSAContext>>()))
             {
-                if (context.Building.Any())
+                if (context.User.Any())
                 {
                     return;   // DB has been seeded
                 }
-                context.Building.AddRange(
-                    new Building{}
+                context.User.AddRange(
+                    new User{
+                        Email = "test@test.com",
+                        Password = "hashedpassword",
+                        FirstName = "Test",
+                        LastName = "E"
+                    }
                 );
                 context.SaveChanges();
             }
