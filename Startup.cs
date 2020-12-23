@@ -23,8 +23,8 @@ namespace asp_mvc
         // This method gets called by the runtime. Use this method to add services to the container via DI
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<BuildingContext>(options =>
-                options.UseSqlServer(Configuration["Buildings:ConnectionString"]));
+            services.AddDbContext<MSAContext>(options =>
+                options.UseSqlServer(Configuration["MultiSpaApp:ConnectionString"]));
             services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddSingleton<IDateTime, SystemDateTime>();
             services.AddControllers();
