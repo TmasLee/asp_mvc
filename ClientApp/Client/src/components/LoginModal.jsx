@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Alert, Button, OverlayTrigger, Tooltip, Form } from 'react-bootstrap';
+import { Alert, Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
 
-import { GenericFormModal, GenericFormInputError } from './generics';
+import { FormModal, FormControlWithError } from './generics';
 
 // Clean up the code
 export class LoginModal extends Component{
@@ -33,7 +33,7 @@ export class LoginModal extends Component{
 
     handleInputOnChange = (e) => this.setState({ [e.target.name]: e.target.value });
 
-    // Seems like this should be in GenericFormModal
+    // Seems like this should be in FormModal
     validateForm = () => {
         const { email, password, reenteredPassword, newUser } = this.state;
         let errors = {};
@@ -93,39 +93,39 @@ export class LoginModal extends Component{
         }
 
         return (
-            <GenericFormModal title={title}
+            <FormModal title={title}
                               showModal={showModal}
                               primaryButtonMsg={primaryButtonMsg}
                               resetAndToggleModal={this.resetAndToggleModal}
                               action={action}>
                 {serverError ? <Alert variant="warning">{serverError}</Alert>
                 : null}
-                <Form.Control required={true}
-                              type="text"
-                              name="email"
-                              value={email}
-                              onChange={(e)=>this.handleInputOnChange(e)}
-                              placeholder="Email"/>
-                {errors.email ? <GenericFormInputError error={errors.email}/> : null}
+                <FormControlWithError required={true}
+                                      type="text"
+                                      name="email"
+                                      value={email}
+                                      onChange={this.handleInputOnChange}
+                                      placeholder="Email"
+                                      error={errors.email}/>
                 <br/>
-                <Form.Control required
-                              type="password"
-                              name="password"
-                              value={password}
-                              onChange={(e)=>this.handleInputOnChange(e)}
-                              placeholder="Password"/>
-                {errors.password ? <GenericFormInputError error={errors.password}/> : null}
+                <FormControlWithError required={true}
+                                      type="password"
+                                      name="password"
+                                      value={password}
+                                      onChange={this.handleInputOnChange}
+                                      placeholder="Password"
+                                      error={errors.password}/>
                 {
                     newUser ? (
                         <div>
                             <br/>
-                            <Form.Control required
-                                          name="reenteredPassword" 
-                                          value={reenteredPassword}
-                                          type="password"
-                                          onChange={(e)=>this.handleInputOnChange(e)}
-                                          placeholder="Re-enter Password"/>
-                            {errors.reenteredPassword ? <GenericFormInputError error={errors.reenteredPassword}/> : null}
+                            <FormControlWithError required={true}
+                                      type="reenteredPassword"
+                                      name="reenteredPassword"
+                                      value={reenteredPassword}
+                                      onChange={this.handleInputOnChange}
+                                      placeholder="Re-enter Password"
+                                      error={errors.reenteredPassword}/>
                         </div>
                     )
                     : (
@@ -135,7 +135,7 @@ export class LoginModal extends Component{
                             <Button variant="link" onClick={this.handleNewUser}>New User?</Button>
                         </div>)
                 }
-            </GenericFormModal>
+            </FormModal>
         )
     }
 }
@@ -143,7 +143,6 @@ export class LoginModal extends Component{
 const ForgotPasswordTooltip = ({id}) => {
     return (
       <span>
-
         <OverlayTrigger placement="bottom"
                         overlay={
                             <Tooltip target={"Tooltip-" + id}>
@@ -154,7 +153,6 @@ const ForgotPasswordTooltip = ({id}) => {
                 Forgot Password?
             </Button>
         </OverlayTrigger>
-
       </span>
     );
 }

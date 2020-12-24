@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Modal } from 'react-bootstrap';
 
-export const GenericFormModal = (props) => {
+export const FormModal = (props) => {
     const { showModal, title, message, primaryButtonMsg, resetAndToggleModal, action } = props;
 
     return (

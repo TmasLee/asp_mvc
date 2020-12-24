@@ -1,8 +1,9 @@
-import { GenericFormModal } from './GenericFormModal';
-import { GenericFormInputError } from './GenericFormInputError';
+import { FormModal } from './FormModal';
+import { FormInputError } from './FormInputError';
+import { FormControlWithError } from './FormControlWithError';
 
 export {
-    GenericFormModal,
-    GenericFormInputError,
-    
+    FormModal,
+    FormInputError,
+    FormControlWithError
 }
