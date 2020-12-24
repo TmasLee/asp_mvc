@@ -1,45 +1,42 @@
 import React, { Component } from 'react';
-import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
+import { Container, Navbar, Nav } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 import '../../../css/NavMenu.css';
 
 export class NavMenu extends Component {
-    constructor (props) {
-        super(props);
-
-        this.toggleNavbar = this.toggleNavbar.bind(this);
-        this.state = {
-            collapsed: true
-        };
-    }
-
-    toggleNavbar () {
-        this.setState({
-            collapsed: !this.state.collapsed
-        });
-    }
-
     render () {
+        const { toggleLogin, currentUser } = this.props;
         return (
             <header>
-                <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" light>
+                <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" bg="light">
                     <Container>
-                        <NavbarBrand tag={Link} to="/">Antonio's Brother</NavbarBrand>
-                        <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
-                        <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
-                            <ul className="navbar-nav flex-grow">
-                                <NavItem>
-                                    <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
-                                </NavItem>
-                                <NavItem>
-                                    <NavLink tag={Link} className="text-dark" to="/aboutme">About Me</NavLink>
-                                </NavItem>
-                                <NavItem>
-                                    <NavLink tag={Link} className="text-dark" to="/exercises">Exercises</NavLink>
-                                </NavItem>
-                            </ul>
-                        </Collapse>
+                        <Navbar.Brand as={Link} to="/">Antonio's Brother</Navbar.Brand>
+                        <ul className="navbar-nav flex-grow">
+                            <Nav.Item>
+                                <Nav.Link as={Link} className="text-dark" to="/">Home</Nav.Link>
+                            </Nav.Item>
+                            <Nav.Item>
+                                <Nav.Link as={Link} className="text-dark" to="/aboutme">About Me</Nav.Link>
+                            </Nav.Item>
+                            <Nav.Item>
+                                <Nav.Link as={Link} className="text-dark" to="/exercises">Exercises</Nav.Link>
+                            </Nav.Item>
+                            <Nav.Item>
+                                {
+                                    currentUser ? <Nav.Link as={Link} className="text-dark" to="/">Logout</Nav.Link>
+                                    :
+                                    <Nav.Link as={Link} className="text-dark" to="#" onClick={toggleLogin}>Login</Nav.Link>
+                                }
+                            </Nav.Item>
+                            {
+                                currentUser ? 
+                                <Nav.Item>
+                                    <Nav.Link as={Link} className="text-dark">Name</Nav.Link>
+                                </Nav.Item>
+                                : null
+                            }
+                        </ul>
                     </Container>
                 </Navbar>
             </header>
