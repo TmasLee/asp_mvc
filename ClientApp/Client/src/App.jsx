@@ -13,7 +13,6 @@ import { UserContext } from './components/UserContext';
 
 import '../../css/App.css';
 
-// Incorrect user/password error or already existing email error from server
 class App extends Component {
     state = {
         user: null,
@@ -23,34 +22,45 @@ class App extends Component {
     }
 
     componentDidMount(){
-
+        // User set here based on session/jwt?
     }
 
     toggleModal = () => this.setState({ showModal: !this.state.showModal })
 
+    /**
+     * 5-10 second load
+     * Determine # of loading increments (4-8) - Increments 1-3 --> "Authenticating" + "Connecting to services" + "Getting user datas"
+     * Randomly determine which increment (increments 4-8) will be progress lost --> "Woah looks like we lost some progress, terrible UX" + "Better not log off... no really, I coded this to do this everytime you log in"
+     * Randomly determine % of each increment
+     */
+    // Incorrect user/password error
+    // Async not working - need plugin?
     handleLogin = () => {
-        console.log('log in')
+        this.setState({loading: true});
     }
 
     handleLogout = (e) => {
         e.preventDefault();
     }
 
-    // If success close modal
-    handleSignUp = (e) => {
+    // Already existing email error from server
+    handleSignUp = (newUser) => {
         this.handleError(null);
-        console.log('sign up')
-        // axios.post(
-        //     '/User/SignUp',
-        //     {
-
-        //     }
-        // )
+        this.setState({loading: true});
+        const response = axios.post(
+            '/User/SignUp',
+            newUser
+        ).then((resp) => {
+            this.setState({loading: false});
+        }).catch(err => {
+            this.setState({loading: false});
+            this.handleError(err.response.data.error)
+        })
     }
 
     handleError = (error) => {
         if (error){
-            this.setState({serverError: error.response.data.error});
+            this.setState({serverError: eerror});
         } else {
             this.setState({serverError: null})
         }

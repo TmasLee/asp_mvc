@@ -6,7 +6,3 @@ namespace asp_mvc.Models
 
     }
 }
-
-
-// Line interface for different line types for different utilities?
-// Line obj + utility col?

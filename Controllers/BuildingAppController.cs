@@ -10,7 +10,6 @@ using asp_mvc.Models;
 
 namespace asp_mvc.Controllers
 {
-    // Catch all Controller
     public class BuildingAppController : Controller
     {
         private readonly IWebHostEnvironment _env;

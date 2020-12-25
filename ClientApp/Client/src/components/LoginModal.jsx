@@ -7,6 +7,8 @@ import { FormModal, FormControlWithError } from './generics';
 export class LoginModal extends Component{
     state = {
         email: "",
+        firstName: "",
+        lastName: "",
         password: "",
         reenteredPassword: "",
         newUser: false,
@@ -33,15 +35,38 @@ export class LoginModal extends Component{
 
     handleInputOnChange = (e) => this.setState({ [e.target.name]: e.target.value });
 
-    // Seems like this should be in FormModal
+    getDataModel = (form) => {
+        if (form.newUser){
+            return {
+                email: form.email,
+                firstName: form.firstName,
+                lastName: form.lastName,
+                password: form.password
+            }
+        }
+        return {
+            email: form.email,
+            password: form.password
+        }
+    }
+
+    // Seems like this should be in FormModal - maybe extend FormModal
     validateForm = () => {
-        const { email, password, reenteredPassword, newUser } = this.state;
+        const { email, firstName, lastName, password, reenteredPassword, newUser } = this.state;
         let errors = {};
         let isValid = true;
 
         if (!email){
             isValid = false;
             errors["email"] = "Please enter your email address.";
+        }
+        if (newUser && !firstName){
+            isValid = false;
+            errors["firstName"] = "Please enter your first name.";
+        }
+        if (newUser && !lastName){
+            isValid = false;
+            errors["lastName"] = "Please enter your last name.";
         }
         if (email){
             var pattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
@@ -54,7 +79,7 @@ export class LoginModal extends Component{
             isValid = false;
             errors["password"] = "Please enter your password.";
         }
-        if ((password !== reenteredPassword) && (newUser)){
+        if (newUser && (password !== reenteredPassword)){
             isValid = false;
             errors["reenteredPassword"] = "Passwords don't match.";
         }
@@ -67,7 +92,8 @@ export class LoginModal extends Component{
     validateAndSignUp = () => {
         this.resetErrors();
         if (this.validateForm()){
-            this.props.handleSignUp();
+            let newUser = this.getDataModel(this.state);
+            this.props.handleSignUp(newUser);
         }
     }
 
@@ -79,7 +105,7 @@ export class LoginModal extends Component{
     }
 
     render(){
-        const { email, password, reenteredPassword, newUser, errors } = this.state;
+        const { email, firstName, lastName, password, reenteredPassword, newUser, errors } = this.state;
         const { showModal, serverError } = this.props;
 
         let title = "Login";
@@ -98,8 +124,7 @@ export class LoginModal extends Component{
                               primaryButtonMsg={primaryButtonMsg}
                               resetAndToggleModal={this.resetAndToggleModal}
                               action={action}>
-                {serverError ? <Alert variant="warning">{serverError}</Alert>
-                : null}
+                {serverError ? <Alert variant="warning">{serverError}</Alert>: null}
                 <FormControlWithError required={true}
                                       type="text"
                                       name="email"
@@ -107,7 +132,27 @@ export class LoginModal extends Component{
                                       onChange={this.handleInputOnChange}
                                       placeholder="Email"
                                       error={errors.email}/>
-                <br/>
+                {
+                    newUser ? (
+                        <div>
+                            <FormControlWithError required={true}
+                                      type="text"
+                                      name="firstName"
+                                      value={firstName}
+                                      onChange={this.handleInputOnChange}
+                                      placeholder="First Name"
+                                      error={errors.firstName}/>
+                            <FormControlWithError required={true}
+                                      type="text"
+                                      name="lastName"
+                                      value={lastName}
+                                      onChange={this.handleInputOnChange}
+                                      placeholder="Last Name"
+                                      error={errors.lastName}/>
+                        </div>
+                    )
+                    : null
+                }
                 <FormControlWithError required={true}
                                       type="password"
                                       name="password"
@@ -118,9 +163,8 @@ export class LoginModal extends Component{
                 {
                     newUser ? (
                         <div>
-                            <br/>
                             <FormControlWithError required={true}
-                                      type="reenteredPassword"
+                                      type="password"
                                       name="reenteredPassword"
                                       value={reenteredPassword}
                                       onChange={this.handleInputOnChange}
