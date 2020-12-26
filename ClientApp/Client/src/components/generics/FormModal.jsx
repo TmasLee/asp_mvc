@@ -1,18 +1,27 @@
 import React from 'react';
-import { Button, Modal } from 'react-bootstrap';
+import { Alert, Button, Modal } from 'react-bootstrap';
+import { LoadingButton } from '../generics/LoadingButton';
 
 export const FormModal = (props) => {
-    const { showModal, title, message, primaryButtonMsg, resetAndToggleModal, action } = props;
-
+    const { showModal, title, primaryButtonMsg, resetAndToggleModal, action, serverResponse, serverError, loading } = props;
     return (
         <Modal show={showModal} onHide={resetAndToggleModal}>
             <Modal.Header>{title}</Modal.Header>
             <Modal.Body>
-                <p>{message}</p>
+                {
+                    serverError ? <Alert variant="danger">{serverError}</Alert>
+                    : serverResponse ? <Alert variant="success">{serverResponse}</Alert>
+                    : null
+                }
                 {props.children}
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="primary" onClick={action}>{primaryButtonMsg}</Button>{' '}
+                {
+                    loading ? <LoadingButton/>
+                    :
+                    <Button variant="primary" onClick={action}>{primaryButtonMsg}</Button>
+                }
+                {' '}
                 <Button variant="secondary" onClick={resetAndToggleModal}>Cancel</Button>
             </Modal.Footer>
         </Modal>

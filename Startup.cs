@@ -1,4 +1,3 @@
-using asp_mvc.Data;
 using System;
 using System.IO;
 using Microsoft.AspNetCore.Builder;
@@ -8,6 +7,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.FileProviders;
+using asp_mvc.Data;
+using asp_mvc.DAL;
 
 namespace asp_mvc
 {
@@ -27,6 +28,7 @@ namespace asp_mvc
                 options.UseSqlServer(Configuration["MultiSpaApp:ConnectionString"]));
             services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddSingleton<IDateTime, SystemDateTime>();
+            services.AddScoped<IUserRepository, UserRepository>();
             services.AddControllers();
             // services.AddTransient<>(); // Gets new instance of specified service everytime
         }

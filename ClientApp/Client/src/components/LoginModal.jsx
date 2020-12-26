@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert, Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 import { FormModal, FormControlWithError } from './generics';
 
@@ -106,7 +106,6 @@ export class LoginModal extends Component{
 
     render(){
         const { email, firstName, lastName, password, reenteredPassword, newUser, errors } = this.state;
-        const { showModal, serverError } = this.props;
 
         let title = "Login";
         let primaryButtonMsg = "Login";
@@ -120,11 +119,10 @@ export class LoginModal extends Component{
 
         return (
             <FormModal title={title}
-                              showModal={showModal}
-                              primaryButtonMsg={primaryButtonMsg}
-                              resetAndToggleModal={this.resetAndToggleModal}
-                              action={action}>
-                {serverError ? <Alert variant="warning">{serverError}</Alert>: null}
+                       primaryButtonMsg={primaryButtonMsg}
+                       resetAndToggleModal={this.resetAndToggleModal}
+                       action={action}
+                       {...this.props}>
                 <FormControlWithError required={true}
                                       type="text"
                                       name="email"

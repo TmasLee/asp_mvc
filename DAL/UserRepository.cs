@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
-using System.Data;
 using asp_mvc.Models;
 using asp_mvc.Data;
 
@@ -15,27 +14,27 @@ namespace asp_mvc.DAL{
             _context = context;
         }
 
+        // Catch SQL query errors - currently fails silently
         public void CreateUser(User user)
         {
-            Console.WriteLine(user);
-            _context.User.FromSqlInterpolated($"INSERT INTO User (Email, FirstName, LastName, Password) VALUES ({user.Email}, {user.FirstName}, {user.LastName}, {user.Password});");
+            _context.User.FromSqlInterpolated($"INSERT INTO \"User\" (Email, FirstName, LastName, Password) OUTPUT INSERTED.* VALUES ({user.Email}, {user.FirstName}, {user.LastName}, {user.Password});");
         }
 
         public IEnumerable<User> RetrieveUsers()
         {
-            return _context.User.FromSqlRaw($"SELECT * FROM User;").ToList();
+            return _context.User.FromSqlRaw($"SELECT * FROM \"User\";").ToList();
         }
 
-        public List<User> RetrieveUserByEmail(String email)
+        public List<User> RetrieveUserByEmail(string email)
         {
-            return _context.User.FromSqlInterpolated($"SELECT * FROM User WHERE email = {email};").ToList();
+            return _context.User.FromSqlInterpolated($"SELECT * FROM \"User\" WHERE email = {email};").ToList();
         }
 
         // public User Update(User user){}
 
         public void Delete(String email)
         {
-            _context.User.FromSqlInterpolated($"DELETE FROM User WHERE email = {email};");
+            _context.User.FromSqlInterpolated($"DELETE FROM \"User\" OUTPUT DELETED.* WHERE email = {email};");
         }
 
         private bool disposed = false;
@@ -56,6 +55,11 @@ namespace asp_mvc.DAL{
         {
             Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        public void Save()
+        {
+            _context.SaveChanges();
         }
     }
 }

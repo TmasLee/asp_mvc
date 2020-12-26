@@ -18,6 +18,7 @@ class App extends Component {
         user: null,
         loading: false,
         showModal: false,
+        serverResponse: null,
         serverError: null
     }
 
@@ -25,7 +26,10 @@ class App extends Component {
         // User set here based on session/jwt?
     }
 
-    toggleModal = () => this.setState({ showModal: !this.state.showModal })
+    toggleModal = () => {
+        this.resetServerResponse();
+        this.setState({showModal: !this.state.showModal})
+    }
 
     /**
      * 5-10 second load
@@ -43,27 +47,37 @@ class App extends Component {
         e.preventDefault();
     }
 
-    // Already existing email error from server
     handleSignUp = (newUser) => {
-        this.handleError(null);
+        this.resetServerResponse(null);
         this.setState({loading: true});
-        const response = axios.post(
+        axios.post(
             '/User/SignUp',
             newUser
         ).then((resp) => {
-            this.setState({loading: false});
+            this.fakeLoadTime(2000).then(val => {
+                this.setState({
+                    loading: false,
+                    serverResponse: resp.data
+                });
+            })
         }).catch(err => {
-            this.setState({loading: false});
-            this.handleError(err.response.data.error)
+            const error = err.response.data;
+            this.setState({
+                loading: false,
+                serverError: error
+            });
         })
     }
 
-    handleError = (error) => {
-        if (error){
-            this.setState({serverError: eerror});
-        } else {
-            this.setState({serverError: null})
-        }
+    resetServerResponse = () => {
+        this.setState({
+            serverResponse: null,
+            serverError: null
+        });
+    }
+
+    fakeLoadTime = (delay) => {
+        return new Promise(res => setTimeout(res, delay));
     }
 
     render(){
@@ -76,7 +90,7 @@ class App extends Component {
 
         return(
             <UserContext.Provider value={user}>
-                <Layout showModal={this.state.showModal} toggleModal={this.toggleModal} serverError={this.state.serverError}>
+                <Layout {...this.state} toggleModal={this.toggleModal}>
                     <Route exact path='/' component={Home} />
                     <Route path='/aboutme' component={AboutMe} />
                     <Route path='/exercises' component={Exercises} />

@@ -15,26 +15,35 @@ namespace asp_mvc.Controllers
     [Produces("application/json")]
     public class UserController : ControllerBase
     {
-        private readonly MSAContext _context;
         private readonly IUserRepository _userRepo;
-        public UserController(MSAContext context)
+        public UserController(IUserRepository userRepository)
         {
-            // _context = context;
-            _userRepo = new UserRepository(context);
+            _userRepo = userRepository;
         }
 
         [HttpPost("/User/SignUp")]
         public IActionResult SignUp([FromBody]User newUser)
         {
-            // Console.WriteLine(newUser);
+            if (_userRepo.RetrieveUserByEmail(newUser.Email).Any())
+            {
+                return Conflict("Email already in use!");
+            }
             _userRepo.CreateUser(newUser);
-            return Ok(newUser);
+            return Ok("Registered");
         }
 
-        // [HttpPost]
-        // public int Login()
-        // {
-        //     return 0;
-        // }
+        [HttpGet("/User/GetUsers")]
+        public IActionResult RetrieveUsers()
+        {
+            var users = _userRepo.RetrieveUsers();
+            return Ok(users);
+        }
+
+        [HttpPost("/User/Login")]
+        public IActionResult Login([FromBody]User user)
+        {
+            var test = _userRepo.RetrieveUserByEmail(user.Email);
+            return Ok(test);
+        }
     }
 }

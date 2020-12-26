@@ -8,13 +8,13 @@ using asp_mvc.Models;
 namespace asp_mvc.DAL
 {
     // Interface for CRUD operations
-    interface IUserRepository : IDisposable
+    public interface IUserRepository : IDisposable
     {
         void CreateUser(User user);
         IEnumerable<User> RetrieveUsers();
         List<User> RetrieveUserByEmail(String email);
         // void Update(User user);
         void Delete(String email);
-        // void Save();
+        void Save();
     }
 }
