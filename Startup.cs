@@ -9,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.FileProviders;
 using asp_mvc.Data;
 using asp_mvc.DAL;
+using asp_mvc.Utilities;
 
 namespace asp_mvc
 {
@@ -30,7 +31,7 @@ namespace asp_mvc
             services.AddSingleton<IDateTime, SystemDateTime>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddControllers();
-            // services.AddTransient<>(); // Gets new instance of specified service everytime
+            services.AddTransient<StupidLoader>(); // Gets new instance of specified service everytime
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Route } from 'react-router';
 import { hot } from 'react-hot-loader';
 import axios from 'axios';
+import "core-js/stable";
+import "regenerator-runtime/runtime";
 
 import { Layout } from './components/Layout';
 import {
@@ -13,6 +15,7 @@ import { UserContext } from './components/UserContext';
 
 import '../../css/App.css';
 
+// Add loading percentages
 class App extends Component {
     state = {
         user: null,
@@ -31,16 +34,28 @@ class App extends Component {
         this.setState({showModal: !this.state.showModal})
     }
 
-    /**
-     * 5-10 second load
-     * Determine # of loading increments (4-8) - Increments 1-3 --> "Authenticating" + "Connecting to services" + "Getting user datas"
-     * Randomly determine which increment (increments 4-8) will be progress lost --> "Woah looks like we lost some progress, terrible UX" + "Better not log off... no really, I coded this to do this everytime you log in"
-     * Randomly determine % of each increment
-     */
-    // Incorrect user/password error
-    // Async not working - need plugin?
-    handleLogin = () => {
+    handleLogin = (user) => {
         this.setState({loading: true});
+        // There's gotta be a better way to handle this - looks like callback hell
+        axios.post(
+            '/User/Login',
+            user
+        ).then((resp) => {
+            this.handleServerResponse(resp.data, true);
+            axios.get(
+                '/User/ConnectToServices'
+            ).then((resp) => {
+                this.handleServerResponse(resp.data, true)
+                axios.get(
+                    '/User/LoseData'
+                ).then((resp) => {
+                    this.handleServerResponse(resp.data, true);
+                    axios.get(
+                        '/User/GetUserDatas'
+                    ).then((resp) => this.handleServerResponse("Success!"));
+                }).catch((err) => this.handleServerError(err.response.data));
+            }).catch((err) => this.handleServerError(err.response.data));
+        }).catch((err) => this.handleServerError(err.response.data));
     }
 
     handleLogout = (e) => {
@@ -54,24 +69,29 @@ class App extends Component {
             '/User/SignUp',
             newUser
         ).then((resp) => {
-            this.fakeLoadTime(2000).then(val => {
-                this.setState({
-                    loading: false,
-                    serverResponse: resp.data
-                });
-            })
-        }).catch(err => {
-            const error = err.response.data;
-            this.setState({
-                loading: false,
-                serverError: error
-            });
-        })
+            this.fakeLoadTime(2000).then(val => this.handleServerResponse(resp.data))
+        }).catch((err) => this.handleServerError(err.response.data));
     }
 
     resetServerResponse = () => {
         this.setState({
             serverResponse: null,
+            serverError: null
+        });
+    }
+
+    handleServerError = (error) => {
+        this.setState({
+            loading: false,
+            serverResponse: null,
+            serverError: error
+        })
+    }
+
+    handleServerResponse = (resp, stillLoading = false) => {
+        this.setState({
+            loading: stillLoading ? true : false,
+            serverResponse: resp,
             serverError: null
         });
     }

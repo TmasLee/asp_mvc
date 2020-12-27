@@ -33,3 +33,16 @@ namespace asp_mvc.Controllers
         }
     }
 }
+
+// Object model mismatch - OOP objects when objects only needed during run time? Maybe for data processing?
+// For CRUD operations, DB model objects are enough?
+
+// User - building - units - line - meters/meter types
+// building type?, line type?
+// building / line factories?
+
+// Line abstract class?
+// Line obj + utility col?
+// Function to generate fake meter usage data?
+
+// Design pattern maze example
