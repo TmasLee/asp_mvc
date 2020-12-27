@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using asp_mvc.Models;
@@ -14,20 +15,19 @@ namespace asp_mvc.DAL{
             _context = context;
         }
 
-        // Catch SQL query errors - currently fails silently
         public void CreateUser(User user)
         {
             _context.User.FromSqlInterpolated($"INSERT INTO \"User\" (Email, FirstName, LastName, Password) OUTPUT INSERTED.* VALUES ({user.Email}, {user.FirstName}, {user.LastName}, {user.Password});");
         }
 
-        public IEnumerable<User> RetrieveUsers()
+        public async Task<List<User>> RetrieveUsers()
         {
-            return _context.User.FromSqlRaw($"SELECT * FROM \"User\";").ToList();
+            return await _context.User.FromSqlRaw($"SELECT * FROM \"User\";").ToListAsync();
         }
 
-        public List<User> RetrieveUserByEmail(string email)
+        public User RetrieveUserByEmail(string email)
         {
-            return _context.User.FromSqlInterpolated($"SELECT * FROM \"User\" WHERE email = {email};").ToList();
+            return _context.User.FromSqlInterpolated($"SELECT * FROM \"User\" WHERE email = {email};").FirstOrDefault();
         }
 
         // public User Update(User user){}

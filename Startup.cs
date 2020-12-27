@@ -30,6 +30,7 @@ namespace asp_mvc
             services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddSingleton<IDateTime, SystemDateTime>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<UserManager>();
             services.AddControllers();
             services.AddTransient<StupidLoader>(); // Gets new instance of specified service everytime
         }

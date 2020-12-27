@@ -1,60 +1,50 @@
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
-using System.Net.Mime;
 using asp_mvc.Models;
 using asp_mvc.Data;
-using asp_mvc.DAL;
 using asp_mvc.Utilities;
 
 namespace asp_mvc.Controllers
 {
     [ApiController]
+    [Route("/User/")]
     [Produces("application/json")]
     public class UserController : ControllerBase
     {
-        private readonly IUserRepository _userRepo;
         private readonly StupidLoader _stupidLoader;
-        public UserController(IUserRepository userRepository, StupidLoader stupidLoader)
+        private readonly UserManager _userMgr;
+        public UserController(UserManager userMgr, StupidLoader stupidLoader)
         {
-            _userRepo = userRepository;
+            _userMgr = userMgr;
             _stupidLoader = stupidLoader;
         }
 
-        // Move email validation to server side to prevent posts not using the client form
-        [HttpPost("/User/SignUp")]
+        [HttpPost("/SignUp")]
         public IActionResult SignUp([FromBody]User newUser)
         {
-            if (_userRepo.RetrieveUserByEmail(newUser.Email).Any())
-            {
-                return Conflict("Email already in use!");
+            try {
+                _userMgr.AddUser(newUser);
             }
-            _userRepo.CreateUser(newUser);
+            catch (UserException e)
+            {
+                return BadRequest(e);
+            }
             return Ok("Registered!");
-        }
-
-        [HttpGet("/User/GetUsers")]
-        public IActionResult RetrieveUsers()
-        {
-            var users = _userRepo.RetrieveUsers();
-            return Ok(users);
         }
 
         [HttpPost("/User/Login")]
         public IActionResult Login([FromBody]User user)
         {
-            // Check password
-            // Validate password on model?
-            if (!_userRepo.RetrieveUserByEmail(user.Email).Any())
-            {
-                return BadRequest("Incorrect username or password!");
+            try {
+                _userMgr.LogUserIn(user);
+            }
+            catch (UserException e){
+                BadRequest(e);
             }
             return Ok(_stupidLoader.Authenticating);
         }
 
-        // Set async
         [HttpGet("/User/ConnectToServices")]
         public IActionResult ConnectToServices()
         {
@@ -62,7 +52,6 @@ namespace asp_mvc.Controllers
             return Ok(_stupidLoader.Connecting);
         }
 
-        // Set async
         [HttpGet("/User/GetUserDatas")]
         public IActionResult GetUserDatas()
         {
@@ -70,7 +59,6 @@ namespace asp_mvc.Controllers
             return Ok(_stupidLoader.GettingDatas);
         }
 
-        // Set async
         [HttpGet("/User/LoseData")]
         public IActionResult LoseData()
         {
