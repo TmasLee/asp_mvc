@@ -8,7 +8,7 @@ using asp_mvc.Utilities;
 namespace asp_mvc.Controllers
 {
     [ApiController]
-    [Route("/User/")]
+    [Route("[controller]/[action]")]
     [Produces("application/json")]
     public class UserController : ControllerBase
     {
@@ -20,8 +20,13 @@ namespace asp_mvc.Controllers
             _stupidLoader = stupidLoader;
         }
 
-        [HttpPost("/SignUp")]
-        public IActionResult SignUp([FromBody]User newUser)
+        // ActionResults (represent various HTTP statu codes) are used when multiple return types are possible
+        // ActionResults<T> let you return either an ActionResult or specifc type, T.
+        // ActionResult is limited to those classes which extend the ActionResult abstract class (which you could also do with custom code, but using an interface allows for something like multiple inheritance, while extending a class does not).
+        // IActionResult allows a wider range of return types, including any custom code that implements the IActionResult interface.
+        // IActionResult is used when multiple ActionResult return types are possible
+        [HttpPost]
+        public ActionResult SignUp([FromBody]User newUser)
         {
             try {
                 _userMgr.AddUser(newUser);
@@ -30,11 +35,12 @@ namespace asp_mvc.Controllers
             {
                 return BadRequest(e);
             }
-            return Ok("Registered!");
+            _stupidLoader.LoadTime(2);
+            return Ok(StupidLoader.Registered);
         }
 
-        [HttpPost("/User/Login")]
-        public IActionResult Login([FromBody]User user)
+        [HttpPost]
+        public ActionResult Login([FromBody]User user)
         {
             try {
                 _userMgr.LogUserIn(user);
@@ -42,28 +48,28 @@ namespace asp_mvc.Controllers
             catch (UserException e){
                 BadRequest(e);
             }
-            return Ok(_stupidLoader.Authenticating);
+            return Ok(StupidLoader.Authenticating);
         }
 
-        [HttpGet("/User/ConnectToServices")]
-        public IActionResult ConnectToServices()
+        [HttpGet]
+        public ActionResult ConnectToServices()
         {
             _stupidLoader.LoadTime(1, 3);
-            return Ok(_stupidLoader.Connecting);
+            return Ok(StupidLoader.Connecting);
         }
 
-        [HttpGet("/User/GetUserDatas")]
-        public IActionResult GetUserDatas()
-        {
-            _stupidLoader.LoadTime(1, 3);
-            return Ok(_stupidLoader.GettingDatas);
-        }
-
-        [HttpGet("/User/LoseData")]
-        public IActionResult LoseData()
+        [HttpGet]
+        public ActionResult LoseData()
         {
             _stupidLoader.LoadTime(3, 5);
-            return Ok(_stupidLoader.LostProgress);
+            return Ok(StupidLoader.LostProgress);
+        }
+
+        [HttpGet]
+        public ActionResult GetUserDatas()
+        {
+            _stupidLoader.LoadTime(1, 3);
+            return Ok(StupidLoader.GettingDatas);
         }
     }
 }

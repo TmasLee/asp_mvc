@@ -27,7 +27,7 @@ namespace asp_mvc.DAL{
 
         public User RetrieveUserByEmail(string email)
         {
-            return _context.User.FromSqlInterpolated($"SELECT * FROM \"User\" WHERE email = {email};").FirstOrDefault();
+            return _context.User.FromSqlInterpolated($"SELECT * FROM \"User\" WHERE email = {email}").FirstOrDefault();
         }
 
         // public User Update(User user){}

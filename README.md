@@ -4,18 +4,18 @@ A small web app project built from the ground up using a C# backend and a JS/Rea
 
 ### **To-Do**:
 
-* User token/session
-* Test /User/ Route
-* Static methods?
+* User session vs cookie? What're tokens for? Local storage? Cache?
 * How does interface type work? --> IEnumberable<User>
-* Implement Generic Repository?
+* Services using interfaces
 * Understand DI + Interfaces - Use cases
-* Get ASP.NET Core details down
-* Make data access methods async + controller actions
 
-* Catch SQL errors - currently fails silently
+* Make data access methods async
+* Get ASP.NET Core details down
+* Implement Generic Repository?
+
+* Server side form validation
 * Smooth % loading
-* Fix axios callback hell
+* Clean up / reorganize front end
 * Fix browser console error line mapping?
 * Start building app - User based buildings - data processing + SQL practice
 * Tests

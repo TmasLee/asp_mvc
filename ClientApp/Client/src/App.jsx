@@ -35,27 +35,37 @@ class App extends Component {
     }
 
     handleLogin = (user) => {
+        this.resetServerResponse();
         this.setState({loading: true});
-        // There's gotta be a better way to handle this - looks like callback hell
         axios.post(
             '/User/Login',
             user
-        ).then((resp) => {
+        )
+        .then((resp) => {
             this.handleServerResponse(resp.data, true);
-            axios.get(
+            return axios.get(
                 '/User/ConnectToServices'
-            ).then((resp) => {
-                this.handleServerResponse(resp.data, true)
-                axios.get(
-                    '/User/LoseData'
-                ).then((resp) => {
-                    this.handleServerResponse(resp.data, true);
-                    axios.get(
-                        '/User/GetUserDatas'
-                    ).then((resp) => this.handleServerResponse("Success!"));
-                }).catch((err) => this.handleServerError(err.response.data));
-            }).catch((err) => this.handleServerError(err.response.data));
-        }).catch((err) => this.handleServerError(err.response.data));
+            )
+        })
+        .then((resp) => {
+            this.handleServerResponse(resp.data, true)
+            return axios.get(
+                '/User/LoseData'
+            )
+        }).then((resp) => {
+            this.handleServerResponse(resp.data, true);
+            return axios.get(
+                '/User/GetUserDatas'
+            )
+        })
+        .then((resp) => {
+            this.handleServerResponse("Success!");
+            setTimeout(() => {
+                this.setState({showModal: false});
+                this.resetServerResponse();
+            }, 1000);
+        })
+        .catch((err) => this.handleServerError(err.response.data));
     }
 
     handleLogout = (e) => {
@@ -68,9 +78,11 @@ class App extends Component {
         axios.post(
             '/User/SignUp',
             newUser
-        ).then((resp) => {
-            this.fakeLoadTime(2000).then(val => this.handleServerResponse(resp.data))
-        }).catch((err) => this.handleServerError(err.response.data));
+        )
+        .then((resp) => {
+            this.handleServerResponse(resp.data);
+        })
+        .catch((err) => this.handleServerError(err.response.data));
     }
 
     resetServerResponse = () => {
@@ -94,10 +106,6 @@ class App extends Component {
             serverResponse: resp,
             serverError: null
         });
-    }
-
-    fakeLoadTime = (delay) => {
-        return new Promise(res => setTimeout(res, delay));
     }
 
     render(){
