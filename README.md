@@ -1,13 +1,11 @@
 # asp_mvc
 
-A small web app project built from the ground up using a C# backend and a JS/React frontend.
+A small web app project built from the ground up using C#/ASP.NET Core and JS/React.
 
 ### **To-Do**:
 
-* User session vs cookie? What're tokens for? Local storage? Cache?
-* How does interface type work? --> IEnumberable<User>
-* Services using interfaces
-* Understand DI + Interfaces - Use cases
+* User session
+* Services using interfaces + Understand DI
 
 * Make data access methods async
 * Get ASP.NET Core details down

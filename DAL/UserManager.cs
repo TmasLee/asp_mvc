@@ -8,11 +8,8 @@ using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using asp_mvc.Models;
 using asp_mvc.DAL;
 
-
-// Static method? Static vs class method - what is?
 // Should UserRepository just be the manager implementing IUserRepository?
-// AddSingleton vs AddTransient vs AddScoped - use interfaces when using?
-// Potentially need to register a lot of Repository + Manager services - Is that why we use interface?
+// AddSingleton vs AddTransient vs AddScoped
 namespace asp_mvc.Data
 {
     public class UserException : Exception

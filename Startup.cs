@@ -25,10 +25,18 @@ namespace asp_mvc
         // This method gets called by the runtime. Use this method to add services to the container via DI
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDistributedMemoryCache();
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromSeconds(10);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
             services.AddDbContext<MSAContext>(options =>
                 options.UseSqlServer(Configuration["MultiSpaApp:ConnectionString"]));
             services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddSingleton<IDateTime, SystemDateTime>();
+            // If we need to register a lot of related Repository + Manager services we can do so via extension methods
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<UserManager>();
             services.AddControllers();
@@ -62,6 +70,8 @@ namespace asp_mvc
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {

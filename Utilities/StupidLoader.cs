@@ -11,7 +11,7 @@ namespace asp_mvc.Utilities
         public const string Registered = "Registered!";
         public const string Authenticating = "Authenticating...";
         public const string Connecting = "Connecting to services...";
-        public const string LostProgress = "Woah looks like we lost some progress, terrible UX. Better not log off... no really, I coded this to do this everytime you log in";
+        public const string LostProgress = "Whoops looks like we lost some progress. Better not log off... no really, this is coded to happen everytime you log in. Terrible UX";
         public const string GettingDatas = "Getting user datas...";
         private Random _rand = new Random();
         public void LoadTime(int lower, int upper)

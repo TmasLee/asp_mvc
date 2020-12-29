@@ -34,12 +34,6 @@ namespace asp_mvc.Controllers
             return this._dateTime;
         }
 
-        [HttpGet("Data")]
-        public async Task<IActionResult> Data()
-        {
-            return NoContent();
-        }
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
