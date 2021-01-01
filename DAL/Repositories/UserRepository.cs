@@ -7,19 +7,20 @@ using asp_mvc.Data;
 namespace asp_mvc.DAL{
     public class UserRepository : BaseRepository<User>, IUserRepository
     {
-        public UserRepository(MSAContext context)
+        public UserRepository(MSAContext dbContext)
         {
-            _context = context;
+            tableName = dbContext.User.GetType().Name;
+            context = dbContext;
         }
 
         public override void Create(User user)
         {
-            _context.User.FromSqlInterpolated($"INSERT INTO \"User\" (Email, FirstName, LastName, Password) OUTPUT INSERTED.* VALUES ({user.Email}, {user.FirstName}, {user.LastName}, {user.Password});");
+            context.User.FromSqlInterpolated($"INSERT INTO \"User\" (Email, FirstName, LastName, Password) OUTPUT INSERTED.* VALUES ({user.Email}, {user.FirstName}, {user.LastName}, {user.Password});");
         }
 
         public User RetrieveUserByEmail(string email)
         {
-            return _context.User.FromSqlInterpolated($"SELECT * FROM \"User\" WHERE email = {email}").FirstOrDefault();
+            return context.User.FromSqlInterpolated($"SELECT * FROM \"User\" WHERE email = {email}").FirstOrDefault();
         }
 
         // public override User Update(User user)
@@ -29,7 +30,7 @@ namespace asp_mvc.DAL{
 
         public void DeleteByEmail(string email)
         {
-            _context.User.FromSqlInterpolated($"DELETE FROM \"User\" OUTPUT DELETED.* WHERE email = {email};");
+            context.User.FromSqlInterpolated($"DELETE FROM \"User\" OUTPUT DELETED.* WHERE email = {email};");
         }
     }
 }

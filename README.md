@@ -5,12 +5,11 @@ A small web app project built from the ground up using C#/ASP.NET Core and JS/Re
 ### **To-Do**:
 
 * User session
-* Make data access methods async
-
 * Make fake blog site with user - be able to see list of all other users - users can have friends? - user profile - script to make users
 * Server side form validation
 * Smooth % loading
 * Clean up / reorganize front end
+* Make data access methods async
 * Fix browser console error line mapping?
 
 * Start building app - User based buildings - data processing + SQL practice

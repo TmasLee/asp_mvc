@@ -1,10 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Data;
-using System.Linq.Expressions;
-using asp_mvc.Models;
-using asp_mvc.Utilities;
 using asp_mvc.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,9 +8,10 @@ namespace asp_mvc.DAL
 {
     public abstract class BaseRepository<T> : IRepository<T> where T : class
     {
-        private bool disposed = false;
+        private bool _disposed = false;
+        public string tableName;
         public DbSet<T> model;
-        public MSAContext _context;
+        public MSAContext context;
 
         // Generic insert possible?
         public abstract void Create(T model);
@@ -34,24 +31,24 @@ namespace asp_mvc.DAL
 
         public void DeleteById(int id)
         {
-            _context.User.FromSqlInterpolated($"DELETE FROM \"{model.GetType().Name}\" OUTPUT DELETED.* WHERE Id = {id};");
+            context.User.FromSqlInterpolated($"DELETE FROM \"{model.GetType().Name}\" OUTPUT DELETED.* WHERE Id = {id};");
         }
 
         public void Save()
         {
-            _context.SaveChanges();
+            context.SaveChanges();
         }
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!this.disposed)
+            if (!_disposed)
             {
                 if (disposing)
                 {
-                    _context.Dispose();
+                    context.Dispose();
                 }
             }
-            this.disposed = true;
+            _disposed = true;
         }
 
         public void Dispose()
