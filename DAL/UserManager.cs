@@ -8,8 +8,6 @@ using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using asp_mvc.Models;
 using asp_mvc.DAL;
 
-// Should UserRepository just be the manager implementing IUserRepository?
-// AddSingleton vs AddTransient vs AddScoped
 namespace asp_mvc.Data
 {
     public class UserException : Exception
@@ -97,7 +95,7 @@ namespace asp_mvc.Data
         {
             VerifyEmail(newUser.Email);
             newUser.Password = HashPassword(newUser.Password);
-            _userRepo.CreateUser(newUser);
+            _userRepo.Create(newUser);
         }
     }
 }

@@ -5,16 +5,14 @@ A small web app project built from the ground up using C#/ASP.NET Core and JS/Re
 ### **To-Do**:
 
 * User session
-* Services using interfaces + Understand DI
-
 * Make data access methods async
-* Get ASP.NET Core details down
-* Implement Generic Repository?
 
+* Make fake blog site with user - be able to see list of all other users - users can have friends? - user profile - script to make users
 * Server side form validation
 * Smooth % loading
 * Clean up / reorganize front end
 * Fix browser console error line mapping?
+
 * Start building app - User based buildings - data processing + SQL practice
 * Tests
 * Error page
