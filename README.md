@@ -4,8 +4,6 @@ A small web app project built from the ground up using C#/ASP.NET Core and JS/Re
 
 ### **To-Do**:
 
-* Kunhung should play wow healer - brewmaster tank kinda cool
-
 * Move loading messages to front end
 * User data
 * User session sign out
