@@ -4,15 +4,21 @@ A small web app project built from the ground up using C#/ASP.NET Core and JS/Re
 
 ### **To-Do**:
 
-* User session
-* Make fake blog site with user - be able to see list of all other users - users can have friends? - user profile - script to make users
+* Kunhung should play wow healer - brewmaster tank kinda cool
+
+* Move loading messages to front end
+* User data
+* User session sign out
+* Authorization JWT for endpoints
+* Make fake blog site with user - admin users - users should be able to see list of all other users - users can have friends? - user profile - script to make users
+* SQL practice - Stored procedures - Index
 * Server side form validation
 * Smooth % loading
 * Clean up / reorganize front end
 * Make data access methods async
 * Fix browser console error line mapping?
 
-* Start building app - User based buildings - data processing + SQL practice
+* Start building app - User based buildings - data processing
 * Tests
 * Error page
 

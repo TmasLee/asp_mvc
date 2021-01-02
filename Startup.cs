@@ -7,6 +7,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.AspNetCore.Authentication.Cookies;
+
 using asp_mvc.Data;
 using asp_mvc.DAL;
 using asp_mvc.Utilities;
@@ -25,13 +27,12 @@ namespace asp_mvc
         // This method gets called by the runtime. Use this method to inject services to the container
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDistributedMemoryCache();
-            services.AddSession(options =>
-            {
-                options.IdleTimeout = TimeSpan.FromSeconds(10);
-                options.Cookie.HttpOnly = true;
-                options.Cookie.IsEssential = true;
-            });
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie("CookieAuthentication", config =>
+                {
+                    config.Cookie.Name = "UserSessionCookie";
+                    config.LoginPath = "/User/Login";
+                });
             services.AddDbContext<MSAContext>(options =>
                 options.UseSqlServer(Configuration["MultiSpaApp:ConnectionString"]));
             services.AddDatabaseDeveloperPageExceptionFilter();
@@ -68,9 +69,8 @@ namespace asp_mvc
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
-
-            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {
