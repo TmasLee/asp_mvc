@@ -42,7 +42,7 @@ namespace asp_mvc.Controllers
                 return BadRequest(e);
             }
             _stupidLoader.LoadTime(2);
-            return Ok(StupidLoader.Registered);
+            return Ok();
         }
 
         [HttpPost]
@@ -92,21 +92,21 @@ namespace asp_mvc.Controllers
             catch (UserException e){
                 BadRequest(e);
             }
-            return Ok(StupidLoader.Authenticating);
+            return Ok();
         }
 
         [HttpGet]
         public ActionResult ConnectToServices()
         {
             _stupidLoader.LoadTime(1, 3);
-            return Ok(StupidLoader.Connecting);
+            return Ok();
         }
 
         [HttpGet]
         public ActionResult LoseData()
         {
             _stupidLoader.LoadTime(3, 5);
-            return Ok(StupidLoader.LostProgress);
+            return Ok();
         }
 
         [HttpGet]

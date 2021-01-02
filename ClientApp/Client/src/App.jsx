@@ -12,10 +12,10 @@ import {
     Exercises
 } from './components/pages';
 import { UserContext } from './components/UserContext';
+import { loadingMessages } from './utilities/messages';
 
 import '../../css/App.css';
 
-// Add loading percentages
 class App extends Component {
     state = {
         user: null,
@@ -26,7 +26,8 @@ class App extends Component {
     }
 
     componentDidMount(){
-        // User set here based on session/jwt?
+        // User set here based on session
+        // Send request to /Index/Home with cookie to check if session still valid
     }
 
     toggleModal = () => {
@@ -36,30 +37,30 @@ class App extends Component {
 
     handleLogin = (user) => {
         this.resetServerResponse();
-        this.setState({loading: true});
+        this.updateLoadingMessage(loadingMessages.authenticating, true);
         axios.post(
             '/User/Login',
             user
         )
         .then((resp) => {
-            this.handleServerResponse(resp.data, true);
+            this.updateLoadingMessage(loadingMessages.connecting, true);
             return axios.get(
                 '/User/ConnectToServices'
             )
         })
         .then((resp) => {
-            this.handleServerResponse(resp.data, true)
+            this.updateLoadingMessage(loadingMessages.lostProgress, true)
             return axios.get(
                 '/User/LoseData'
             )
         }).then((resp) => {
-            this.handleServerResponse(resp.data, true);
+            this.updateLoadingMessage(loadingMessages.gettingDatas, true);
             return axios.get(
                 '/User/GetUserDatas'
             )
         })
         .then((resp) => {
-            this.handleServerResponse("Success!");
+            this.updateLoadingMessage(loadingMessages.success, false);
             setTimeout(() => {
                 this.setState({showModal: false});
                 this.resetServerResponse();
@@ -100,7 +101,7 @@ class App extends Component {
         })
     }
 
-    handleServerResponse = (resp, stillLoading = false) => {
+    updateLoadingMessage = (resp, stillLoading) => {
         this.setState({
             loading: stillLoading ? true : false,
             serverResponse: resp,
