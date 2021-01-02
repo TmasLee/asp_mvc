@@ -50,13 +50,13 @@ namespace asp_mvc.Controllers
         {
             try {
                 _stupidLoader.LoadTime(1, 3);
-                _userMgr.LogUserIn(user);
+                User storedUser = _userMgr.LogUserIn(user);
 
-                List<Claim> claims = new List<Claim>()
+                List<Claim> claims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Email, user.Email),
-                    new Claim(ClaimTypes.Name, user.FirstName),
-                    new Claim(ClaimTypes.Surname, user.LastName),
+                    new Claim(ClaimTypes.Email, storedUser.Email),
+                    new Claim(ClaimTypes.Name, storedUser.FirstName),
+                    new Claim(ClaimTypes.Surname, storedUser.LastName),
                 };
                 var claimsIdentity = new ClaimsIdentity(
                     claims, CookieAuthenticationDefaults.AuthenticationScheme);

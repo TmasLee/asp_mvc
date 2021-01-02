@@ -3,7 +3,6 @@
 A small web app project built from the ground up using C#/ASP.NET Core and JS/React.
 
 ### **To-Do**:
-* Check cookie actually works
 * User data - After user logs in --> redirect to User personal page
 * All Users link
 * Link to personal page
