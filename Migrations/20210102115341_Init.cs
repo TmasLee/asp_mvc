@@ -2,7 +2,7 @@
 
 namespace asp_mvc.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -10,14 +10,17 @@ namespace asp_mvc.Migrations
                 name: "User",
                 columns: table => new
                 {
-                    Email = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Salt = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_User", x => x.Email);
+                    table.PrimaryKey("PK_User", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -26,16 +29,16 @@ namespace asp_mvc.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserEmail = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    UserId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Building", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Building_User_UserEmail",
-                        column: x => x.UserEmail,
+                        name: "FK_Building_User_UserId",
+                        column: x => x.UserId,
                         principalTable: "User",
-                        principalColumn: "Email",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -59,9 +62,9 @@ namespace asp_mvc.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Building_UserEmail",
+                name: "IX_Building_UserId",
                 table: "Building",
-                column: "UserEmail");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Line_BuildingId",

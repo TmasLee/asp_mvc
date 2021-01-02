@@ -26,12 +26,12 @@ namespace asp_mvc.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<string>("UserEmail")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserEmail");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Building");
                 });
@@ -55,14 +55,16 @@ namespace asp_mvc.Migrations
 
             modelBuilder.Entity("asp_mvc.Models.User", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
                     b.Property<string>("Email")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
 
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
@@ -73,7 +75,7 @@ namespace asp_mvc.Migrations
                     b.Property<string>("Salt")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Email");
+                    b.HasKey("Id");
 
                     b.ToTable("User");
                 });
@@ -82,7 +84,7 @@ namespace asp_mvc.Migrations
                 {
                     b.HasOne("asp_mvc.Models.User", null)
                         .WithMany("Buildings")
-                        .HasForeignKey("UserEmail");
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("asp_mvc.Models.Line", b =>
