@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using asp_mvc.Data;
 
 namespace asp_mvc.Migrations
 {
     [DbContext(typeof(MSAContext))]
-    partial class MSAContextModelSnapshot : ModelSnapshot
+    [Migration("20210102112526_AddUserSaltColumn")]
+    partial class AddUserSaltColumn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
