@@ -9,13 +9,14 @@ namespace asp_mvc.DAL{
     {
         public UserRepository(MSAContext dbContext)
         {
-            tableName = dbContext.User.GetType().Name;
+            model = dbContext.User;
+            tableName = model.GetType().Name;
             context = dbContext;
         }
 
         public override void Create(User user)
         {
-            context.User.FromSqlInterpolated($"INSERT INTO \"User\" (Email, FirstName, LastName, Password) OUTPUT INSERTED.* VALUES ({user.Email}, {user.FirstName}, {user.LastName}, {user.Password});");
+            context.User.FromSqlInterpolated($"INSERT INTO \"User\" (Email, FirstName, LastName, Password) OUTPUT INSERTED.* VALUES ({user.Email}, {user.FirstName}, {user.LastName}, {user.Password});").ToList();
         }
 
         public User RetrieveUserByEmail(string email)
@@ -30,7 +31,7 @@ namespace asp_mvc.DAL{
 
         public void DeleteByEmail(string email)
         {
-            context.User.FromSqlInterpolated($"DELETE FROM \"User\" OUTPUT DELETED.* WHERE email = {email};");
+            context.User.FromSqlInterpolated($"DELETE FROM \"User\" OUTPUT DELETED.* WHERE email = {email};").ToList();
         }
     }
 }

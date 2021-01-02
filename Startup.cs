@@ -28,10 +28,9 @@ namespace asp_mvc
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie("CookieAuthentication", config =>
+                .AddCookie(options =>
                 {
-                    config.Cookie.Name = "UserSessionCookie";
-                    config.LoginPath = "/User/Login";
+                    options.LoginPath = "/User/Login";
                 });
             services.AddDbContext<MSAContext>(options =>
                 options.UseSqlServer(Configuration["MultiSpaApp:ConnectionString"]));

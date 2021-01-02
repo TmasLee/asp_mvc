@@ -3,7 +3,7 @@ import { Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 import { FormModal, FormControlWithError } from './generics';
 
-// Clean up the code
+// Clean up code
 export class LoginModal extends Component{
     state = {
         email: "",

@@ -26,8 +26,8 @@ class App extends Component {
     }
 
     componentDidMount(){
-        // User set here based on session
-        // Send request to /Index/Home with cookie to check if session still valid
+        // Check if session still valid
+        // axios.get('/');
     }
 
     toggleModal = () => {
@@ -44,20 +44,20 @@ class App extends Component {
         )
         .then((resp) => {
             this.updateLoadingMessage(loadingMessages.connecting, true);
-            return axios.get(
-                '/User/ConnectToServices'
-            )
+            return axios.get('/User/ConnectToServices');
         })
         .then((resp) => {
             this.updateLoadingMessage(loadingMessages.lostProgress, true)
-            return axios.get(
-                '/User/LoseData'
-            )
-        }).then((resp) => {
+            return axios.get('/User/LoseData');
+        })
+        .then((resp) => {
             this.updateLoadingMessage(loadingMessages.gettingDatas, true);
             return axios.get(
-                '/User/GetUserDatas'
-            )
+                '/User/GetUserDatas', {
+                params: {
+                    email: user.email
+                }
+            });
         })
         .then((resp) => {
             this.updateLoadingMessage(loadingMessages.success, false);
@@ -74,14 +74,14 @@ class App extends Component {
     }
 
     handleSignUp = (newUser) => {
-        this.resetServerResponse(null);
+        this.resetServerResponse();
         this.setState({loading: true});
         axios.post(
             '/User/SignUp',
             newUser
         )
         .then((resp) => {
-            this.handleServerResponse(resp.data);
+            this.updateLoadingMessage(loadingMessages.registered, false);
         })
         .catch((err) => this.handleServerError(err.response.data));
     }

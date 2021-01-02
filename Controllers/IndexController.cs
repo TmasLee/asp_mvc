@@ -1,12 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Hosting;
-using asp_mvc.Models;
 
 namespace asp_mvc.Controllers
 {
@@ -32,12 +29,6 @@ namespace asp_mvc.Controllers
         public IDateTime ServerTime()
         {
             return this._dateTime;
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }

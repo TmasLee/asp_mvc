@@ -39,7 +39,7 @@ namespace asp_mvc.Controllers
             }
             catch (UserException e)
             {
-                return BadRequest(e);
+                return BadRequest(e.Message);
             }
             _stupidLoader.LoadTime(2);
             return Ok();
@@ -49,6 +49,7 @@ namespace asp_mvc.Controllers
         public async Task<ActionResult> Login([FromBody]User user)
         {
             try {
+                _stupidLoader.LoadTime(1, 3);
                 _userMgr.LogUserIn(user);
 
                 List<Claim> claims = new List<Claim>()
@@ -62,22 +63,12 @@ namespace asp_mvc.Controllers
 
                 var authProperties = new AuthenticationProperties
                 {
-                    //AllowRefresh = <bool>,
-                    // Refreshing the authentication session should be allowed.
-
-                    //ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10),
-                    // The time at which the authentication ticket expires. A 
-                    // value set here overrides the ExpireTimeSpan option of 
-                    // CookieAuthenticationOptions set with AddCookie.
-
+                    ExpiresUtc = DateTimeOffset.UtcNow.AddDays(7),
                     //IsPersistent = true,
                     // Whether the authentication session is persisted across 
                     // multiple requests. When used with cookies, controls
                     // whether the cookie's lifetime is absolute (matching the
                     // lifetime of the authentication ticket) or session-based.
-
-                    //IssuedUtc = <DateTimeOffset>,
-                    // The time at which the authentication ticket was issued.
 
                     //RedirectUri = <string>
                     // The full path or absolute URI to be used as an http 
@@ -90,7 +81,7 @@ namespace asp_mvc.Controllers
                     authProperties);
             }
             catch (UserException e){
-                BadRequest(e);
+                return BadRequest(e.Message);
             }
             return Ok();
         }
@@ -110,9 +101,8 @@ namespace asp_mvc.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetUserDatas()
+        public ActionResult GetUserDatas([FromQuery(Name="email")]string email)
         {
-            // Redirect with user data
             _stupidLoader.LoadTime(1, 3);
             return Redirect("/");
         }
