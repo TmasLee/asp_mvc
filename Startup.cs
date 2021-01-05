@@ -30,7 +30,9 @@ namespace asp_mvc
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
+                    options.Cookie.Name = "UserSessionCookie";
                     options.LoginPath = "/User/Login";
+                    options.ExpireTimeSpan = new TimeSpan(7,0,0,0);
                 });
             services.AddDbContext<MSAContext>(options =>
                 options.UseSqlServer(Configuration["MultiSpaApp:ConnectionString"]));

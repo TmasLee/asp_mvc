@@ -15,7 +15,7 @@ namespace asp_mvc.Utilities
 
         public void LoadTime(int time)
         {
-            Thread.Sleep(_rand.Next(time) * 1000);
+            Thread.Sleep(_rand.Next(time, time) * 1000);
         }
     }
 }

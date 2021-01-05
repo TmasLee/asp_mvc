@@ -11,120 +11,28 @@ import {
     AboutMe,
     Exercises
 } from './components/pages';
-import { UserContext } from './components/UserContext';
-import { loadingMessages } from './utilities/messages';
-
 import '../../css/App.css';
 
 class App extends Component {
     state = {
-        user: null,
-        loading: false,
-        showModal: false,
-        serverResponse: null,
-        serverError: null
+        currentUser: null
     }
 
     componentDidMount(){
-        // Check if session still valid
-        // axios.get('/');
-    }
-
-    toggleModal = () => {
-        this.resetServerResponse();
-        this.setState({showModal: !this.state.showModal})
-    }
-
-    handleLogin = (user) => {
-        this.resetServerResponse();
-        this.updateLoadingMessage(loadingMessages.authenticating, true);
-        axios.post(
-            '/User/Login',
-            user
-        )
-        .then((resp) => {
-            this.updateLoadingMessage(loadingMessages.connecting, true);
-            return axios.get('/User/ConnectToServices');
-        })
-        .then((resp) => {
-            this.updateLoadingMessage(loadingMessages.lostProgress, true)
-            return axios.get('/User/LoseData');
-        })
-        .then((resp) => {
-            this.updateLoadingMessage(loadingMessages.gettingDatas, true);
-            return axios.get(
-                '/User/GetUserDatas', {
-                params: {
-                    email: user.email
-                }
-            });
-        })
-        .then((resp) => {
-            this.updateLoadingMessage(loadingMessages.success, false);
-            setTimeout(() => {
-                this.setState({showModal: false});
-                this.resetServerResponse();
-            }, 1000);
-        })
-        .catch((err) => this.handleServerError(err.response.data));
-    }
-
-    handleLogout = (e) => {
-        e.preventDefault();
-    }
-
-    handleSignUp = (newUser) => {
-        this.resetServerResponse();
-        this.setState({loading: true});
-        axios.post(
-            '/User/SignUp',
-            newUser
-        )
-        .then((resp) => {
-            this.updateLoadingMessage(loadingMessages.registered, false);
-        })
-        .catch((err) => this.handleServerError(err.response.data));
-    }
-
-    resetServerResponse = () => {
-        this.setState({
-            serverResponse: null,
-            serverError: null
-        });
-    }
-
-    handleServerError = (error) => {
-        this.setState({
-            loading: false,
-            serverResponse: null,
-            serverError: error
-        })
-    }
-
-    updateLoadingMessage = (resp, stillLoading) => {
-        this.setState({
-            loading: stillLoading ? true : false,
-            serverResponse: resp,
-            serverError: null
-        });
+        // Check if session cookie not expired
+        // axios.get(
+        //     '/User/GetUserDatas', {
+        //     withCredentials: true
+        // });
     }
 
     render(){
-        const user = {
-            currentUser: this.state.user,
-            loginUser: this.handleLogin,
-            logoutUser: this.handleLogout,
-            signUpUser: this.handleSignUp
-        }
-
         return(
-            <UserContext.Provider value={user}>
-                <Layout {...this.state} toggleModal={this.toggleModal}>
-                    <Route exact path='/' component={Home} />
-                    <Route path='/aboutme' component={AboutMe} />
-                    <Route path='/exercises' component={Exercises} />
-                </Layout>
-            </UserContext.Provider>
+            <Layout {...this.state}>
+                <Route exact path='/' component={Home} />
+                <Route path='/aboutme' component={AboutMe} />
+                <Route path='/exercises' component={Exercises} />
+            </Layout>
         );
     }
 }

@@ -3,20 +3,17 @@
 A small web app project built from the ground up using C#/ASP.NET Core and JS/React.
 
 ### **To-Do**:
+* Update navbar - All Users link - Link to personal page - Log out link - User session sign out
 * User data - After user logs in --> redirect to User personal page
-* All Users link
-* Link to personal page
-* Log out link - User session sign out
-* Authorization for endpoints - JWT?
 
 * Make fake blog site with user - users can have friends?
 * Script to make 1000 users
 * SQL practice - Stored procedures - Index
 * Make data access methods async
 * Admin account
+* Encrypt form post?
 * Server side form validation
 * Clean up / reorganize front end
-* Fix browser console error line mapping? - https://developer.mozilla.org/en-US/docs/Tools/Debugger/How_to/Use_a_source_map
 
 * Building app - User based buildings - data processing
 * Tests

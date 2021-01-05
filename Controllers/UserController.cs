@@ -5,6 +5,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using asp_mvc.Models;
@@ -34,6 +35,7 @@ namespace asp_mvc.Controllers
         [HttpPost]
         public ActionResult SignUp([FromBody]User newUser)
         {
+            _stupidLoader.LoadTime(2);
             try {
                 _userMgr.AddUser(newUser);
             }
@@ -41,15 +43,14 @@ namespace asp_mvc.Controllers
             {
                 return BadRequest(e.Message);
             }
-            _stupidLoader.LoadTime(2);
             return Ok();
         }
 
         [HttpPost]
         public async Task<ActionResult> Login([FromBody]User user)
         {
+            _stupidLoader.LoadTime(1, 3);
             try {
-                _stupidLoader.LoadTime(1, 3);
                 User storedUser = _userMgr.LogUserIn(user);
 
                 List<Claim> claims = new List<Claim>
@@ -63,13 +64,7 @@ namespace asp_mvc.Controllers
 
                 var authProperties = new AuthenticationProperties
                 {
-                    ExpiresUtc = DateTimeOffset.UtcNow.AddDays(7),
-                    //IsPersistent = true,
-                    // Whether the authentication session is persisted across 
-                    // multiple requests. When used with cookies, controls
-                    // whether the cookie's lifetime is absolute (matching the
-                    // lifetime of the authentication ticket) or session-based.
-
+                    IsPersistent = true,
                     //RedirectUri = <string>
                     // The full path or absolute URI to be used as an http 
                     // redirect response value.
@@ -86,6 +81,7 @@ namespace asp_mvc.Controllers
             return Ok();
         }
 
+        [Authorize]
         [HttpGet]
         public ActionResult ConnectToServices()
         {
@@ -93,6 +89,7 @@ namespace asp_mvc.Controllers
             return Ok();
         }
 
+        [Authorize]
         [HttpGet]
         public ActionResult LoseData()
         {
@@ -100,13 +97,18 @@ namespace asp_mvc.Controllers
             return Ok();
         }
 
+        // Authorization based on cookie atm - need to figure out JWT implementation
+        [Authorize]
         [HttpGet]
-        public ActionResult GetUserDatas([FromQuery(Name="email")]string email)
+        public ActionResult GetUserDatas()
         {
+            // Want to return User data from cookie
             _stupidLoader.LoadTime(1, 3);
-            return Redirect("/");
+            var cookie = Request.Cookies["UserSessionCookie"];
+            return Ok();
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult> LogOut()
         {

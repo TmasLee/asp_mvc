@@ -2,10 +2,13 @@ import React, { Component } from 'react';
 import { Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 import { FormModal, FormControlWithError } from './generics';
+import { LoginMessage } from './LoginMessage';
+import { loadingMessages } from '../utilities/messages';
+import authService from '../AuthenticationService';
 
-// Clean up code
 export class LoginModal extends Component{
     state = {
+        loading: false,
         email: "",
         firstName: "",
         lastName: "",
@@ -13,24 +16,42 @@ export class LoginModal extends Component{
         reenteredPassword: "",
         newUser: false,
         errors: {},
+        serverResponse: null,
+        serverError: null
     }
 
     baseState = this.state;
 
-    resetFields = () => {
-        this.setState(this.baseState);
+    componentDidUpdate(prevState, prevProps){
+        
     }
 
-    resetErrors = () => this.setState({errors: {}});
+    resetFields = () => this.setState(this.baseState);
+
+    resetErrors = () => this.setState({ errors: {} });
 
     resetAndToggleModal = () => {
         this.resetFields();
+        this.resetServerResponse();
         this.props.toggleModal();
+    }
+
+    resetServerResponse = () => {
+        this.setState({
+            serverResponse: null,
+            serverError: null
+        });
+    }
+
+    autoToggle = (time=700) => {
+        setTimeout(() => {
+            this.resetAndToggleModal();
+        }, time);
     }
 
     handleNewUser = () => {
         this.resetFields();
-        this.setState({ newUser: true })
+        this.setState({ newUser: true });
     };
 
     handleInputOnChange = (e) => this.setState({ [e.target.name]: e.target.value });
@@ -50,7 +71,42 @@ export class LoginModal extends Component{
         }
     }
 
-    // Seems like this should be in FormModal - maybe extend FormModal
+    handleServerError = (error) => {
+        this.setState({
+            serverResponse: null,
+            serverError: error,
+            loading: false
+        });
+    }
+
+    updateLoadingMessage = (resp, isLoading=true) => {
+        this.setState({
+            loading: isLoading,
+            serverResponse: resp,
+            serverError: null
+        });
+    }
+
+    handleSignUp = async (newUser) => {
+        this.setState({loading: true});
+        try {
+            await authService.signUp(newUser, this.updateLoadingMessage);
+            this.autoToggle(1000);
+        } catch (e){
+            this.handleServerError(e);
+        }
+    }
+
+    handleLogin = async (user) => {
+        this.updateLoadingMessage(loadingMessages.authenticating);
+        try {
+            await authService.logIn(user, this.updateLoadingMessage);
+            this.autoToggle();
+        } catch (e){
+            this.handleServerError(e);
+        }
+    }
+
     validateForm = () => {
         const { email, firstName, lastName, password, reenteredPassword, newUser } = this.state;
         let errors = {};
@@ -94,7 +150,7 @@ export class LoginModal extends Component{
         this.resetErrors();
         if (this.validateForm()){
             let newUser = this.getDataModel(this.state);
-            this.props.handleSignUp(newUser);
+            this.handleSignUp(newUser);
         }
     }
 
@@ -102,12 +158,12 @@ export class LoginModal extends Component{
         this.resetErrors();
         if (this.validateForm()){
             let user = this.getDataModel(this.state);
-            this.props.handleLogin(user);
+            this.handleLogin(user);
         }
     }
 
     render(){
-        const { email, firstName, lastName, password, reenteredPassword, newUser, errors } = this.state;
+        const { email, firstName, lastName, password, reenteredPassword, newUser, errors, loading, serverError, serverResponse } = this.state;
 
         let title = "Login";
         let primaryButtonMsg = "Login";
@@ -124,7 +180,9 @@ export class LoginModal extends Component{
                        primaryButtonMsg={primaryButtonMsg}
                        resetAndToggleModal={this.resetAndToggleModal}
                        action={action}
+                       loading={loading}
                        {...this.props}>
+                <LoginMessage serverError={serverError} serverResponse={serverResponse} />
                 <FormControlWithError required={true}
                                       type="text"
                                       name="email"

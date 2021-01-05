@@ -3,28 +3,29 @@ import { Container } from 'react-bootstrap';
 
 import { NavMenu } from './NavMenu';
 import { LoginModal } from "./LoginModal";
-import { UserContext } from './UserContext';
 
 export class Layout extends Component {
+    state = {
+        showModal: false
+    }
+
+    toggleModal = () => {
+        this.setState({
+            showModal: !this.state.showModal
+        });
+    }
+
     render () {
-        const { toggleModal } = this.props;
         return (
-            <UserContext.Consumer>
-                {({currentUser, loginUser, logoutUser, signUpUser}) => {
-                    return (
-                        <div>
-                            <NavMenu currentUser={currentUser} toggleLogin={toggleModal}/>
-                            <LoginModal {...this.props}
-                                        handleLogin={loginUser}
-                                        handleLogout={logoutUser}
-                                        handleSignUp={signUpUser}/>
-                            <Container>
-                                {this.props.children}
-                            </Container>
-                        </div>
-                    )
-                }}
-            </UserContext.Consumer>
+            <div>
+                <NavMenu {...this.props} toggleModal={this.toggleModal}/>
+                <LoginModal {...this.props}
+                            {...this.state}
+                            toggleModal={this.toggleModal}/>
+                <Container>
+                    {this.props.children}
+                </Container>
+            </div>
         );
     }
 }

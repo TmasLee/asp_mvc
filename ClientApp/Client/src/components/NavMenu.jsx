@@ -6,7 +6,7 @@ import '../../../css/NavMenu.css';
 
 export class NavMenu extends Component {
     render () {
-        const { toggleLogin, currentUser } = this.props;
+        const { toggleModal, currentUser } = this.props;
         return (
             <header>
                 <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" bg="light">
@@ -26,7 +26,7 @@ export class NavMenu extends Component {
                                 {
                                     currentUser ? <Nav.Link as={Link} className="text-dark" to="/">Logout</Nav.Link>
                                     :
-                                    <Nav.Link as={Link} className="text-dark" to="#" onClick={toggleLogin}>Login</Nav.Link>
+                                    <Nav.Link as={Link} className="text-dark" to="#" onClick={toggleModal}>Login</Nav.Link>
                                 }
                             </Nav.Item>
                             {
