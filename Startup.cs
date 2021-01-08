@@ -1,17 +1,22 @@
 using System;
+using System.Text;
 using System.IO;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.FileProviders;
-using Microsoft.AspNetCore.Authentication.Cookies;
 
 using asp_mvc.Data;
 using asp_mvc.DAL;
+using asp_mvc.DAL.Managers;
 using asp_mvc.Utilities;
+using asp_mvc.Utilities.POCO;
+using asp_mvc.Utilities.Authentication;
 
 namespace asp_mvc
 {
@@ -27,21 +32,36 @@ namespace asp_mvc
         // This method gets called by the runtime. Use this method to inject services to the container
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options =>
-                {
-                    options.Cookie.Name = "UserSessionCookie";
-                    options.LoginPath = "/User/Login";
-                    options.ExpireTimeSpan = new TimeSpan(7,0,0,0);
-                });
             services.AddDbContext<MSAContext>(options =>
                 options.UseSqlServer(Configuration["MultiSpaApp:ConnectionString"]));
             services.AddDatabaseDeveloperPageExceptionFilter();
+
+            services.Configure<TokenManagement>(Configuration.GetSection("tokenManagement"));
+            var token = Configuration.GetSection("tokenManagement").Get<TokenManagement>();
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+            {
+                options.RequireHttpsMetadata = false;
+                options.SaveToken = true;
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey =  new SymmetricSecurityKey(Encoding.ASCII.GetBytes(token.Secret)),
+                    ValidIssuer = token.Issuer,
+                    ValidAudience = token.Audience,
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
+
             services.AddSingleton<IDateTime, SystemDateTime>();
+
+            services.AddScoped<ITokenAuthService, TokenAuthService>();
+
             services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<UserManager>();
+            services.AddScoped<IUserManager, UserManager>();
+            services.AddTransient<StupidLoader>();
+
             services.AddControllers();
-            services.AddTransient<StupidLoader>(); // Gets new instance of specified service everytime
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

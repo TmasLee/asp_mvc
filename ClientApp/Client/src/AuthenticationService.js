@@ -22,34 +22,35 @@ class AuthenticationService {
     }
 
     async logIn(user, successCallback) {
+        var config;
+
+        successCallback(loadingMessages.authenticating);
+
         await axios.post(
-            '/user/login',
+            '/authentication/authenticate',
             user
         )
         .then((resp) => {
+            config = {
+                headers: { Authorization: `Bearer ${resp.data}` }
+            }
             successCallback(loadingMessages.connecting);
-            return axios.get('/user/connect', {
-                withCredentials: true
-            });
+            return axios.get('/user/connect', config);
         })
         .then((resp) => {
             successCallback(loadingMessages.lostProgress);
-            return axios.get('/user/lose-data', {
-                withCredentials: true
-            });
+            return axios.get('/user/lose-data', config);
         })
         .then((resp) => {
             successCallback(loadingMessages.gettingDatas);
             return axios.get(
-                '/user/get-user-datass', {
-                    withCredentials: true
-                });
+                '/user/get-user-datass', config);
         })
         .then((resp) => {
             successCallback(loadingMessages.success);
         })
         .catch((err) => {
-            throw err.response.data;
+            throw err.response;
         });
     }
 

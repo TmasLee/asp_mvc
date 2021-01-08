@@ -1,14 +1,11 @@
 using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using asp_mvc.Models;
+using asp_mvc.Utilities.POCO;
 using asp_mvc.DAL.Managers;
 using asp_mvc.Utilities;
 
@@ -25,8 +22,8 @@ namespace asp_mvc.Controllers
     public class UserController : ControllerBase
     {
         private readonly StupidLoader _stupidLoader;
-        private readonly UserManager _userMgr;
-        public UserController(UserManager userMgr, StupidLoader stupidLoader)
+        private readonly IUserManager _userMgr;
+        public UserController(IUserManager userMgr, StupidLoader stupidLoader)
         {
             _userMgr = userMgr;
             _stupidLoader = stupidLoader;
@@ -36,48 +33,21 @@ namespace asp_mvc.Controllers
         public ActionResult SignUp([FromBody]User newUser)
         {
             _stupidLoader.LoadTime(2);
-            try {
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
                 _userMgr.AddUser(newUser);
             }
             catch (UserException e)
             {
                 return BadRequest(e.Message);
             }
-            return Ok();
-        }
 
-        [HttpPost("login")]
-        public async Task<ActionResult> Login([FromBody]User user)
-        {
-            _stupidLoader.LoadTime(1, 3);
-            try {
-                User storedUser = _userMgr.LogUserIn(user);
-
-                List<Claim> claims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.Email, storedUser.Email),
-                    new Claim(ClaimTypes.Name, storedUser.FirstName),
-                    new Claim(ClaimTypes.Surname, storedUser.LastName),
-                };
-                var claimsIdentity = new ClaimsIdentity(
-                    claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
-                var authProperties = new AuthenticationProperties
-                {
-                    IsPersistent = true,
-                    //RedirectUri = <string>
-                    // The full path or absolute URI to be used as an http 
-                    // redirect response value.
-                };
-
-                await HttpContext.SignInAsync(
-                    CookieAuthenticationDefaults.AuthenticationScheme,
-                    new ClaimsPrincipal(claimsIdentity),
-                    authProperties);
-            }
-            catch (UserException e){
-                return BadRequest(e.Message);
-            }
             return Ok();
         }
 
@@ -85,35 +55,30 @@ namespace asp_mvc.Controllers
         [HttpGet("connect")]
         public ActionResult ConnectToServices()
         {
-            _stupidLoader.LoadTime(1, 3);
+            _stupidLoader.LoadTime(2, 3);
             return Ok();
         }
 
-        [Authorize]
+        // [Authorize]
         [HttpGet("lose-data")]
         public ActionResult LoseData()
         {
-            _stupidLoader.LoadTime(3, 5);
+            _stupidLoader.LoadTime(3, 4);
             return Ok();
         }
 
-        // Authorization based on cookie atm - need to figure out JWT implementation
-        [Authorize]
+        // [Authorize]
         [HttpGet("get-user-datass")]
         public ActionResult GetUserDatas()
         {
-            // Want to return User data from cookie
             _stupidLoader.LoadTime(1, 3);
-            var cookie = Request.Cookies["UserSessionCookie"];
             return Ok();
         }
 
-        [Authorize]
+        // [Authorize]
         [HttpGet("logout")]
         public async Task<ActionResult> LogOut()
         {
-            await HttpContext.SignOutAsync(
-                CookieAuthenticationDefaults.AuthenticationScheme);
             return Ok();
         }
     }

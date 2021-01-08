@@ -103,7 +103,8 @@ export class LoginModal extends Component{
             await authService.logIn(user, this.updateLoadingMessage);
             this.autoToggle();
         } catch (e){
-            this.handleServerError(e);
+            console.log(e)
+            this.handleServerError(e.data);
         }
     }
 
