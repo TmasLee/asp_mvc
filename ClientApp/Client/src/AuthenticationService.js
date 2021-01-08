@@ -10,7 +10,7 @@ class AuthenticationService {
 
     async signUp(newUser, successCallback) {
         await axios.post(
-            '/User/SignUp',
+            '/user/signup',
             newUser
         )
         .then((resp) => {
@@ -23,25 +23,25 @@ class AuthenticationService {
 
     async logIn(user, successCallback) {
         await axios.post(
-            '/User/Login',
+            '/user/login',
             user
         )
         .then((resp) => {
             successCallback(loadingMessages.connecting);
-            return axios.get('/User/ConnectToServices', {
+            return axios.get('/user/connect', {
                 withCredentials: true
             });
         })
         .then((resp) => {
             successCallback(loadingMessages.lostProgress);
-            return axios.get('/User/LoseData', {
+            return axios.get('/user/lose-data', {
                 withCredentials: true
             });
         })
         .then((resp) => {
             successCallback(loadingMessages.gettingDatas);
             return axios.get(
-                '/User/GetUserDatas', {
+                '/user/get-user-datass', {
                     withCredentials: true
                 });
         })

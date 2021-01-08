@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using asp_mvc.Models;
-using asp_mvc.Data;
+using asp_mvc.DAL.Managers;
 using asp_mvc.Utilities;
 
 // ActionResults (represent various HTTP status codes) are used when multiple return types are possible
@@ -20,7 +20,7 @@ using asp_mvc.Utilities;
 namespace asp_mvc.Controllers
 {
     [ApiController]
-    [Route("[controller]/[action]")]
+    [Route("[controller]")]
     [Produces("application/json")]
     public class UserController : ControllerBase
     {
@@ -32,7 +32,7 @@ namespace asp_mvc.Controllers
             _stupidLoader = stupidLoader;
         }
 
-        [HttpPost]
+        [HttpPost("signup")]
         public ActionResult SignUp([FromBody]User newUser)
         {
             _stupidLoader.LoadTime(2);
@@ -46,7 +46,7 @@ namespace asp_mvc.Controllers
             return Ok();
         }
 
-        [HttpPost]
+        [HttpPost("login")]
         public async Task<ActionResult> Login([FromBody]User user)
         {
             _stupidLoader.LoadTime(1, 3);
@@ -82,7 +82,7 @@ namespace asp_mvc.Controllers
         }
 
         [Authorize]
-        [HttpGet]
+        [HttpGet("connect")]
         public ActionResult ConnectToServices()
         {
             _stupidLoader.LoadTime(1, 3);
@@ -90,7 +90,7 @@ namespace asp_mvc.Controllers
         }
 
         [Authorize]
-        [HttpGet]
+        [HttpGet("lose-data")]
         public ActionResult LoseData()
         {
             _stupidLoader.LoadTime(3, 5);
@@ -99,7 +99,7 @@ namespace asp_mvc.Controllers
 
         // Authorization based on cookie atm - need to figure out JWT implementation
         [Authorize]
-        [HttpGet]
+        [HttpGet("get-user-datass")]
         public ActionResult GetUserDatas()
         {
             // Want to return User data from cookie
@@ -109,7 +109,7 @@ namespace asp_mvc.Controllers
         }
 
         [Authorize]
-        [HttpGet]
+        [HttpGet("logout")]
         public async Task<ActionResult> LogOut()
         {
             await HttpContext.SignOutAsync(

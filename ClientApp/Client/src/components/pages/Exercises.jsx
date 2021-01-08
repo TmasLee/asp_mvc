@@ -11,7 +11,7 @@ export class Exercises extends Component {
 
     componentDidMount(){
         axios.get(
-            'Index/Exercises/ServerTime'
+            'index/exercises/servertime'
         ).then(res => {
             const data = res.data;
             this.setState({
