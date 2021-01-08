@@ -16,7 +16,7 @@ namespace asp_mvc.DAL{
 
         public override void Create(User user)
         {
-            context.User.FromSqlInterpolated($"INSERT INTO \"User\" (Email, FirstName, LastName, Password, Salt) OUTPUT INSERTED.* VALUES ({user.Email}, {user.FirstName}, {user.LastName}, {user.Password}, {user.Salt});").ToList();
+            context.User.FromSqlInterpolated($"INSERT INTO \"User\" (Email, FirstName, LastName, Password, Salt) OUTPUT INSERTED.* VALUES ({user.Email}, {user.FirstName}, {user.LastName}, {user.Password});").ToList();
         }
 
         public User RetrieveUserByEmail(string email)
