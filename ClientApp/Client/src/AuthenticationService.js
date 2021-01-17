@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { loadingMessages } from './utilities/messages';
-
-axios.defaults.withCredentials = true;
+import { getCsrfToken } from './utilities/utils';
 
 class AuthenticationService {
     user = null;
@@ -26,7 +25,7 @@ class AuthenticationService {
     }
 
     async logIn(user, successCallback) {
-        var config;
+        let config;
 
         successCallback(loadingMessages.authenticating);
 
@@ -35,21 +34,29 @@ class AuthenticationService {
             user
         )
         .then((resp) => {
+            return axios.get('/authentication/antiforgery');
+        })
+        .then((resp) => {
+            let csrfToken = getCsrfToken();
+            config = {
+                headers: {
+                    'csrf-token': csrfToken
+                }
+            }
             successCallback(loadingMessages.connecting);
-            return axios.get('/user/connect');
+            return axios.get('/user/connect', config);
         })
         .then((resp) => {
             successCallback(loadingMessages.lostProgress);
-            return axios.get('/user/lose-data');
+            return axios.get('/user/lose-data', config);
         })
         .then((resp) => {
             successCallback(loadingMessages.gettingDatas);
-            return axios.get(
-                '/user/get-user-datass');
+            return axios.get('/user/get-user-datass', config);
         })
         .then((resp) => {
             successCallback(loadingMessages.success);
-        })
+    })
         .catch((err) => {
             throw err.response;
         });

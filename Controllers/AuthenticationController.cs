@@ -4,11 +4,9 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-using asp_mvc.Models;
 using asp_mvc.Utilities;
 using asp_mvc.Utilities.Authentication;
 using asp_mvc.Utilities.POCO;
-using asp_mvc.DAL.Managers;
 
 namespace asp_mvc.Controllers
 {
@@ -36,14 +34,23 @@ namespace asp_mvc.Controllers
                 return BadRequest(ModelState);
             }
 
-            string token;
+            string authToken;
 
-            if (_authService.IsAuthenticated(request, out token))
+            if (_authService.IsAuthenticated(request, out authToken))
             {
-                return Ok(token);
+                return Ok(authToken);
             }
 
             return BadRequest("Incorrect username or password!");
+        }
+
+        [Authorize]
+        [HttpGet("antiforgery")]
+        public IActionResult Antiforgery()
+        {
+            _authService.GenerateCsrfToken();
+
+            return Ok();
         }
     }
 }

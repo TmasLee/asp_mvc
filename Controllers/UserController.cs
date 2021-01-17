@@ -51,6 +51,7 @@ namespace asp_mvc.Controllers
         }
 
         [Authorize]
+        [ServiceFilter(typeof(ApiAntiforgeryTokenAuthorizationFilter))]
         [HttpGet("connect")]
         public ActionResult ConnectToServices()
         {
@@ -59,6 +60,7 @@ namespace asp_mvc.Controllers
         }
 
         [Authorize]
+        [ServiceFilter(typeof(ApiAntiforgeryTokenAuthorizationFilter))]
         [HttpGet("lose-data")]
         public ActionResult LoseData()
         {
@@ -67,6 +69,7 @@ namespace asp_mvc.Controllers
         }
 
         [Authorize]
+        [ServiceFilter(typeof(ApiAntiforgeryTokenAuthorizationFilter))]
         [HttpGet("get-user-datass")]
         public ActionResult GetUserDatas()
         {
@@ -75,6 +78,7 @@ namespace asp_mvc.Controllers
         }
 
         [Authorize]
+        [ServiceFilter(typeof(ApiAntiforgeryTokenAuthorizationFilter))]
         [HttpGet("logout")]
         public async Task<ActionResult> LogOut()
         {

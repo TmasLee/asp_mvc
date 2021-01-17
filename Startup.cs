@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using System.IO;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -40,6 +41,14 @@ namespace asp_mvc
             var token = Configuration.GetSection("tokenManagement").Get<TokenManagement>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {
+                options.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        context.Token = context.Request.Cookies["auth-token"];
+                        return Task.CompletedTask;
+                    },
+                };
                 options.RequireHttpsMetadata = false;
                 options.SaveToken = true;
                 options.TokenValidationParameters = new TokenValidationParameters
@@ -53,15 +62,23 @@ namespace asp_mvc
                 };
             });
 
+            // CSRF token service
+            services.AddAntiforgery(options =>
+            {
+                options.HeaderName = "csrf-token";
+            });
+            // Custom CSRF token validation attribute - Antiforgery not supported for APIs with no views
+            services.AddScoped<ApiAntiforgeryTokenAuthorizationFilter>();
+
             services.AddSingleton<IDateTime, SystemDateTime>();
-
             services.AddScoped<ITokenAuthService, TokenAuthService>();
-
+            // Test UserRepository with fake dependencies
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserManager, UserManager>();
             services.AddTransient<StupidLoader>();
 
             services.AddControllers();
+            services.AddHttpContextAccessor();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
