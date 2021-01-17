@@ -18,15 +18,15 @@ namespace asp_mvc.Models
                 {
                     return;   // DB has been seeded
                 }
-                context.User.AddRange(
-                    new User{
-                        Email = "test@test.com",
-                        Password = "hashedpassword",
-                        FirstName = "Test",
-                        LastName = "E"
-                    }
-                );
-                context.SaveChanges();
+                // context.User.AddRange(
+                //     new User{
+                //         Email = "test@test.com",
+                //         Password = "hashedpassword",
+                //         FirstName = "Test",
+                //         LastName = "E"
+                //     }
+                // );
+                // context.SaveChanges();
             }
         }
     }

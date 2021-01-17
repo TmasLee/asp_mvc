@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { loadingMessages } from './utilities/messages';
 
+axios.defaults.withCredentials = true;
+
 class AuthenticationService {
     user = null;
 
@@ -9,6 +11,8 @@ class AuthenticationService {
     }
 
     async signUp(newUser, successCallback) {
+        successCallback(loadingMessages.signingUp);
+
         await axios.post(
             '/user/signup',
             newUser
@@ -31,20 +35,17 @@ class AuthenticationService {
             user
         )
         .then((resp) => {
-            config = {
-                headers: { Authorization: `Bearer ${resp.data}` }
-            }
             successCallback(loadingMessages.connecting);
-            return axios.get('/user/connect', config);
+            return axios.get('/user/connect');
         })
         .then((resp) => {
             successCallback(loadingMessages.lostProgress);
-            return axios.get('/user/lose-data', config);
+            return axios.get('/user/lose-data');
         })
         .then((resp) => {
             successCallback(loadingMessages.gettingDatas);
             return axios.get(
-                '/user/get-user-datass', config);
+                '/user/get-user-datass');
         })
         .then((resp) => {
             successCallback(loadingMessages.success);

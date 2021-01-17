@@ -3,7 +3,6 @@ import { Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 import { FormModal, FormControlWithError } from './generics';
 import { LoginMessage } from './LoginMessage';
-import { loadingMessages } from '../utilities/messages';
 import authService from '../AuthenticationService';
 
 export class LoginModal extends Component{
@@ -21,10 +20,6 @@ export class LoginModal extends Component{
     }
 
     baseState = this.state;
-
-    componentDidUpdate(prevState, prevProps){
-        
-    }
 
     resetFields = () => this.setState(this.baseState);
 
@@ -87,33 +82,11 @@ export class LoginModal extends Component{
         });
     }
 
-    handleSignUp = async (newUser) => {
-        this.setState({loading: true});
-        try {
-            await authService.signUp(newUser, this.updateLoadingMessage);
-            this.autoToggle(1000);
-        } catch (e){
-            this.handleServerError(e);
-        }
-    }
-
-    handleLogin = async (user) => {
-        this.updateLoadingMessage(loadingMessages.authenticating);
-        try {
-            await authService.logIn(user, this.updateLoadingMessage);
-            this.autoToggle();
-        } catch (e){
-            console.log(e)
-            this.handleServerError(e.data);
-        }
-    }
-
     validateForm = () => {
         const { email, firstName, lastName, password, reenteredPassword, newUser } = this.state;
         let errors = {};
         let isValid = true;
 
-        // Probably need server side validation too
         if (!email){
             isValid = false;
             errors["email"] = "Please enter your email address.";
@@ -147,19 +120,29 @@ export class LoginModal extends Component{
         return isValid;
     }
 
-    validateAndSignUp = () => {
+    validateAndSignUp = async () => {
         this.resetErrors();
         if (this.validateForm()){
             let newUser = this.getDataModel(this.state);
-            this.handleSignUp(newUser);
+            try {
+                await authService.signUp(newUser, this.updateLoadingMessage);
+                this.autoToggle(1000);
+            } catch (e){
+                this.handleServerError(e);
+            }
         }
     }
 
-    validateAndLogin = () => {
+    validateAndLogin = async () => {
         this.resetErrors();
         if (this.validateForm()){
             let user = this.getDataModel(this.state);
-            this.handleLogin(user);
+            try {
+                await authService.logIn(user, this.updateLoadingMessage);
+                this.autoToggle();
+            } catch (e){
+                this.handleServerError(e.data);
+            }
         }
     }
 

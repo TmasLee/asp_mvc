@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using asp_mvc.Models;
-using asp_mvc.Utilities.POCO;
 using asp_mvc.DAL.Managers;
 using asp_mvc.Utilities;
 
@@ -23,7 +22,7 @@ namespace asp_mvc.Controllers
     {
         private readonly StupidLoader _stupidLoader;
         private readonly IUserManager _userMgr;
-        public UserController(IUserManager userMgr, StupidLoader stupidLoader)
+        public UserController(StupidLoader stupidLoader, IUserManager userMgr)
         {
             _userMgr = userMgr;
             _stupidLoader = stupidLoader;
@@ -59,7 +58,7 @@ namespace asp_mvc.Controllers
             return Ok();
         }
 
-        // [Authorize]
+        [Authorize]
         [HttpGet("lose-data")]
         public ActionResult LoseData()
         {
@@ -67,7 +66,7 @@ namespace asp_mvc.Controllers
             return Ok();
         }
 
-        // [Authorize]
+        [Authorize]
         [HttpGet("get-user-datass")]
         public ActionResult GetUserDatas()
         {
@@ -75,7 +74,7 @@ namespace asp_mvc.Controllers
             return Ok();
         }
 
-        // [Authorize]
+        [Authorize]
         [HttpGet("logout")]
         public async Task<ActionResult> LogOut()
         {
