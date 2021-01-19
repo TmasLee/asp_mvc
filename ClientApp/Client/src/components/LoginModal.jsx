@@ -138,7 +138,7 @@ export class LoginModal extends Component{
         if (this.validateForm()){
             let user = this.getDataModel(this.state);
             try {
-                await authService.logIn(user, this.updateLoadingMessage);
+                await authService.login(user, this.updateLoadingMessage);
                 this.autoToggle();
             } catch (e){
                 this.handleServerError(e.data);

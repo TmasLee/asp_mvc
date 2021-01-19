@@ -44,7 +44,7 @@ namespace asp_mvc.Utilities.Authentication
                 _tokenManagement.Issuer,
                 _tokenManagement.Audience,
                 claim,
-                expires:DateTime.Now.AddMinutes(_tokenManagement.AccessExpiration),
+                expires: DateTime.Now.AddMinutes(_tokenManagement.AccessExpiration),
                 signingCredentials: credentials
             );
 

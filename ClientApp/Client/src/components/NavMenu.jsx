@@ -22,6 +22,13 @@ export class NavMenu extends Component {
                             <Nav.Item>
                                 <Nav.Link as={Link} className="text-dark" to="/exercises">Exercises</Nav.Link>
                             </Nav.Item>
+                            {
+                                currentUser ?
+                                <Nav.Item>
+                                    <Nav.Link as={Link} className="text-dark" to="#">{currentUser.firstName}</Nav.Link>
+                                </Nav.Item>
+                                : null
+                            }
                             <Nav.Item>
                                 {
                                     currentUser ? <Nav.Link as={Link} className="text-dark" to="/">Logout</Nav.Link>
@@ -29,13 +36,6 @@ export class NavMenu extends Component {
                                     <Nav.Link as={Link} className="text-dark" to="#" onClick={toggleModal}>Login</Nav.Link>
                                 }
                             </Nav.Item>
-                            {
-                                currentUser ? 
-                                <Nav.Item>
-                                    <Nav.Link as={Link} className="text-dark">Name</Nav.Link>
-                                </Nav.Item>
-                                : null
-                            }
                         </ul>
                     </Container>
                 </Navbar>

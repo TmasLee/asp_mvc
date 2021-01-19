@@ -5,8 +5,24 @@ import { getCsrfToken } from './utilities/utils';
 class AuthenticationService {
     user = null;
 
-    getUser() {
+    async getUser() {
+        let config = {
+            headers: {
+                'csrf-token': getCsrfToken()
+            }
+        }
 
+        return await axios.get(
+            '/user/get-user-datass',
+            config
+        )
+        .then((resp) => {
+            this.user = resp.data;
+            return resp.data;
+        })
+        .catch((err) => {
+            return;
+        });
     }
 
     async signUp(newUser, successCallback) {
@@ -24,7 +40,7 @@ class AuthenticationService {
         });
     }
 
-    async logIn(user, successCallback) {
+    async login(user, successCallback) {
         let config;
 
         successCallback(loadingMessages.authenticating);

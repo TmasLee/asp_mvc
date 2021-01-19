@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router';
 import { hot } from 'react-hot-loader';
-import axios from 'axios';
 import "core-js/stable";
 import "regenerator-runtime/runtime";
 
@@ -12,18 +11,19 @@ import {
     Exercises
 } from './components/pages';
 import '../../css/App.css';
+import authService from './AuthenticationService';
 
+// TODO: Get logged in view with no rerendering
 class App extends Component {
     state = {
         currentUser: null
     }
 
-    componentDidMount(){
-        // Check if session cookie not expired
-        // axios.get(
-        //     '/User/GetUserDatas', {
-        //     withCredentials: true
-        // });
+    async componentDidMount(){
+        let user = await authService.getUser();
+        this.setState({
+            currentUser: user
+        });
     }
 
     render(){

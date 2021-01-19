@@ -1,11 +1,14 @@
 using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using asp_mvc.Models;
 using asp_mvc.DAL.Managers;
+using asp_mvc.DAL;
 using asp_mvc.Utilities;
 
 // ActionResults (represent various HTTP status codes) are used when multiple return types are possible
@@ -22,10 +25,12 @@ namespace asp_mvc.Controllers
     {
         private readonly StupidLoader _stupidLoader;
         private readonly IUserManager _userMgr;
-        public UserController(StupidLoader stupidLoader, IUserManager userMgr)
+        private readonly IUserRepository _userRepo;
+        public UserController(StupidLoader stupidLoader, IUserManager userMgr, IUserRepository userRepo)
         {
             _userMgr = userMgr;
             _stupidLoader = stupidLoader;
+            _userRepo = userRepo;
         }
 
         [HttpPost("signup")]
@@ -55,7 +60,7 @@ namespace asp_mvc.Controllers
         [HttpGet("connect")]
         public ActionResult ConnectToServices()
         {
-            _stupidLoader.LoadTime(2, 3);
+            _stupidLoader.LoadTime(1, 3);
             return Ok();
         }
 
@@ -64,7 +69,7 @@ namespace asp_mvc.Controllers
         [HttpGet("lose-data")]
         public ActionResult LoseData()
         {
-            _stupidLoader.LoadTime(3, 4);
+            _stupidLoader.LoadTime(2, 3);
             return Ok();
         }
 
@@ -73,8 +78,12 @@ namespace asp_mvc.Controllers
         [HttpGet("get-user-datass")]
         public ActionResult GetUserDatas()
         {
-            _stupidLoader.LoadTime(1, 3);
-            return Ok();
+            _stupidLoader.LoadTime(1, 2);
+
+            var email = User.Claims.Where(x => x.Type == ClaimTypes.Email).FirstOrDefault()?.Value;
+            UserDto user = _userRepo.RetrieveUserByEmail(email).ToDto();
+
+            return Ok(user);
         }
 
         [Authorize]

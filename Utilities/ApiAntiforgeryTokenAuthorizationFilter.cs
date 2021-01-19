@@ -25,6 +25,7 @@ namespace asp_mvc.Utilities
             }
             catch (AntiforgeryValidationException exception)
             {
+                Console.WriteLine(exception.ToString());
                 context.Result = new StatusCodeResult(StatusCodes.Status403Forbidden);
             }
         }

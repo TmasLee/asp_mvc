@@ -8,5 +8,5 @@ export function getCsrfToken() {
         }
     }
 
-    return null;
+    return '';
 }
