@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Threading;
+using System.Threading.Tasks;
 
 namespace asp_mvc.Utilities
 {
@@ -8,14 +8,14 @@ namespace asp_mvc.Utilities
     {
         private Random _rand = new Random();
 
-        public void LoadTime(int lower, int upper)
+        public async Task LoadTime(int lower, int upper)
         {
-            Thread.Sleep(_rand.Next(lower, upper) * 1000);
+            await Task.Delay(_rand.Next(lower, upper) * 1000);
         }
 
-        public void LoadTime(int time)
+        public async Task LoadTime(int time)
         {
-            Thread.Sleep(_rand.Next(time, time) * 1000);
+            await Task.Delay(_rand.Next(time, time) * 1000);
         }
     }
 }

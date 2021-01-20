@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using System.Text;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
@@ -27,10 +28,11 @@ namespace asp_mvc.Utilities.Authentication
             _context = httpContextAccessor.HttpContext;
         }
 
-        public bool IsAuthenticated(TokenRequest request, out string authToken)
+        public async Task<bool> IsAuthenticated(TokenRequest request)
         {
-            authToken = string.Empty;
-            if (!_userMgr.IsValidUser(request.Email, request.Password)) return false;
+            string authToken = string.Empty;
+            bool isValidUser = await _userMgr.IsValidUser(request.Email, request.Password);
+            if (!isValidUser) return false;
 
             // Generate new JWT from claims
             var claim = new[]

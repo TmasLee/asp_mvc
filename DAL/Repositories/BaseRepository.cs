@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Linq;
-using asp_mvc.Data;
 using Microsoft.EntityFrameworkCore;
+
+using asp_mvc.Data;
 
 namespace asp_mvc.DAL
 {
@@ -14,24 +16,24 @@ namespace asp_mvc.DAL
         public MSAContext context;
 
         // Generic insert possible?
-        public abstract void Create(T model);
+        public abstract Task Create(T model);
 
-        public T RetrieveById(int id)
+        public async Task<T> RetrieveById(int id)
         {
-            return model.FromSqlInterpolated($"SELECT * FROM \"{model.GetType().Name}\" WHERE Id = {id}").FirstOrDefault();
+            return await model.FromSqlInterpolated($"SELECT * FROM \"{model.GetType().Name}\" WHERE Id = {id};").FirstOrDefaultAsync<T>();
         }
 
-        public List<T> RetrieveAll()
+        public async Task<List<T>> RetrieveAll()
         {
-            return model.FromSqlRaw($"SELECT * FROM \"{model.GetType().Name}\";").ToList<T>();
+            return await model.FromSqlInterpolated($"SELECT * FROM \"{model.GetType().Name}\";").ToListAsync<T>();
         }
 
         // Generic update possible?
         // public abstract T Update(T model);
 
-        public void DeleteById(int id)
+        public async Task DeleteById(int id)
         {
-            context.User.FromSqlInterpolated($"DELETE FROM \"{model.GetType().Name}\" OUTPUT DELETED.* WHERE Id = {id};");
+            await model.FromSqlInterpolated($"DELETE FROM \"{model.GetType().Name}\" OUTPUT DELETED.* WHERE Id = {id};").FirstAsync();
         }
 
         public void Save()

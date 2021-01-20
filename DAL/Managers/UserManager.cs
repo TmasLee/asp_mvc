@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
@@ -24,9 +25,14 @@ namespace asp_mvc.DAL.Managers
         private readonly IUserRepository _userRepo;
         private static byte[] _salt = Encoding.ASCII.GetBytes("PLACEHOLDER");
 
-        public bool IsValidUser(string email, string password)
+        public UserManager(IUserRepository userRepository)
         {
-            var storedUser = _userRepo.RetrieveUserByEmail(email);
+            _userRepo = userRepository;
+        }
+
+        public async Task<bool> IsValidUser(string email, string password)
+        {
+            var storedUser = await _userRepo.RetrieveUserByEmail(email);
 
             if (storedUser == null)
             {
@@ -39,11 +45,6 @@ namespace asp_mvc.DAL.Managers
             }
 
             return true;
-        }
-
-        public UserManager(IUserRepository userRepository)
-        {
-            _userRepo = userRepository;
         }
 
         public static bool IsValidEmail(string email)
@@ -63,12 +64,12 @@ namespace asp_mvc.DAL.Managers
             }
         }
 
-        public void VerifyEmail(string email)
+        public async Task VerifyEmail(string email)
         {
             if (!IsValidEmail(email))
                 throw new UserException("Invalid email format");
 
-            if (_userRepo.RetrieveUserByEmail(email) != null)
+            if (await _userRepo.RetrieveUserByEmail(email) != null)
                 throw new UserException("Email already in use!");
         }
 
@@ -107,15 +108,15 @@ namespace asp_mvc.DAL.Managers
             return salt;
         }
 
-        public void AddUser(User newUser)
+        public async Task AddUser(User newUser)
         {
-            VerifyEmail(newUser.Email);
+            await VerifyEmail(newUser.Email);
 
             var hashedPassword = HashPassword(newUser.Password);
             string saltString = Convert.ToBase64String(_salt);
 
             newUser.Password = hashedPassword;
-            _userRepo.Create(newUser);
+            await _userRepo.Create(newUser);
         }
     }
 }

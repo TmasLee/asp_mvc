@@ -34,9 +34,9 @@ namespace asp_mvc.Controllers
         }
 
         [HttpPost("signup")]
-        public ActionResult SignUp([FromBody]User newUser)
+        public async Task<ActionResult> SignUp([FromBody]User newUser)
         {
-            _stupidLoader.LoadTime(2);
+            await _stupidLoader.LoadTime(2);
 
             if (!ModelState.IsValid)
             {
@@ -45,7 +45,7 @@ namespace asp_mvc.Controllers
 
             try
             {
-                _userMgr.AddUser(newUser);
+                await _userMgr.AddUser(newUser);
             }
             catch (UserException e)
             {
@@ -58,32 +58,33 @@ namespace asp_mvc.Controllers
         [Authorize]
         [ServiceFilter(typeof(ApiAntiforgeryTokenAuthorizationFilter))]
         [HttpGet("connect")]
-        public ActionResult ConnectToServices()
+        public async Task<ActionResult> ConnectToServices()
         {
-            _stupidLoader.LoadTime(1, 3);
+            await _stupidLoader.LoadTime(1, 3);
             return Ok();
         }
 
         [Authorize]
         [ServiceFilter(typeof(ApiAntiforgeryTokenAuthorizationFilter))]
         [HttpGet("lose-data")]
-        public ActionResult LoseData()
+        public async Task<ActionResult> LoseData()
         {
-            _stupidLoader.LoadTime(2, 3);
+            await _stupidLoader.LoadTime(2, 3);
             return Ok();
         }
 
         [Authorize]
         [ServiceFilter(typeof(ApiAntiforgeryTokenAuthorizationFilter))]
         [HttpGet("get-user-datass")]
-        public ActionResult GetUserDatas()
+        public async Task<ActionResult> GetUserDatas()
         {
-            _stupidLoader.LoadTime(1, 2);
+            await _stupidLoader.LoadTime(1, 2);
 
             var email = User.Claims.Where(x => x.Type == ClaimTypes.Email).FirstOrDefault()?.Value;
-            UserDto user = _userRepo.RetrieveUserByEmail(email).ToDto();
+            User user = await _userRepo.RetrieveUserByEmail(email);
+            UserDto userDto = user.ToDto();
 
-            return Ok(user);
+            return Ok(userDto);
         }
 
         [Authorize]

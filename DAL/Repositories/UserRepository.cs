@@ -1,6 +1,8 @@
 using System;
-using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks; 
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
+
 using asp_mvc.Models;
 using asp_mvc.Data;
 
@@ -15,14 +17,14 @@ namespace asp_mvc.DAL
             context = dbContext;
         }
 
-        public override void Create(User user)
+        public async override Task Create(User user)
         {
-            context.User.FromSqlInterpolated($"INSERT INTO \"User\" (Email, FirstName, LastName, Password) OUTPUT INSERTED.* VALUES ({user.Email}, {user.FirstName}, {user.LastName}, {user.Password});").ToList();
+            await context.User.FromSqlInterpolated($"INSERT INTO \"User\" (Email, FirstName, LastName, Password) OUTPUT INSERTED.* VALUES ({user.Email}, {user.FirstName}, {user.LastName}, {user.Password});").FirstOrDefaultAsync();
         }
 
-        public User RetrieveUserByEmail(string email)
+        public async Task<User> RetrieveUserByEmail(string email)
         {
-            return context.User.FromSqlInterpolated($"SELECT * FROM \"User\" WHERE email = {email}").FirstOrDefault();
+            return await context.User.FromSqlInterpolated($"SELECT * FROM \"User\" WHERE email = {email}").FirstOrDefaultAsync<User>();
         }
 
         // public override User Update(User user)
@@ -30,9 +32,9 @@ namespace asp_mvc.DAL
         //     return _context.User.FromSqlInterpolated($"UPDATE \"User\" SET ");
         // }
 
-        public void DeleteByEmail(string email)
+        public async Task DeleteByEmail(string email)
         {
-            context.User.FromSqlInterpolated($"DELETE FROM \"User\" OUTPUT DELETED.* WHERE email = {email};").ToList();
+            await context.User.FromSqlInterpolated($"DELETE FROM \"User\" OUTPUT DELETED.* WHERE email = {email};").ToListAsync();
         }
     }
 }

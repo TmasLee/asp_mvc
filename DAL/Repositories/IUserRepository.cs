@@ -1,10 +1,12 @@
+using System.Threading.Tasks;
+
 using asp_mvc.Models;
 
 namespace asp_mvc.DAL
 {
     public interface IUserRepository : IRepository<User>
     {
-        User RetrieveUserByEmail(string email);
-        void DeleteByEmail(string email);
+        Task<User> RetrieveUserByEmail(string email);
+        Task DeleteByEmail(string email);
     }
 }

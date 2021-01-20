@@ -25,20 +25,20 @@ namespace asp_mvc.Controllers
 
         [AllowAnonymous]
         [HttpPost("authenticate")]
-        public IActionResult Authenticate([FromBody] TokenRequest request)
+        public async Task<IActionResult> Authenticate([FromBody] TokenRequest request)
         {
-            _stupidLoader.LoadTime(2, 3);
+            await _stupidLoader.LoadTime(2, 3);
 
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            string authToken;
+            bool isAuthenticated = await _authService.IsAuthenticated(request);
 
-            if (_authService.IsAuthenticated(request, out authToken))
+            if (isAuthenticated)
             {
-                return Ok(authToken);
+                return Ok();
             }
 
             return BadRequest("Incorrect username or password!");
