@@ -11,24 +11,11 @@ import {
     Exercises
 } from './components/pages';
 import '../../css/App.css';
-import authService from './AuthenticationService';
 
-// TODO: Get logged in view with no rerendering
 class App extends Component {
-    state = {
-        currentUser: null
-    }
-
-    async componentDidMount(){
-        let user = await authService.getUser();
-        this.setState({
-            currentUser: user
-        });
-    }
-
     render(){
-        return(
-            <Layout {...this.state}>
+        return (
+            <Layout>
                 <Route exact path='/' component={Home} />
                 <Route path='/aboutme' component={AboutMe} />
                 <Route path='/exercises' component={Exercises} />

@@ -52,5 +52,14 @@ namespace asp_mvc.Controllers
 
             return Ok();
         }
+
+        [Authorize]
+        [ServiceFilter(typeof(ApiAntiforgeryTokenAuthorizationFilter))]
+        [HttpGet("logout")]
+        public ActionResult LogOut()
+        {
+            _authService.DeleteCookies();
+            return Ok();
+        }
     }
 }

@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import { Container, Navbar, Nav } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
+import { UserMenu } from './UserMenu';
 import '../../../css/NavMenu.css';
 
 export class NavMenu extends Component {
     render () {
-        const { toggleModal, currentUser } = this.props;
         return (
             <header>
                 <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" bg="light">
@@ -22,20 +22,7 @@ export class NavMenu extends Component {
                             <Nav.Item>
                                 <Nav.Link as={Link} className="text-dark" to="/exercises">Exercises</Nav.Link>
                             </Nav.Item>
-                            {
-                                currentUser ?
-                                <Nav.Item>
-                                    <Nav.Link as={Link} className="text-dark" to="#">{currentUser.firstName}</Nav.Link>
-                                </Nav.Item>
-                                : null
-                            }
-                            <Nav.Item>
-                                {
-                                    currentUser ? <Nav.Link as={Link} className="text-dark" to="/">Logout</Nav.Link>
-                                    :
-                                    <Nav.Link as={Link} className="text-dark" to="#" onClick={toggleModal}>Login</Nav.Link>
-                                }
-                            </Nav.Item>
+                            <UserMenu {...this.props}/>
                         </ul>
                     </Container>
                 </Navbar>

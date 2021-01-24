@@ -120,29 +120,30 @@ export class LoginModal extends Component{
         return isValid;
     }
 
-    validateAndSignUp = async () => {
+    validateAndSignUp = () => {
         this.resetErrors();
         if (this.validateForm()){
             let newUser = this.getDataModel(this.state);
-            try {
-                await authService.signUp(newUser, this.updateLoadingMessage);
-                this.autoToggle(1000);
-            } catch (e){
-                this.handleServerError(e);
-            }
+            let callbacks = [
+                this.updateLoadingMessage,
+                this.autoToggle,
+                this.handleServerError
+            ]
+            authService.signUp(newUser, callbacks);
         }
     }
 
-    validateAndLogin = async () => {
+    validateAndLogin = () => {
         this.resetErrors();
         if (this.validateForm()){
-            let user = this.getDataModel(this.state);
-            try {
-                await authService.login(user, this.updateLoadingMessage);
-                this.autoToggle();
-            } catch (e){
-                this.handleServerError(e.data);
-            }
+            let userModel = this.getDataModel(this.state);
+            let callbacks = [
+                this.updateLoadingMessage,
+                this.props.setUser,
+                this.autoToggle,
+                this.handleServerError
+            ]
+            authService.login(userModel, callbacks)
         }
     }
 

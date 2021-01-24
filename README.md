@@ -3,7 +3,9 @@
 A small web app project built using C#, ASP.NET Core, and JS/React.
 
 ### **To-Do**:
-* Update navbar - Link to personal page - Logout link - Overlay for logout
+* Logout link
+* "Logged Out" Overlay for logout
+* Personal page
 * Seed data to make 1000 users
 * Implement friends (add/remove)
 * Update user

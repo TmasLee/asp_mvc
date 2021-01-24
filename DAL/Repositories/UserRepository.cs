@@ -1,5 +1,5 @@
 using System;
-using System.Threading.Tasks; 
+using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,7 +19,7 @@ namespace asp_mvc.DAL
 
         public async override Task Create(User user)
         {
-            await context.User.FromSqlInterpolated($"INSERT INTO \"User\" (Email, FirstName, LastName, Password) OUTPUT INSERTED.* VALUES ({user.Email}, {user.FirstName}, {user.LastName}, {user.Password});").FirstOrDefaultAsync();
+            await context.User.FromSqlInterpolated($"INSERT INTO \"User\" (Email, FirstName, LastName, Password) OUTPUT INSERTED.* VALUES ({user.Email}, {user.FirstName}, {user.LastName}, {user.Password})").ToListAsync();
         }
 
         public async Task<User> RetrieveUserByEmail(string email)
@@ -34,7 +34,7 @@ namespace asp_mvc.DAL
 
         public async Task DeleteByEmail(string email)
         {
-            await context.User.FromSqlInterpolated($"DELETE FROM \"User\" OUTPUT DELETED.* WHERE email = {email};").ToListAsync();
+            await context.User.FromSqlInterpolated($"DELETE FROM \"User\" OUTPUT DELETED.* WHERE email = {email}").ToListAsync();
         }
     }
 }

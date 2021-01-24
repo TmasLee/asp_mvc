@@ -8,5 +8,6 @@ namespace asp_mvc.Utilities.Authentication
     {
         Task<bool> IsAuthenticated(TokenRequest request);
         void GenerateCsrfToken();
+        void DeleteCookies();
     }
 }

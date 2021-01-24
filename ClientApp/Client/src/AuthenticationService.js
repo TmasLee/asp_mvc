@@ -2,50 +2,47 @@ import axios from 'axios';
 import { loadingMessages } from './utilities/messages';
 import { getCsrfToken } from './utilities/utils';
 
+// TODO: Handle callbacks better
 class AuthenticationService {
-    user = null;
-
-    async getUser() {
-        let config = {
-            headers: {
-                'csrf-token': getCsrfToken()
-            }
+    config = {
+        headers: {
+            'csrf-token': getCsrfToken()
         }
+    }
 
-        return await axios.get(
+    retrieveUser() {
+        return axios.get(
             '/user/get-user-datass',
-            config
+            this.config
         )
         .then((resp) => {
-            this.user = resp.data;
             return resp.data;
         })
         .catch((err) => {
-            return;
+            return null;
         });
     }
 
-    async signUp(newUser, successCallback) {
-        successCallback(loadingMessages.signingUp);
+    signUp(newUser, callbacks) {
+        callbacks[0](loadingMessages.signingUp);
 
-        await axios.post(
+        axios.post(
             '/user/signup',
             newUser
         )
         .then((resp) => {
-            successCallback(loadingMessages.registered, false);
+            callbacks[0](loadingMessages.registered, false);
+            callbacks[1](1000);
         })
         .catch((err) => {
-            throw err.response.data;
+            callbacks[2](err.response.data)
         });
     }
 
-    async login(user, successCallback) {
-        let config;
+    login(user, callbacks) {
+        callbacks[0](loadingMessages.authenticating);
 
-        successCallback(loadingMessages.authenticating);
-
-        await axios.post(
+        axios.post(
             '/authentication/authenticate',
             user
         )
@@ -53,33 +50,33 @@ class AuthenticationService {
             return axios.get('/authentication/antiforgery');
         })
         .then((resp) => {
-            let csrfToken = getCsrfToken();
-            config = {
-                headers: {
-                    'csrf-token': csrfToken
-                }
-            }
-            successCallback(loadingMessages.connecting);
-            return axios.get('/user/connect', config);
+            this.config.headers['csrf-token'] = getCsrfToken();
+            callbacks[0](loadingMessages.connecting);
+            return axios.get('/user/connect', this.config);
+        })
+        // .then((resp) => {
+        //     callbacks[0](loadingMessages.lostProgress);
+        //     return axios.get('/user/lose-data', this.config);
+        // })
+        .then((resp) => {
+            callbacks[0](loadingMessages.gettingDatas);
+            return axios.get('/user/get-user-datass', this.config);
         })
         .then((resp) => {
-            successCallback(loadingMessages.lostProgress);
-            return axios.get('/user/lose-data', config);
-        })
-        .then((resp) => {
-            successCallback(loadingMessages.gettingDatas);
-            return axios.get('/user/get-user-datass', config);
-        })
-        .then((resp) => {
-            successCallback(loadingMessages.success);
+            callbacks[0](loadingMessages.success);
+            callbacks[1](resp.data);
+            callbacks[2]();
     })
         .catch((err) => {
-            throw err.response;
+            callbacks[3](err.response.data);
         });
     }
 
-    logOut() {
-
+    logout() {
+        axios.get(
+            '/authentication/logout',
+            this.config
+        )
     }
 };
 

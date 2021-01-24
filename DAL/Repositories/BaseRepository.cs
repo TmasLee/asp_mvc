@@ -20,12 +20,12 @@ namespace asp_mvc.DAL
 
         public async Task<T> RetrieveById(int id)
         {
-            return await model.FromSqlInterpolated($"SELECT * FROM \"{model.GetType().Name}\" WHERE Id = {id};").FirstOrDefaultAsync<T>();
+            return await model.FromSqlInterpolated($"SELECT * FROM \"{model.GetType().Name}\" WHERE Id = {id}").FirstOrDefaultAsync<T>();
         }
 
         public async Task<List<T>> RetrieveAll()
         {
-            return await model.FromSqlInterpolated($"SELECT * FROM \"{model.GetType().Name}\";").ToListAsync<T>();
+            return await model.FromSqlInterpolated($"SELECT * FROM \"{model.GetType().Name}\"").ToListAsync<T>();
         }
 
         // Generic update possible?
@@ -33,7 +33,7 @@ namespace asp_mvc.DAL
 
         public async Task DeleteById(int id)
         {
-            await model.FromSqlInterpolated($"DELETE FROM \"{model.GetType().Name}\" OUTPUT DELETED.* WHERE Id = {id};").FirstAsync();
+            await model.FromSqlInterpolated($"DELETE FROM \"{model.GetType().Name}\" OUTPUT DELETED.* WHERE Id = {id}").FirstAsync();
         }
 
         public void Save()

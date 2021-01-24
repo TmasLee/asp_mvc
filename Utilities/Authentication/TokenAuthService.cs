@@ -75,5 +75,13 @@ namespace asp_mvc.Utilities.Authentication
                 HttpOnly = false
             });
         }
+
+        public void DeleteCookies()
+        {
+            foreach (var cookie in _context.Request.Cookies.Keys)
+            {
+                _context.Response.Cookies.Delete(cookie);
+            }
+        }
     }
 }

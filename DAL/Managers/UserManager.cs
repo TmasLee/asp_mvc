@@ -4,6 +4,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using System.Security.Cryptography;
+using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
 using asp_mvc.Models;
@@ -23,11 +24,12 @@ namespace asp_mvc.DAL.Managers
     public class UserManager : IUserManager
     {
         private readonly IUserRepository _userRepo;
-        private static byte[] _salt = Encoding.ASCII.GetBytes("PLACEHOLDER");
+        private static byte[] _salt;
 
-        public UserManager(IUserRepository userRepository)
+        public UserManager(IUserRepository userRepository, IConfiguration Configuration)
         {
             _userRepo = userRepository;
+            _salt = Encoding.ASCII.GetBytes(Configuration["salt"]);
         }
 
         public async Task<bool> IsValidUser(string email, string password)
