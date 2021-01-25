@@ -8,7 +8,7 @@ import { Layout } from './components/Layout';
 import {
     Home,
     AboutMe,
-    Exercises
+    User
 } from './components/pages';
 import '../../css/App.css';
 
@@ -18,7 +18,7 @@ class App extends Component {
             <Layout>
                 <Route exact path='/' component={Home} />
                 <Route path='/aboutme' component={AboutMe} />
-                <Route path='/exercises' component={Exercises} />
+                <Route path='/user/:id' component={User} />
             </Layout>
         );
     }

@@ -11,7 +11,7 @@ export class Home extends Component {
                 <p>This was built with a ReactJS front end and a customized backend combining ASP.NET Core MVC and WebApi.</p>
                 <p>This is a project implementing web security practices using JWTs and cookies for a SPA.</p>
                 <p>
-                    <span style={{ color: 'red' }}>TALK ABOUT WHAT WAS IMPLEMETNED</span>
+                    <span style={{ color: 'red' }}>TALK ABOUT WHAT WAS IMPLEMETNED + MAKING USER MANAGEMNET SYSTEM</span>
                 </p>
                 <p>
                     While using .NET template projects and framework/ORM "out-of-the-box" functionalities is practical, I figured I'd get a better learning experience by starting (mostly) from scratch.

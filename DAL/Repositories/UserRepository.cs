@@ -13,7 +13,7 @@ namespace asp_mvc.DAL
         public UserRepository(MSAContext dbContext)
         {
             model = dbContext.User;
-            tableName = model.GetType().Name;
+            tableName = "User";
             context = dbContext;
         }
 

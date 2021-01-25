@@ -12,7 +12,7 @@ export class UserMenu extends Component {
                 {
                     currentUser ?
                     <Nav.Item>
-                        <Nav.Link as={Link} className="text-dark" to="#">{currentUser.firstName}</Nav.Link>
+                        <Nav.Link as={Link} className="text-dark" to={`/user/${currentUser.id}`}>{currentUser.firstName}</Nav.Link>
                     </Nav.Item>
                     : null
                 }

@@ -20,7 +20,7 @@ export class NavMenu extends Component {
                                 <Nav.Link as={Link} className="text-dark" to="/aboutme">About Me</Nav.Link>
                             </Nav.Item>
                             <Nav.Item>
-                                <Nav.Link as={Link} className="text-dark" to="/exercises">Exercises</Nav.Link>
+                                <Nav.Link as={Link} className="text-dark" to="#" onClick={console.log("xd")}>Users</Nav.Link>
                             </Nav.Item>
                             <UserMenu {...this.props}/>
                         </ul>

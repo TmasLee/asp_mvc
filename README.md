@@ -4,9 +4,13 @@ A small web app project built using C#, ASP.NET Core, and JS/React.
 
 ### **To-Do**:
 * Personal/User page - sloth user image
+* Test visit page after csrf and jwt tokens expired
+* Remove cancel button while loading modal
 * Users List modal - Only logged in user can view a User's page
+* Redirect user if token expires
 * Implement friends (add/remove)
 * Update user - Forgot password
+* Query string - Sql injection
 
 * Test xss / csrf
 * Web server logging

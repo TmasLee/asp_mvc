@@ -1,4 +1,5 @@
 import axios from 'axios';
+
 import { loadingMessages } from './utilities/messages';
 import { getCsrfToken } from './utilities/utils';
 
@@ -54,10 +55,10 @@ class AuthenticationService {
             callbacks[0](loadingMessages.connecting);
             return axios.get('/user/connect', this.config);
         })
-        // .then((resp) => {
-        //     callbacks[0](loadingMessages.lostProgress);
-        //     return axios.get('/user/lose-data', this.config);
-        // })
+        .then((resp) => {
+            callbacks[0](loadingMessages.lostProgress);
+            return axios.get('/user/lose-data', this.config);
+        })
         .then((resp) => {
             callbacks[0](loadingMessages.gettingDatas);
             return axios.get('/user/get-user-datass', this.config);

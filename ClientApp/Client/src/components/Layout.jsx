@@ -6,6 +6,7 @@ import { LoginModal } from "./LoginModal";
 import authService from '../AuthenticationService';
 
 // TODO: Get logged in view with no rerendering when landing on site - Index would need to be an authenticated view
+// TODO: Logged in page title update to user's first name
 // TODO: Need to handle csrf token config handling on app level
 export class Layout extends Component {
     state = {
@@ -18,6 +19,7 @@ export class Layout extends Component {
         this.setUser(user);
     }
 
+    // Modal type (login/users) switch?
     toggleModal = () => {
         this.setState({
             showModal: !this.state.showModal
@@ -38,7 +40,7 @@ export class Layout extends Component {
             <div>
                 <NavMenu toggleModal={this.toggleModal}
                          logout={this.handleLogout}
-                          currentUser={this.state.currentUser}/>
+                         currentUser={this.state.currentUser}/>
                 <LoginModal {...this.state}
                             setUser={this.setUser}
                             toggleModal={this.toggleModal}/>

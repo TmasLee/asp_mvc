@@ -60,7 +60,7 @@ namespace asp_mvc.Controllers
         [HttpGet("connect")]
         public async Task<ActionResult> ConnectToServices()
         {
-            await _stupidLoader.LoadTime(1, 3);
+            await _stupidLoader.LoadTime(1, 2);
             return Ok();
         }
 
@@ -78,8 +78,6 @@ namespace asp_mvc.Controllers
         [HttpGet("get-user-datass")]
         public async Task<ActionResult> GetUserDatas()
         {
-            await _stupidLoader.LoadTime(1, 2);
-
             var email = User.Claims.Where(x => x.Type == ClaimTypes.Email).FirstOrDefault()?.Value;
             User user = await _userRepo.RetrieveUserByEmail(email);
             UserDto userDto = user.ToDto();
@@ -89,10 +87,12 @@ namespace asp_mvc.Controllers
 
         [Authorize]
         [ServiceFilter(typeof(ApiAntiforgeryTokenAuthorizationFilter))]
-        [HttpGet("logout")]
-        public async Task<ActionResult> LogOut()
+        [HttpGet("get-user")]
+        public async Task<ActionResult> GetUser([FromQuery(Name = "userId")]int userId)
         {
-            return Ok();
+            User user = await _userRepo.RetrieveById(userId);
+            UserDto userDto = user.ToDto();
+            return Ok(userDto);
         }
     }
 }
