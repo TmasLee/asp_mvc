@@ -1,8 +1,9 @@
+using System;
+using System.Linq;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using asp_mvc.Data;
-using System;
-using System.Linq;
 
 namespace asp_mvc.Models
 {
@@ -18,16 +19,57 @@ namespace asp_mvc.Models
                 {
                     return;   // DB has been seeded
                 }
-                // context.User.AddRange(
-                //     new User{
-                //         Email = "test@test.com",
-                //         Password = "hashedpassword",
-                //         FirstName = "Test",
-                //         LastName = "E"
-                //     }
-                // );
-                // context.SaveChanges();
+                var users = UserGenerator.GenerateUsers();
+                foreach (User user in users)
+                {
+                Console.WriteLine(user.Email);
+                    context.User.AddRange(user);
+                }
+                context.SaveChanges();
             }
+        }
+    }
+
+    public static class UserGenerator
+    {
+        private static Random random = new Random();
+
+        public static List<User> GenerateUsers()
+        {
+            List<User> users = new List<User>(500);
+            for (int i = 0; i < 500; i++)
+            {
+                try
+                {
+                    users.Add(
+                        new User {
+                            Email = GenerateEmail(),
+                            Password = RandomString(8),
+                            FirstName = RandomString(3),
+                            LastName = RandomString(3)
+                        }
+                    );
+                }
+                catch
+                {
+                    continue;
+                }
+            }
+            return users;
+        }
+
+        public static string GenerateEmail()
+        {
+            string domain = RandomString(3) + ".com";
+            string email = RandomString(3) + domain;
+            return email;
+        }
+
+        public static string RandomString(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, length)
+            .Select(s => s[random.Next(s.Length)]).ToArray());
         }
     }
 }
