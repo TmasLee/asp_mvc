@@ -3,8 +3,7 @@ const webpack = require("webpack");
 
 module.exports = {
     entry: {
-        client: "./Client/src/index.js",
-        building: "./Building/src/index.js"
+        client: "./Client/src/index.js"
         },
     devtool: 'source-map',
     mode: "development",
@@ -22,6 +21,12 @@ module.exports = {
         {
             test: /\.css$/,
             use: ["style-loader", "css-loader"]
+        },
+        {
+            test: /\.(jpg|png)$/,
+            use: {
+                loader: 'url-loader',
+            }
         }
         ]
     },
