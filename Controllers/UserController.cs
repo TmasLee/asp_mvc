@@ -75,7 +75,7 @@ namespace asp_mvc.Controllers
 
         [Authorize]
         [ServiceFilter(typeof(ApiAntiforgeryTokenAuthorizationFilter))]
-        [HttpGet("get-user-datass")]
+        [HttpGet("get-current-user-datass")]
         public async Task<ActionResult> GetUserDatas()
         {
             var email = User.Claims.Where(x => x.Type == ClaimTypes.Email).FirstOrDefault()?.Value;
@@ -93,6 +93,19 @@ namespace asp_mvc.Controllers
             User user = await _userRepo.RetrieveById(userId);
             UserDto userDto = user.ToDto();
             return Ok(userDto);
+        }
+
+        [HttpGet("get-users")]
+        public async Task<ActionResult> GetUsers()
+        {
+            List<User> users = await _userRepo.RetrieveAll();
+            List<UserDto> userDtos = new List<UserDto>();
+
+            foreach (User user in users)
+            {
+                userDtos.Add(user.ToDto());
+            }
+            return Ok(userDtos);
         }
     }
 }

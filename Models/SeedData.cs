@@ -22,7 +22,6 @@ namespace asp_mvc.Models
                 var users = UserGenerator.GenerateUsers();
                 foreach (User user in users)
                 {
-                Console.WriteLine(user.Email);
                     context.User.AddRange(user);
                 }
                 context.SaveChanges();
@@ -60,7 +59,7 @@ namespace asp_mvc.Models
 
         public static string GenerateEmail()
         {
-            string domain = RandomString(3) + ".com";
+            string domain = "@" + RandomString(3) + ".com";
             string email = RandomString(3) + domain;
             return email;
         }

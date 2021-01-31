@@ -55,7 +55,8 @@ namespace asp_mvc.Utilities.Authentication
             CookieOptions option = new CookieOptions()
             {
                 HttpOnly = true,
-                Secure = true
+                Secure = true,
+                Expires = DateTime.Now.AddMinutes(_tokenManagement.AccessExpiration),
             };
 
             // Store JWT in HttpOnly cookie
@@ -72,7 +73,8 @@ namespace asp_mvc.Utilities.Authentication
             // Store CSRF token in non-HttpOnly cookie - CSRF attacker would need access to cookie value to attach in header
             _context.Response.Cookies.Append("csrf-token", csrfToken, new Microsoft.AspNetCore.Http.CookieOptions
             {
-                HttpOnly = false
+                HttpOnly = false,
+                Expires = DateTime.Now.AddMinutes(_tokenManagement.AccessExpiration),
             });
         }
 

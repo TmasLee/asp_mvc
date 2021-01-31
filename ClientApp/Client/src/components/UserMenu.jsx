@@ -20,7 +20,7 @@ export class UserMenu extends Component {
                     {
                         currentUser ? <Nav.Link as={Link} className="text-dark" to="/" onClick={logout}>Logout</Nav.Link>
                         :
-                        <Nav.Link as={Link} className="text-dark" to="#" onClick={toggleModal}>Login</Nav.Link>
+                        <Nav.Link as={Link} className="text-dark" to="#" onClick={(e)=>{toggleModal('login')}}>Login</Nav.Link>
                     }
                 </Nav.Item>
             </Fragment>

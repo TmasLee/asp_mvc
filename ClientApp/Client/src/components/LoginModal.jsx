@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
 
-import { FormModal, FormControlWithError } from './generics';
+import { GenericModal, FormControlWithError } from './generics';
 import { LoginMessage } from './LoginMessage';
 import authService from '../AuthenticationService';
 
@@ -161,9 +161,9 @@ export class LoginModal extends Component{
         }
 
         return (
-            <FormModal title={title}
+            <GenericModal title={title}
                        primaryButtonMsg={primaryButtonMsg}
-                       resetAndToggleModal={this.resetAndToggleModal}
+                       toggleModal={this.resetAndToggleModal}
                        action={action}
                        loading={loading}
                        {...this.props}>
@@ -222,7 +222,7 @@ export class LoginModal extends Component{
                             <Button variant="link" onClick={this.handleNewUser}>New User?</Button>
                         </div>)
                 }
-            </FormModal>
+            </GenericModal>
         )
     }
 }

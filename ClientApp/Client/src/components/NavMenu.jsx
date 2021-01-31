@@ -7,6 +7,7 @@ import '../../../css/NavMenu.css';
 
 export class NavMenu extends Component {
     render () {
+        const { toggleModal } = this.props;
         return (
             <header>
                 <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" bg="light">
@@ -20,7 +21,7 @@ export class NavMenu extends Component {
                                 <Nav.Link as={Link} className="text-dark" to="/aboutme">About Me</Nav.Link>
                             </Nav.Item>
                             <Nav.Item>
-                                <Nav.Link as={Link} className="text-dark" to="#" onClick={console.log("xd")}>Users</Nav.Link>
+                                <Nav.Link as={Link} className="text-dark" to="#" onClick={(e)=>{toggleModal('usersList')}}>Users</Nav.Link>
                             </Nav.Item>
                             <UserMenu {...this.props}/>
                         </ul>

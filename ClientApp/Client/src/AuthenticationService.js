@@ -13,7 +13,7 @@ class AuthenticationService {
 
     retrieveUser() {
         return axios.get(
-            '/user/get-user-datass',
+            '/user/get-current-user-datass',
             this.config
         )
         .then((resp) => {
@@ -61,7 +61,7 @@ class AuthenticationService {
         })
         .then((resp) => {
             callbacks[0](loadingMessages.gettingDatas);
-            return axios.get('/user/get-user-datass', this.config);
+            return axios.get('/user/get-current-user-datass', this.config);
         })
         .then((resp) => {
             callbacks[0](loadingMessages.success);

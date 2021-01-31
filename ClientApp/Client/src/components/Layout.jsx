@@ -2,17 +2,18 @@ import React, { Component } from 'react';
 import { Container } from 'react-bootstrap';
 
 import { NavMenu } from './NavMenu';
-import { LoginModal } from "./LoginModal";
+import { ModalSwitch } from './ModalSwitch';
 
 export class Layout extends Component {
     state = {
-        showModal: false
+        showModal: false,
+        modalType: ''
     }
 
-    // Modal type (login/users) switch?
-    toggleModal = () => {
+    toggleModal = (modalType='') => {
         this.setState({
-            showModal: !this.state.showModal
+            showModal: !this.state.showModal,
+            modalType: modalType
         });
     }
 
@@ -23,7 +24,7 @@ export class Layout extends Component {
                 <NavMenu toggleModal={this.toggleModal}
                          logout={handleLogout}
                          currentUser={currentUser}/>
-                <LoginModal {...this.state}
+                <ModalSwitch {...this.state}
                             currentUser={currentUser}
                             setUser={setUser}
                             toggleModal={this.toggleModal}/>
