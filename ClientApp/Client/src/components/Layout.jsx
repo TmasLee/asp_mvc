@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Container } from 'react-bootstrap';
 
 import { NavMenu } from './NavMenu';
-import { ModalSwitch } from './ModalSwitch';
+import { ModalSwitch } from './Modals/ModalSwitch';
 
 export class Layout extends Component {
     state = {

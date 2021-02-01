@@ -7,15 +7,24 @@ import '../../../css/NavMenu.css';
 export class UserMenu extends Component {
     render () {
         const { toggleModal, currentUser, logout } = this.props;
-        return (
-            <Fragment>
-                {
-                    currentUser ?
+
+        let userMenuOptions = null;
+        if (currentUser){
+            userMenuOptions = (
+                <Fragment>
+                    <Nav.Item>
+                        <Nav.Link as={Link} className="text-dark" to="#" onClick={(e)=>{toggleModal('friends')}}>Friends</Nav.Link>
+                    </Nav.Item>
                     <Nav.Item>
                         <Nav.Link as={Link} className="text-dark" to={`/user/${currentUser.id}`}>{currentUser.firstName}</Nav.Link>
                     </Nav.Item>
-                    : null
-                }
+                </Fragment>
+            )
+        }
+
+        return (
+            <Fragment>
+                { userMenuOptions }
                 <Nav.Item>
                     {
                         currentUser ? <Nav.Link as={Link} className="text-dark" to="/" onClick={logout}>Logout</Nav.Link>

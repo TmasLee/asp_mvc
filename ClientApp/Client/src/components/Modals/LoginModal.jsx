@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
 
-import { GenericModal, FormControlWithError } from './generics';
-import { LoginMessage } from './LoginMessage';
-import authService from '../AuthenticationService';
+import { GenericModal, FormControlWithError } from '../generics';
+import { LoginMessage } from '../LoginMessage';
+import authService from '../../AuthenticationService';
 
 export class LoginModal extends Component{
     state = {

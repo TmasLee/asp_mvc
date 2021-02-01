@@ -21,7 +21,7 @@ export class NavMenu extends Component {
                                 <Nav.Link as={Link} className="text-dark" to="/aboutme">About Me</Nav.Link>
                             </Nav.Item>
                             <Nav.Item>
-                                <Nav.Link as={Link} className="text-dark" to="#" onClick={(e)=>{toggleModal('usersList')}}>Users</Nav.Link>
+                                <Nav.Link as={Link} className="text-dark" to="#" onClick={(e)=>{toggleModal('users')}}>Users</Nav.Link>
                             </Nav.Item>
                             <UserMenu {...this.props}/>
                         </ul>

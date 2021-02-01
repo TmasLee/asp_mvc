@@ -33,7 +33,7 @@ namespace asp_mvc.DAL
         // Generic update possible?
         // public abstract T Update(T model);
 
-        public async Task DeleteById(int id)
+        public virtual async Task DeleteById(int id)
         {
             string q = $"DELETE FROM \"{tableName}\" OUTPUT DELETED.* WHERE Id = {id}";
             await model.FromSqlRaw(q).FirstAsync();

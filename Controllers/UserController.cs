@@ -26,11 +26,13 @@ namespace asp_mvc.Controllers
         private readonly StupidLoader _stupidLoader;
         private readonly IUserManager _userMgr;
         private readonly IUserRepository _userRepo;
-        public UserController(StupidLoader stupidLoader, IUserManager userMgr, IUserRepository userRepo)
+        private readonly IFriendshipRepository _friendshipRepo;
+        public UserController(StupidLoader stupidLoader, IUserManager userMgr, IUserRepository userRepo, IFriendshipRepository friendshipRepo)
         {
             _userMgr = userMgr;
             _stupidLoader = stupidLoader;
             _userRepo = userRepo;
+            _friendshipRepo = friendshipRepo;
         }
 
         [HttpPost("signup")]
@@ -107,5 +109,17 @@ namespace asp_mvc.Controllers
             }
             return Ok(userDtos);
         }
+
+        [HttpGet("get-friends")]
+        public async Task<ActionResult> GetFriends()
+        {
+            List<Friendship> friends = await _friendshipRepo.RetrieveAll();
+            List<UserDto> friendDtos = new List<UserDto>();
+
+            return Ok();
+        }
+
+        
+
     }
 }

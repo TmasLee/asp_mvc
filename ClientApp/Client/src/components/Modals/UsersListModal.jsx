@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { ListGroup, ListGroupItem, Button, InputGroup, FormControl } from 'react-bootstrap';
+import { ListGroup, Button, InputGroup, FormControl } from 'react-bootstrap';
 import axios from 'axios';
 
-import { GenericModal } from './generics';
+import { GenericModal } from '../generics';
+import { UserLink } from '../generics';
 
-export class UsersList extends Component {
+export class UsersListModal extends Component {
     state = {
         users: [],
         queriedUsers: [],
@@ -12,13 +13,20 @@ export class UsersList extends Component {
     }
 
     componentDidMount(){
-        axios.get('/user/get-users')
-        .then((resp) => {
-            this.setState({
-                users: resp.data,
-                queriedUsers: resp.data
+        if (this.props.type === 'friends'){
+            axios.get('/user/get-friends')
+            .then((resp) => {
+                console.log(resp);
             });
-        });
+        } else {
+            axios.get('/user/get-users')
+            .then((resp) => {
+                this.setState({
+                    users: resp.data,
+                    queriedUsers: resp.data
+                });
+            });
+        }
     }
 
     // Add debounce user input?
@@ -40,8 +48,9 @@ export class UsersList extends Component {
     }
 
     render(){
+        let title = (this.props.type === 'friends') ? 'Friends' : 'All Users';
         return(
-            <GenericModal title='All Users'
+            <GenericModal title={title}
                           toggalModal={this.props.toggleModal}
                           {...this.props}>
                 <InputGroup>
@@ -61,18 +70,5 @@ export class UsersList extends Component {
                 </ListGroup>
             </GenericModal>
         );
-    }
-}
-
-class UserLink extends Component {
-    render(){
-        return(
-            <ListGroupItem action
-                           href={`/user/${this.props.user.id}`}>
-                {this.props.user.email}
-                {' '}
-                <Button>Add</Button>
-            </ListGroupItem>
-        )
     }
 }
