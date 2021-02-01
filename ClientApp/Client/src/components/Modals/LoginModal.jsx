@@ -150,6 +150,13 @@ export class LoginModal extends Component{
     render(){
         const { email, firstName, lastName, password, reenteredPassword, newUser, errors, loading, serverError, serverResponse } = this.state;
 
+        let userOptions = (
+            <div style={{float: "right", textAlign: "right"}}>
+                <ForgotPasswordTooltip id={0}/>
+                <br/>
+                <Button variant="link" onClick={this.handleNewUser}>New User?</Button>
+            </div>
+        )
         let title = "Login";
         let primaryButtonMsg = "Login";
         let action = this.validateAndLogin;
@@ -158,6 +165,10 @@ export class LoginModal extends Component{
             title = "Sign Up";
             primaryButtonMsg = "Register";
             action = this.validateAndSignUp;
+        }
+
+        if (loading){
+            userOptions = null;
         }
 
         return (
@@ -205,22 +216,15 @@ export class LoginModal extends Component{
                                       error={errors.password}/>
                 {
                     newUser ? (
-                        <div>
-                            <FormControlWithError required={true}
-                                      type="password"
-                                      name="reenteredPassword"
-                                      value={reenteredPassword}
-                                      onChange={this.handleInputOnChange}
-                                      placeholder="Re-enter Password"
-                                      error={errors.reenteredPassword}/>
-                        </div>
+                        <FormControlWithError required={true}
+                                    type="password"
+                                    name="reenteredPassword"
+                                    value={reenteredPassword}
+                                    onChange={this.handleInputOnChange}
+                                    placeholder="Re-enter Password"
+                                    error={errors.reenteredPassword}/>
                     )
-                    : (
-                        <div style={{float: "right", textAlign: "right"}}>
-                            <ForgotPasswordTooltip id={0}/>
-                            <br/>
-                            <Button variant="link" onClick={this.handleNewUser}>New User?</Button>
-                        </div>)
+                    : userOptions
                 }
             </GenericModal>
         )

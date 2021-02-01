@@ -65,7 +65,9 @@ export class UsersListModal extends Component {
                 <br/>
                 <ListGroup>
                     {
-                        this.state.queriedUsers.map((user) => <UserLink key={user.id} user={user}/>)
+                        this.state.queriedUsers.map((user) => {
+                            return <UserLink key={user.id} currentUser={this.props.currentUser} user={user}/>
+                        })
                     }
                 </ListGroup>
             </GenericModal>

@@ -3,13 +3,17 @@
 A small web app project built using C#, ASP.NET Core, and JS/React.
 
 ### **To-Do**:
-* Implement friends (add/accept request/remove) - only friends can view each others pages
+* Implement friends
+* Add friend
+* Accept friend request
+* Delete friend 
+* Only friends can view each others pages?
 * Forgot password
 * Update image/avatar
-* Logout redirect?
+* Generic repository - Parameterized table name
 * Pic lol
 
-* Generic repository - Parameterized table name
+* Logout redirect / Log out + Unauthorized message
 
 * Test xss / csrf / sql injection
 * Web server logging

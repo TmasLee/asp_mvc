@@ -1,7 +1,6 @@
 using System.Threading.Tasks;
 
 using asp_mvc.Models;
-using asp_mvc.Utilities.POCO;
 
 namespace asp_mvc.DAL.Managers
 {

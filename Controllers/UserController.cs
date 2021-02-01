@@ -27,7 +27,12 @@ namespace asp_mvc.Controllers
         private readonly IUserManager _userMgr;
         private readonly IUserRepository _userRepo;
         private readonly IFriendshipRepository _friendshipRepo;
-        public UserController(StupidLoader stupidLoader, IUserManager userMgr, IUserRepository userRepo, IFriendshipRepository friendshipRepo)
+        private readonly IFriendshipManager _friendshipMgr;
+        public UserController(
+            StupidLoader stupidLoader,
+            IUserManager userMgr,
+            IUserRepository userRepo,
+            IFriendshipRepository friendshipRepo)
         {
             _userMgr = userMgr;
             _stupidLoader = stupidLoader;
@@ -119,7 +124,23 @@ namespace asp_mvc.Controllers
             return Ok();
         }
 
-        
+        [HttpPost("add-friend")]
+        public async Task<ActionResult> AddFriend([FromBody]Friendship newFriendship)
+        {
+            // await _friendshipMgr.MakeFriendship();
+            await _friendshipRepo.Create(newFriendship);
+
+            return Ok();
+        }
+
+        [HttpPost("remove-friend")]
+        public async Task<ActionResult> RemoveFriend([FromBody]User formerFriend)
+        {
+            List<Friendship> friends = await _friendshipRepo.RetrieveAll();
+            List<UserDto> friendDtos = new List<UserDto>();
+
+            return Ok();
+        }
 
     }
 }

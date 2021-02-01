@@ -76,6 +76,7 @@ namespace asp_mvc
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IFriendshipRepository, FriendshipRepository>();
             services.AddScoped<IUserManager, UserManager>();
+            services.AddScoped<IFriendshipManager, FriendshipManager>();
             services.AddTransient<StupidLoader>();
 
             services.AddControllers();
