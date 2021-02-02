@@ -125,10 +125,9 @@ namespace asp_mvc.Controllers
         }
 
         [HttpPost("add-friend")]
-        public async Task<ActionResult> AddFriend([FromBody]Friendship newFriendship)
+        public async Task<ActionResult> AddFriend([FromBody]Friendship friendRequest)
         {
-            // await _friendshipMgr.MakeFriendship();
-            await _friendshipRepo.Create(newFriendship);
+            await _friendshipRepo.Create(friendRequest);
 
             return Ok();
         }

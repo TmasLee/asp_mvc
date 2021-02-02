@@ -3,8 +3,8 @@
 A small web app project built using C#, ASP.NET Core, and JS/React.
 
 ### **To-Do**:
-* Implement friends
 * Add friend
+* Notification dropdown
 * Accept friend request
 * Delete friend 
 * Only friends can view each others pages?

@@ -17,6 +17,7 @@ namespace asp_mvc.Models
         public string LastName { get; set; }
         [Required]
         public string Password { get; set; }
+        public List<Friendship> Friends { get; set; }
 
         public UserDto ToDto()
         {
