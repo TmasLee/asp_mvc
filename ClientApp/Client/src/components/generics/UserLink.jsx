@@ -21,12 +21,16 @@ export class UserLink extends Component {
     }
 
     render(){
-        const { id, email } = this.props.user;
+        const { currentUser, user } = this.props;
+
+        let addBtn = (currentUser.id !== user.id) ? <Button onClick={this.addFriend}>Add</Button> : null;
+
         return (
             <ListGroupItem>
-                <a href={`/user/${id}`} style={{textDecoration: 'none'}}>{email}</a>
-                {' '}
-                <Button onClick={this.addFriend}>Add</Button>
+                <a href={`/user/${user.id}`} style={{textDecoration: 'none'}}>
+                    {user.email}
+                </a>
+                {addBtn}
             </ListGroupItem>
         )
     }

@@ -121,7 +121,7 @@ namespace asp_mvc.Controllers
             List<Friendship> friends = await _friendshipRepo.RetrieveAll();
             List<UserDto> friendDtos = new List<UserDto>();
 
-            return Ok();
+            return Ok(friendDtos);
         }
 
         [HttpPost("add-friend")]

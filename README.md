@@ -12,6 +12,8 @@ A small web app project built using C#, ASP.NET Core, and JS/React.
 * Update image/avatar
 * Generic repository - Parameterized table name
 * Pic lol
+* AirBnb JS style
+* MS or Google C# style
 
 * Logout redirect / Log out + Unauthorized message
 
