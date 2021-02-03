@@ -15,7 +15,6 @@ namespace asp_mvc.DAL.Managers
 
         // public async Task MakeFriendship(User user, User newFriend)
         // (
-            
         //     var x = _friendshipRepository.Create();
         // )
     }

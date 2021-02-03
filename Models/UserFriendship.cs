@@ -2,12 +2,13 @@
 
 namespace asp_mvc.Models
 {
-    public class Friendship
+    public class UserFriendship
     {
-        public User User { get; set; }
         public int UserId { get; set; }
-        public User Friend { get; set; }
         public int FriendId { get; set; }
+        public string Email { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
         public int Status { get; set; } // 0 = Pending, 1 = Accepted
     }
 }

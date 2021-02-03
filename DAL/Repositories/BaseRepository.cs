@@ -31,7 +31,7 @@ namespace asp_mvc.DAL
         }
 
         // Generic update possible?
-        // public abstract T Update(T model);
+        public abstract Task Update(T model);
 
         public virtual async Task DeleteById(int id)
         {

@@ -3,7 +3,14 @@ import { ListGroup, Button, InputGroup, FormControl } from 'react-bootstrap';
 import axios from 'axios';
 
 import { GenericModal } from '../generics';
-import { UserLink } from '../generics';
+import { UserLink } from './UserLink';
+import { getCsrfToken } from '../../utilities/utils';
+
+let config = {
+    headers: {
+        'csrf-token': getCsrfToken()
+    }
+}
 
 export class UsersListModal extends Component {
     state = {
@@ -14,7 +21,10 @@ export class UsersListModal extends Component {
 
     componentDidMount(){
         if (this.props.type === 'friends'){
-            axios.get('/user/get-friends')
+            axios.get(
+                '/user/get-friends',
+                config
+            )
             .then((resp) => {
                 console.log(resp);
             });

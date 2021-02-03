@@ -23,7 +23,15 @@ export class UserLink extends Component {
     render(){
         const { currentUser, user } = this.props;
 
-        let addBtn = (currentUser.id !== user.id) ? <Button onClick={this.addFriend}>Add</Button> : null;
+        let addBtn = null;
+
+        if (currentUser !== null){
+            if (currentUser.id === user.id ){
+                addBtn = null;
+            } else {
+                addBtn = <Button onClick={this.addFriend}>Add</Button>;
+            }
+        }
 
         return (
             <ListGroupItem>

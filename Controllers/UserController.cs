@@ -32,12 +32,14 @@ namespace asp_mvc.Controllers
             StupidLoader stupidLoader,
             IUserManager userMgr,
             IUserRepository userRepo,
-            IFriendshipRepository friendshipRepo)
+            IFriendshipRepository friendshipRepo,
+            IFriendshipManager friendshipMgr)
         {
             _userMgr = userMgr;
             _stupidLoader = stupidLoader;
             _userRepo = userRepo;
             _friendshipRepo = friendshipRepo;
+            _friendshipMgr = friendshipMgr;
         }
 
         [HttpPost("signup")]
@@ -67,7 +69,7 @@ namespace asp_mvc.Controllers
         [HttpGet("connect")]
         public async Task<ActionResult> ConnectToServices()
         {
-            await _stupidLoader.LoadTime(1, 2);
+            await _stupidLoader.LoadTime(2);
             return Ok();
         }
 
@@ -76,7 +78,7 @@ namespace asp_mvc.Controllers
         [HttpGet("lose-data")]
         public async Task<ActionResult> LoseData()
         {
-            await _stupidLoader.LoadTime(2, 3);
+            await _stupidLoader.LoadTime(2);
             return Ok();
         }
 
@@ -85,6 +87,7 @@ namespace asp_mvc.Controllers
         [HttpGet("get-current-user-datass")]
         public async Task<ActionResult> GetUserDatas()
         {
+            await _stupidLoader.LoadTime(2);
             var email = User.Claims.Where(x => x.Type == ClaimTypes.Email).FirstOrDefault()?.Value;
             User user = await _userRepo.RetrieveUserByEmail(email);
             UserDto userDto = user.ToDto();
@@ -115,6 +118,8 @@ namespace asp_mvc.Controllers
             return Ok(userDtos);
         }
 
+        [Authorize]
+        [ServiceFilter(typeof(ApiAntiforgeryTokenAuthorizationFilter))]
         [HttpGet("get-friends")]
         public async Task<ActionResult> GetFriends()
         {
@@ -124,22 +129,46 @@ namespace asp_mvc.Controllers
             return Ok(friendDtos);
         }
 
+        [Authorize]
+        [ServiceFilter(typeof(ApiAntiforgeryTokenAuthorizationFilter))]
         [HttpPost("add-friend")]
-        public async Task<ActionResult> AddFriend([FromBody]Friendship friendRequest)
+        public async Task<ActionResult> AddFriendRequest([FromBody]Friendship friendRequest)
         {
             await _friendshipRepo.Create(friendRequest);
 
             return Ok();
         }
 
+        [Authorize]
+        [ServiceFilter(typeof(ApiAntiforgeryTokenAuthorizationFilter))]
         [HttpPost("remove-friend")]
         public async Task<ActionResult> RemoveFriend([FromBody]User formerFriend)
         {
-            List<Friendship> friends = await _friendshipRepo.RetrieveAll();
-            List<UserDto> friendDtos = new List<UserDto>();
+            // List<Friendship> friends = await _friendshipRepo.RetrieveAll();
+            // List<UserDto> friendDtos = new List<UserDto>();
 
             return Ok();
         }
 
+        [Authorize]
+        [ServiceFilter(typeof(ApiAntiforgeryTokenAuthorizationFilter))]
+        [HttpGet("get-requests")]
+        public async Task<ActionResult> GetRequests([FromQuery(Name = "currentUserId")]int currentUserId)
+        {
+            List<UserFriendship> pendingRequests = await _friendshipRepo.RetrievePendingRequests(currentUserId);
+
+            return Ok(pendingRequests);
+        }
+
+        [Authorize]
+        [ServiceFilter(typeof(ApiAntiforgeryTokenAuthorizationFilter))]
+        [HttpPost("accept-request")]
+        public async Task<ActionResult> AcceptRequest([FromBody]Friendship friendRequest)
+        {
+            // Should this be PUT or GET?
+            await _friendshipRepo.Update(friendRequest);
+
+            return Ok();
+        }
     }
 }

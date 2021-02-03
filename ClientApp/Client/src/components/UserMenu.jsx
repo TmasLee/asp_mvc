@@ -16,6 +16,9 @@ export class UserMenu extends Component {
                         <Nav.Link as={Link} className="text-dark" to="#" onClick={(e)=>{toggleModal('friends')}}>Friends</Nav.Link>
                     </Nav.Item>
                     <Nav.Item>
+                        <Nav.Link as={Link} className="text-dark" to="#" onClick={(e)=>{toggleModal('requests')}}>Requests</Nav.Link>
+                    </Nav.Item>
+                    <Nav.Item>
                         <Nav.Link as={Link} className="text-dark" to={`/user/${currentUser.id}`}>{currentUser.firstName}</Nav.Link>
                     </Nav.Item>
                 </Fragment>

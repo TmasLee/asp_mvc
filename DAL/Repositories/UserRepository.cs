@@ -27,10 +27,10 @@ namespace asp_mvc.DAL
             return await context.User.FromSqlInterpolated($"SELECT * FROM \"User\" WHERE email = {email}").FirstOrDefaultAsync<User>();
         }
 
-        // public override User Update(User user)
-        // {
-        //     return _context.User.FromSqlInterpolated($"UPDATE \"User\" SET ");
-        // }
+        public async override Task Update(User user)
+        {
+            await context.User.FromSqlInterpolated($"UPDATE \"User\" SET ").FirstAsync();
+        }
 
         public async Task DeleteByEmail(string email)
         {

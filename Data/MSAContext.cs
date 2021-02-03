@@ -7,6 +7,7 @@ namespace asp_mvc.Data
     {
         public DbSet<User> User { get; set; }
         public DbSet<Friendship> Friendship { get; set; }
+        public DbSet<UserFriendship> UserFriendship { get; set; }
         public MSAContext(DbContextOptions<MSAContext> options) : base(options)
         {
         }
@@ -30,6 +31,9 @@ namespace asp_mvc.Data
                         .Property(Friendship => Friendship.Status)
                         .HasDefaultValue(0);
             // Composite Index? - key(friend, user) ---> index
+
+            modelBuilder.Entity<UserFriendship>()
+                        .HasNoKey();
 
         }
     }
