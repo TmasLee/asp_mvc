@@ -2,15 +2,22 @@ import React, { Component } from 'react';
 import { ListGroupItem, Button } from 'react-bootstrap';
 import axios from 'axios';
 
+import { getCsrfToken } from '../../utilities/utils';
+
 export class UserLink extends Component {
     addFriend = () => {
-        console.log(this.props.currentUser);
+        let config = {
+            headers: {
+                'csrf-token': getCsrfToken()
+            }
+        }
         axios.post(
             '/user/add-friend',
             {
                 'userId': this.props.currentUser.id,
                 'friendId': this.props.user.id
-            }
+            },
+            config
         )
         .then((resp) => {
             console.log(resp);

@@ -24,20 +24,19 @@ namespace asp_mvc.DAL
 
         public async Task<List<UserFriendship>> RetrievePendingRequests(int currentUserId)
         {
-            Console.WriteLine(currentUserId);
             return await context.UserFriendship.FromSqlInterpolated($"SELECT UserId, FriendId, Email, FirstName, LastName, Status FROM \"Friendship\" INNER JOIN \"User\" ON \"User\".Id = \"Friendship\".FriendId WHERE UserId = {currentUserId} AND Status = 0").ToListAsync();
         }
 
-        public async Task<List<Friendship>> RetrieveFriends(int userId)
+        public async Task<List<UserFriendship>> RetrieveFriends(int currentUserId)
         {
-            return await context.Friendship.FromSqlInterpolated($"SELECT * FROM \"Friendship\" WHERE UserId = {userId} AND Status = 1").ToListAsync();
+            return await context.UserFriendship.FromSqlInterpolated($"SELECT UserId, FriendId, Email, FirstName, LastName, Status FROM \"Friendship\" INNER JOIN \"User\" ON \"User\".Id = \"Friendship\".FriendId WHERE UserId = {currentUserId} AND Status = 1").ToListAsync();
         }
 
         // Accept a request
         public async override Task Update(Friendship friendship)
         {
-
-            await context.Friendship.FromSqlInterpolated($"UPDATE \"Friendship\" SET Status = 1 OUTPUT INSERTED.* WHERE UserId = {friendship.UserId} AND FriendId = {friendship.FriendId}").FirstAsync();
+            await context.Friendship.FromSqlInterpolated($"UPDATE \"Friendship\" SET Status = 1 OUTPUT INSERTED.* WHERE UserId = {friendship.UserId} AND FriendId = {friendship.FriendId}").IgnoreQueryFilters().FirstAsync();
+            // await context.Friendship.FromSqlInterpolated($"UPDATE \"Friendship\" SET Status = 1 OUTPUT INSERTED.* WHERE UserId = {friendship.UserId} AND FriendId = {friendship.FriendId}").IgnoreQueryFilters().ToListAsync();
         }
 
         // Delete a friend or decline a request

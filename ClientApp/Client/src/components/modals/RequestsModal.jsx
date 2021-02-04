@@ -6,13 +6,6 @@ import { GenericModal } from '../generics';
 import { RequestLink } from './RequestLink';
 import { getCsrfToken } from '../../utilities/utils';
 
-let config = {
-    headers: {
-        'csrf-token': getCsrfToken()
-    }
-}
-
-
 // After accepting request, do get-requests again to update modal
 export class RequestsModal extends Component {
     state = {
@@ -20,12 +13,18 @@ export class RequestsModal extends Component {
     }
 
     componentDidMount(){
-        config.params = {
-            currentUserId: this.props.currentUser.id
+        this.config = {
+            headers: {
+                'csrf-token': getCsrfToken()
+            },
+            params: {
+                currentUserId: this.props.currentUser.id
+            }
         }
+
         axios.get(
             '/user/get-requests',
-            config
+            this.config
             )
         .then((resp) => {
             console.log(resp);
@@ -34,6 +33,24 @@ export class RequestsModal extends Component {
         .catch((err) => {
             console.error(err);
         });
+    }
+
+    acceptRequest = (userId, friendId) => {
+        axios.put(
+            '/user/accept-request',
+            {
+                userId: userId,
+                friendId: friendId
+            },
+            this.config
+        )
+        .then((resp) => {
+            console.log(resp);
+            this.setState({ requests: resp.data });
+        })
+        .catch((err) => {
+            console.error(err.data);
+        })
     }
 
     render(){
@@ -45,7 +62,7 @@ export class RequestsModal extends Component {
                     {
                         this.state.requests.map((request, i) => {
                             console.log(request)
-                            return <RequestLink key={i} request={request}/>
+                            return <RequestLink key={i} accept={this.acceptRequest} request={request}/>
                         })
                     }
                 </ListGroup>

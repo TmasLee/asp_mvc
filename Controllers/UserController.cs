@@ -121,12 +121,11 @@ namespace asp_mvc.Controllers
         [Authorize]
         [ServiceFilter(typeof(ApiAntiforgeryTokenAuthorizationFilter))]
         [HttpGet("get-friends")]
-        public async Task<ActionResult> GetFriends()
+        public async Task<ActionResult> GetFriends([FromQuery(Name = "currentUserId")]int currentUserId)
         {
-            List<Friendship> friends = await _friendshipRepo.RetrieveAll();
-            List<UserDto> friendDtos = new List<UserDto>();
+            List<UserFriendship> friends = await _friendshipRepo.RetrieveFriends(currentUserId);
 
-            return Ok(friendDtos);
+            return Ok(friends);
         }
 
         [Authorize]
@@ -162,13 +161,13 @@ namespace asp_mvc.Controllers
 
         [Authorize]
         [ServiceFilter(typeof(ApiAntiforgeryTokenAuthorizationFilter))]
-        [HttpPost("accept-request")]
+        [HttpPut("accept-request")]
         public async Task<ActionResult> AcceptRequest([FromBody]Friendship friendRequest)
         {
-            // Should this be PUT or GET?
             await _friendshipRepo.Update(friendRequest);
+            List<UserFriendship> pendingRequests = await _friendshipRepo.RetrievePendingRequests(friendRequest.UserId);
 
-            return Ok();
+            return Ok(pendingRequests);
         }
     }
 }

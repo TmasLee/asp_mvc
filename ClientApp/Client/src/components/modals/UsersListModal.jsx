@@ -6,12 +6,6 @@ import { GenericModal } from '../generics';
 import { UserLink } from './UserLink';
 import { getCsrfToken } from '../../utilities/utils';
 
-let config = {
-    headers: {
-        'csrf-token': getCsrfToken()
-    }
-}
-
 export class UsersListModal extends Component {
     state = {
         users: [],
@@ -21,12 +15,24 @@ export class UsersListModal extends Component {
 
     componentDidMount(){
         if (this.props.type === 'friends'){
+            let config = {
+                headers: {
+                    'csrf-token': getCsrfToken()
+                },
+                params: {
+                    currentUserId: this.props.currentUser.id
+                }
+            }
             axios.get(
                 '/user/get-friends',
                 config
             )
             .then((resp) => {
                 console.log(resp);
+                this.setState({
+                    users: resp.data,
+                    queriedUsers: resp.data
+                })
             });
         } else {
             axios.get('/user/get-users')
@@ -75,8 +81,8 @@ export class UsersListModal extends Component {
                 <br/>
                 <ListGroup>
                     {
-                        this.state.queriedUsers.map((user) => {
-                            return <UserLink key={user.id} currentUser={this.props.currentUser} user={user}/>
+                        this.state.queriedUsers.map((user, i) => {
+                            return <UserLink key={i} currentUser={this.props.currentUser} user={user}/>
                         })
                     }
                 </ListGroup>
