@@ -3,22 +3,21 @@
 A small web app project built using C#, ASP.NET Core, and JS/React.
 
 ### **To-Do**:
-* Accept friend request - update list in modal 
-
-* Add friend
-* Delete friend 
-
-* Update image/avatar
+* DB constraints through postman - can i add/request myself through postman? Users add/request each other multiple times? - Handle exception
+* Fix add friend - how am i adding myself lol - might need to implement actionUser - Pending section in request modal
+* Clean up endpoints - Smarter requests for friends/requests (there's probably a better way to pass currentUserId)
+* Add indexes --> Update queries? Why use composite index?
 * Generic repository - Parameterized table name - What is "persistence layer"?
-* Add indexes --> Update queries?
-* Generate real names
-* Pic lol
+* About me - Pic lol
 
-* DB constraints through postman - can i add/request myself through postman? Users add/request each other multiple times?
-* Why using composite key? Why use composite index?
 * Format SQL in code
 * AirBnb JS style
 * MS or Google C# style
+
+* Test another user in incognito
+* Forgot password
+* Clean up modals/links. Modals do too much? Can probably make modals and Links more reusable - Make like a list modal component or something?
+* See other user friends
 
 * Test xss / sql injection
 * Web server logging
@@ -28,12 +27,8 @@ A small web app project built using C#, ASP.NET Core, and JS/React.
 * Set up prod environment / db connection string / salt / token payload
 * Deploy script - Deploy to AWS ECS? - Inject secrets in appsettings.Development / secrets.json
 
-### **Improvements To-Do**
+### **Improvements/Features To-Do**
+* On initial site request, return signed in view instead of separate login request
 * Logout redirect / Log out + Unauthorized message
-* Request badges
-* Only friends can view each others pages?
-* Can probably make modals and UserLink/RequestLink more generic/reusable
-* Better way instead of keyless entity to get join result?
-* Smarter requests for friends/requests (there's probably a better way to pass currentUserId)
-* Forgot password
-* Get CSRF token on app level
+* New # of requests badge
+* Use functional components wherever I can

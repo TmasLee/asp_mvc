@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { LoginModal } from './LoginModal';
 import { UsersListModal } from './UsersListModal';
 import { RequestsModal } from './RequestsModal';
+import { FriendListModal } from './FriendListModal';
 
 export class ModalSwitch extends Component {
     render(){
@@ -12,7 +13,7 @@ export class ModalSwitch extends Component {
             case 'users':
                 return (<UsersListModal {...this.props}/>);
             case 'friends':
-                return (<UsersListModal type='friends' {...this.props}/>);
+                return (<FriendListModal {...this.props}/>);
             case 'requests':
                 return (<RequestsModal {...this.props}/>)
             default:

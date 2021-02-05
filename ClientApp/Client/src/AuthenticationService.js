@@ -5,17 +5,12 @@ import { getCsrfToken } from './utilities/utils';
 
 // TODO: Handle callbacks better
 class AuthenticationService {
-    config = {
-        headers: {
-            'csrf-token': getCsrfToken()
-        }
+    constructor(){
+        axios.defaults.headers.common['csrf-token'] = getCsrfToken();
     }
 
     retrieveUser() {
-        return axios.get(
-            '/user/get-current-user-datass',
-            this.config
-        )
+        return axios.get('/user/get-current-user-datass')
         .then((resp) => {
             return resp.data;
         })
@@ -51,17 +46,17 @@ class AuthenticationService {
             return axios.get('/authentication/antiforgery');
         })
         .then((resp) => {
-            this.config.headers['csrf-token'] = getCsrfToken();
+            axios.defaults.headers.common['csrf-token'] = getCsrfToken();
+
             callbacks[0](loadingMessages.connecting);
-            return axios.get('/user/connect', this.config);
+            return axios.get('/user/connect');
         })
         .then((resp) => {
             callbacks[0](loadingMessages.lostProgress);
-            return axios.get('/user/lose-data', this.config);
+            return axios.get('/user/lose-data');
         })
         .then((resp) => {
-            callbacks[0](loadingMessages.gettingDatas);
-            return axios.get('/user/get-current-user-datass', this.config);
+            return axios.get('/user/get-current-user-datass');
         })
         .then((resp) => {
             callbacks[0](loadingMessages.success);
@@ -74,10 +69,7 @@ class AuthenticationService {
     }
 
     logout() {
-        axios.get(
-            '/authentication/logout',
-            this.config
-        )
+        axios.get('/authentication/logout')
     }
 };
 

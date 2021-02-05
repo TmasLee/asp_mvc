@@ -3,8 +3,9 @@ import { ListGroup, ListGroupItem, Button, InputGroup, FormControl } from 'react
 import axios from 'axios';
 
 import { GenericModal } from '../generics';
+import authService from '../../AuthenticationService';
 
-export class UsersListModal extends Component {
+export class FriendListModal extends Component {
     state = {
         users: [],
         queriedUsers: [],
@@ -12,14 +13,11 @@ export class UsersListModal extends Component {
     }
 
     componentDidMount(){
-        axios.get('/user/get-users')
-        .then((resp) => {
-            this.setState({
-                users: resp.data,
-                queriedUsers: resp.data
-            });
-        })
-        .catch((err)=>console.error(err));
+        const { currentUser } = this.props;
+        this.setState({
+            users: currentUser.friends,
+            queriedUsers: currentUser.friends
+        });
     }
 
     // Add debounce user input?
@@ -41,49 +39,44 @@ export class UsersListModal extends Component {
         }
     }
 
-    addFriend = (friendId) => {
+    deleteFriend = (friendId) => {
         axios.post(
-            '/user/add-friend',
+            '/user/remove-friend',
             {
                 'userId': this.props.currentUser.id,
                 'friendId': friendId
             },
         )
+        .then(async (resp) => {
+            this.setState({
+                users: resp.data,
+                queriedUsers: resp.data
+            });
+            this.props.setUser(await authService.retrieveUser());
+        })
         .catch((err) => console.error(err));
     }
 
-    generateUserList = () => {
-        let friendEmails = this.getFriendEmails();
-        let userList = this.state.queriedUsers.map((user, i) => {
-            let actionBtn = <Button onClick={(e)=>this.addFriend(user.id)}>Add</Button>;
-            if (this.props.currentUser.id === user.id || friendEmails.includes(user.email)){
-                actionBtn = null;
-            }
-
+    generateFriendList = () => {
+        let friendList = this.state.queriedUsers.map((user, i) => {
             return (
                 <ListGroupItem key={i}>
                     <a href={`/user/${user.id}`} style={{textDecoration: 'none'}}>
                         {user.email}
                     </a>
-                    {actionBtn}
+                    <Button variant='danger' onClick={(e)=>this.deleteFriend(user.id)}>Delete</Button>
                 </ListGroupItem>
             )
         });
 
-        return userList;
-    }
-
-    getFriendEmails = () => {
-        let friendEmails = [];
-        this.props.currentUser.friends.forEach((friend) => friendEmails.push(friend.email));
-        return friendEmails;
+        return friendList;
     }
 
     render(){
-        let userList = this.generateUserList();
+        let friendList = this.generateFriendList();
 
         return(
-            <GenericModal title='All Users'
+            <GenericModal title='Friends'
                           toggalModal={this.props.toggleModal}
                           {...this.props}>
                 <InputGroup>
@@ -98,7 +91,7 @@ export class UsersListModal extends Component {
                 <br/>
                 <ListGroup>
                     {
-                        userList.map((user) => {
+                        friendList.map((user) => {
                             return user;
                         })
                     }

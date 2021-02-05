@@ -13,9 +13,6 @@ import {
 } from './components/pages';
 import '../../css/App.css';
 
-// TODO: Get logged in view with no rerendering when landing on site - Index would need to be an authenticated view
-// TODO: Logged in page title update to user's first name
-// TODO: Need to handle csrf token config handling on app level
 class App extends Component {
     state = {
         currentUser: null,

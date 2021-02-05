@@ -35,8 +35,8 @@ namespace asp_mvc.Models
 
         public static List<User> GenerateUsers()
         {
-            List<User> users = new List<User>(500);
-            for (int i = 0; i < 500; i++)
+            List<User> users = new List<User>(100);
+            for (int i = 0; i < 100; i++)
             {
                 try
                 {

@@ -12,7 +12,7 @@ export class NavMenu extends Component {
             <header>
                 <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" bg="light">
                     <Container>
-                        <Navbar.Brand as={Link} to="/">Antonio's Brother</Navbar.Brand>
+                        <Navbar.Brand as={Link} to="/">SlothBook?</Navbar.Brand>
                         <ul className="navbar-nav flex-grow">
                             <Nav.Item>
                                 <Nav.Link as={Link} className="text-dark" to="/">Home</Nav.Link>

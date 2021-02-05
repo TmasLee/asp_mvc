@@ -4,35 +4,24 @@ import axios from 'axios';
 
 import { GenericModal } from '../generics';
 import { RequestLink } from './RequestLink';
-import { getCsrfToken } from '../../utilities/utils';
+import authService from '../../AuthenticationService';
 
-// After accepting request, do get-requests again to update modal
 export class RequestsModal extends Component {
     state = {
         requests: []
     }
 
     componentDidMount(){
-        this.config = {
-            headers: {
-                'csrf-token': getCsrfToken()
-            },
+        axios.get(
+            '/user/get-requests', {
             params: {
                 currentUserId: this.props.currentUser.id
             }
-        }
-
-        axios.get(
-            '/user/get-requests',
-            this.config
-            )
+        })
         .then((resp) => {
-            console.log(resp);
             this.setState({ requests: resp.data})
         })
-        .catch((err) => {
-            console.error(err);
-        });
+        .catch((err) => console.error(err));
     }
 
     acceptRequest = (userId, friendId) => {
@@ -41,16 +30,27 @@ export class RequestsModal extends Component {
             {
                 userId: userId,
                 friendId: friendId
-            },
-            this.config
+            }
+        )
+        .then(async (resp) => {
+            this.setState({ requests: resp.data });
+            this.props.setUser(await authService.retrieveUser());
+        })
+        .catch((err) => console.error(err.data));
+    }
+
+    declineRequest = (userId, friendId) => {
+        axios.post(
+            '/user/decline-request',
+            {
+                userId: userId,
+                friendId: friendId
+            }
         )
         .then((resp) => {
-            console.log(resp);
             this.setState({ requests: resp.data });
         })
-        .catch((err) => {
-            console.error(err.data);
-        })
+        .catch((err) => console.error(err));
     }
 
     render(){
@@ -61,8 +61,10 @@ export class RequestsModal extends Component {
                 <ListGroup>
                     {
                         this.state.requests.map((request, i) => {
-                            console.log(request)
-                            return <RequestLink key={i} accept={this.acceptRequest} request={request}/>
+                            return <RequestLink key={i}
+                                                accept={this.acceptRequest}
+                                                decline={this.declineRequest}
+                                                request={request}/>
                         })
                     }
                 </ListGroup>

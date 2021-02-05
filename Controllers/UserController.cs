@@ -87,10 +87,10 @@ namespace asp_mvc.Controllers
         [HttpGet("get-current-user-datass")]
         public async Task<ActionResult> GetUserDatas()
         {
-            await _stupidLoader.LoadTime(2);
             var email = User.Claims.Where(x => x.Type == ClaimTypes.Email).FirstOrDefault()?.Value;
             User user = await _userRepo.RetrieveUserByEmail(email);
-            UserDto userDto = user.ToDto();
+            List<UserFriendship> friends = await _friendshipRepo.RetrieveFriends(user.Id);
+            UserDto userDto = user.CurrentUserToDto(friends);
 
             return Ok(userDto);
         }
@@ -121,9 +121,9 @@ namespace asp_mvc.Controllers
         [Authorize]
         [ServiceFilter(typeof(ApiAntiforgeryTokenAuthorizationFilter))]
         [HttpGet("get-friends")]
-        public async Task<ActionResult> GetFriends([FromQuery(Name = "currentUserId")]int currentUserId)
+        public async Task<ActionResult> GetFriends([FromQuery(Name = "userId")]int userId)
         {
-            List<UserFriendship> friends = await _friendshipRepo.RetrieveFriends(currentUserId);
+            List<UserFriendship> friends = await _friendshipRepo.RetrieveFriends(userId);
 
             return Ok(friends);
         }
@@ -141,12 +141,12 @@ namespace asp_mvc.Controllers
         [Authorize]
         [ServiceFilter(typeof(ApiAntiforgeryTokenAuthorizationFilter))]
         [HttpPost("remove-friend")]
-        public async Task<ActionResult> RemoveFriend([FromBody]User formerFriend)
+        public async Task<ActionResult> RemoveFriend([FromBody]Friendship friendship)
         {
-            // List<Friendship> friends = await _friendshipRepo.RetrieveAll();
-            // List<UserDto> friendDtos = new List<UserDto>();
+            await _friendshipRepo.DeleteById(friendship.FriendId);
+            List<UserFriendship> friends = await _friendshipRepo.RetrieveFriends(friendship.UserId);
 
-            return Ok();
+            return Ok(friends);
         }
 
         [Authorize]
@@ -169,5 +169,17 @@ namespace asp_mvc.Controllers
 
             return Ok(pendingRequests);
         }
+
+        [Authorize]
+        [ServiceFilter(typeof(ApiAntiforgeryTokenAuthorizationFilter))]
+        [HttpPost("decline-request")]
+        public async Task<ActionResult> DeclineRequest([FromBody]Friendship friendRequest)
+        {
+            await _friendshipRepo.DeleteById(friendRequest.FriendId);
+            List<UserFriendship> pendingRequests = await _friendshipRepo.RetrievePendingRequests(friendRequest.UserId);
+
+            return Ok(pendingRequests);
+        }
+
     }
 }
