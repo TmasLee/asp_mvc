@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { Container, Row, Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { Container, Row } from 'react-bootstrap';
 import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 
-import { getCsrfToken } from '../../utilities/utils';
 import '../../../../css/UserPage.css';
 import sloth from '../../../../assets/handsome_sloth.png';
 
@@ -13,23 +12,13 @@ class User extends Component {
     }
 
     componentDidMount(){
-        let config = {
-            headers: {
-                'csrf-token': getCsrfToken()
-            }
-        }
-        axios.get(
-            `/user/get-user?userId=${this.props.match.params.id}`,
-            config
-        )
+        axios.get(`/user/get-user?userId=${this.props.match.params.id}`)
         .then((resp) => {
             this.setState({
                 user: resp.data
             });
         })
-        .catch((err) => {
-            console.log(err);
-        })
+        .catch((err) => console.error(err));
     }
 
     render(){
@@ -49,7 +38,7 @@ class User extends Component {
                 </Container>
             )
         } else {
-            return <div></div>
+            return null;
         }
     }
 }

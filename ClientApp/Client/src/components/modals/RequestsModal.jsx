@@ -36,7 +36,7 @@ export class RequestsModal extends Component {
             this.setState({ requests: resp.data });
             this.props.setUser(await authService.retrieveUser());
         })
-        .catch((err) => console.error(err.data));
+        .catch((err) => console.error(err));
     }
 
     declineRequest = (userId, friendId) => {
@@ -55,9 +55,7 @@ export class RequestsModal extends Component {
 
     render(){
         return(
-            <GenericModal title="Requests"
-                          toggalModal={this.props.toggleModal}
-                          {...this.props}>
+            <GenericModal {...this.props}>
                 <ListGroup>
                     {
                         this.state.requests.map((request, i) => {

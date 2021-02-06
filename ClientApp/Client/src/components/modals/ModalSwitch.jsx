@@ -11,11 +11,11 @@ export class ModalSwitch extends Component {
             case 'login':
                 return (<LoginModal {...this.props}/>)
             case 'users':
-                return (<UsersListModal {...this.props}/>);
+                return (<UsersListModal title='All Users' {...this.props}/>);
             case 'friends':
-                return (<FriendListModal {...this.props}/>);
+                return (<FriendListModal title='Friends' {...this.props}/>);
             case 'requests':
-                return (<RequestsModal {...this.props}/>)
+                return (<RequestsModal title='Requests' {...this.props}/>)
             default:
                 return null
         }
