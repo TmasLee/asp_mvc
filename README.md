@@ -3,7 +3,6 @@
 A small web app project built using C#, ASP.NET Core, and JS/React.
 
 ### **To-Do**:
-* Why UsersListModal reload?
 * Handle DB duplicate key constraint exception
 * Fix add friend - how am i adding myself lol - might need to implement actionUser - Pending section in request modal
 * Clean up endpoints - Smarter requests for friends/requests (there's probably a better way to pass currentUserId)
@@ -34,3 +33,5 @@ A small web app project built using C#, ASP.NET Core, and JS/React.
 * New # of requests badge
 * Use functional components wherever I can
 * Site icon favicon?
+* Add form submit - submit with Enter
+* Modal rerender when > 70 users kinda disorienting

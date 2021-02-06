@@ -8,8 +8,8 @@ export class UsersListModal extends Component {
         users: []
     }
 
-    componentDidMount(){
-        axios.get('/user/get-users')
+    async componentDidMount(){
+        await axios.get('/user/get-users')
         .then((resp) => {
             this.setState({
                 users: resp.data
@@ -29,35 +29,21 @@ export class UsersListModal extends Component {
         .catch((err) => console.error(err));
     }
 
-    generateUserList = () => {
+    filterFriendsAndSelf = () => {
         const { currentUser } = this.props;
-        let friendEmails = this.getFriendEmails();
-        let userList = this.state.users;
-
-        if (!currentUser){
-            return userList;
-        }
-
-        userList = this.state.users.filter((user) => currentUser.id !== user.id || !friendEmails.includes(user.email));
-
-        return userList;
-    }
-
-    getFriendEmails = () => {
-        const { currentUser } = this.props;
-        let friendEmails = [];
-
-        if (currentUser){
-            currentUser.friends.forEach((friend) => friendEmails.push(friend.email));
-        }
-
-        return friendEmails;
+        let friendsAndSelfEmails = [currentUser.email];
+        currentUser.friends.forEach((friend) => friendsAndSelfEmails.push(friend.email));
+        return this.state.users.filter((user) => !friendsAndSelfEmails.includes(user.email));
     }
 
     render(){
-        let userList = this.generateUserList();
-        let UsersModal = ListModalWithSearch(userList);
+        let userList = this.state.users;
 
+        if (this.props.currentUser){
+            userList = this.filterFriendsAndSelf();
+        }
+
+        let UsersModal = ListModalWithSearch(userList);
         return (<UsersModal userAction={this.addFriend} {...this.props}/>);
     }
 }
