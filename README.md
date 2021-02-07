@@ -3,7 +3,6 @@
 A small web app project built using C#, ASP.NET Core, and JS/React.
 
 ### **To-Do**:
-* After adding or deleting user - users needs to refresh friend modal once to see updated list
 * Update request modal?
 * User list modal error message
 
