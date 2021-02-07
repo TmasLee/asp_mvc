@@ -118,15 +118,6 @@ namespace asp_mvc.Controllers
 
         [Authorize]
         [ServiceFilter(typeof(ApiAntiforgeryTokenAuthorizationFilter))]
-        [HttpGet("get-friends")]
-        public async Task<ActionResult> GetFriends([FromQuery(Name = "userId")]int userId)
-        {
-            List<UserFriendship> friends = await _friendshipRepo.RetrieveFriends(userId);
-            return Ok(friends);
-        }
-
-        [Authorize]
-        [ServiceFilter(typeof(ApiAntiforgeryTokenAuthorizationFilter))]
         [HttpPost("add-friend")]
         public async Task<ActionResult> AddFriendRequest([FromBody]Friendship friendRequest)
         {

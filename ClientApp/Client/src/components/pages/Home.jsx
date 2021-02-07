@@ -18,7 +18,7 @@ export class Home extends Component {
                 </p>
                 <p>You can check out the source code here: <a href="https://github.com/TmasLee/asp_mvc">https://github.com/TmasLee/asp_mvc</a></p>
                 <p><i>**DISCLAIMER: This is still a WIP. There are a number of things that can be done in a smarter/cleaner way and a few things I'm still figuring out how to do with ASP.NET </i>😅. 
-                    Not to worry, I'm figuring it all out 💪.</p>
+                    Don't worry, I'm figuring it all out 💪.</p>
                 <br/><br/>
                 <Row className='row'>
                     <img src={sloth_astronaut} alt="Sloth Astronaut" width={300}/>

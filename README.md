@@ -3,10 +3,9 @@
 A small web app project built using C#, ASP.NET Core, and JS/React.
 
 ### **To-Do**:
-* Accepter email showing up in friendlist
-* After adding or deleting user - other user needs to refresh friend modal once to see updated list
+* After adding or deleting user - users needs to refresh friend modal once to see updated list
 * Update request modal?
-* Modal Rerenders (on delete, etc...) - Modal rerender when > 70 users kinda disorienting
+* User list modal error message
 
 * Add indexes --> Update queries? Why use composite index?
 
@@ -32,5 +31,5 @@ A small web app project built using C#, ASP.NET Core, and JS/React.
 * Add form submit - submit with Enter
 * ASP.NET Core request logging
 * Clean up endpoints / queries - Reuse endpoints/queries? Better way to pass currentUserId?
-* User modal error message
+* Modal Rerenders (on delete, etc...) - Modal rerender when > 70 users kinda disorienting
 * Socket for live friend/user list update

@@ -156,15 +156,23 @@ namespace asp_mvc.DAL
                 Status
             FROM
                 ""Friendship""
-                INNER JOIN
-                    ""User""
-                    ON ""User"".Id = ""Friendship"".FriendId
-            WHERE
+            INNER JOIN
+                ""User""
+                ON ""User"".Id =
                 (
-                    UserId = {userId}
-                    OR FriendId = {userId}
+                    CASE
+                        WHEN
+                            UserId = {userId}
+                            AND Status = 1
+                        THEN
+                            ""Friendship"".FriendId
+                        WHEN
+                            FriendId = {userId}
+                            AND Status = 1
+                        THEN
+                            ""Friendship"".UserId
+                    END
                 )
-                AND Status = 1
             ").ToListAsync();
         }
 
