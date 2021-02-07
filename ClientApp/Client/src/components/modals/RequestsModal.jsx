@@ -14,21 +14,21 @@ export class RequestsModal extends Component {
         }
     }
 
-    componentDidMount(){
-        axios.get(
+    async componentDidMount(){
+        await axios.get(
             '/user/get-requests', {
             params: {
                 currentUserId: this.props.currentUser.id
             }
         })
         .then((resp) => {
-            this.setState({ requests: resp.data})
+            this.setState({ requests: resp.data })
         })
         .catch((err) => console.error(err));
     }
 
-    acceptRequest = (userId, friendId) => {
-        axios.put(
+    acceptRequest = async (userId, friendId) => {
+        await axios.put(
             '/user/accept-request',
             {
                 userId: userId,
@@ -36,15 +36,14 @@ export class RequestsModal extends Component {
             }
         )
         .then(async (resp) => {
-            console.log(resp.data)
             this.setState({ requests: resp.data });
             this.props.setUser(await authService.retrieveUser());
         })
         .catch((err) => console.error(err));
     }
 
-    declineRequest = (userId, friendId) => {
-        axios.post(
+    declineRequest = async (userId, friendId) => {
+        await axios.post(
             '/user/decline-request',
             {
                 userId: userId,
@@ -59,7 +58,7 @@ export class RequestsModal extends Component {
 
     render(){
         const { requests } = this.state;
-        return(
+        return (
             <GenericModal {...this.props}>
                 <h6>Pending Requests</h6>
                 <ListGroup>

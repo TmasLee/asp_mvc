@@ -3,17 +3,14 @@
 A small web app project built using C#, ASP.NET Core, and JS/React.
 
 ### **To-Do**:
-* Update request modal?
-* User list modal error message
-
 * Add indexes --> Update queries? Why use composite index?
+* AirBnb JS style
+* MS or Google C# style
 
-* Generic repository - Parameterized table name - What is "persistence layer"?
 * About me - CV + Pic lol
 * Forgot password
 * See other user friends list
-* AirBnb JS style
-* MS or Google C# style
+* Generic repository - Parameterized table name - What is "persistence layer"?
 
 * Test xss / sql injection
 * Set up SSL
@@ -30,5 +27,4 @@ A small web app project built using C#, ASP.NET Core, and JS/React.
 * Add form submit - submit with Enter
 * ASP.NET Core request logging
 * Clean up endpoints / queries - Reuse endpoints/queries? Better way to pass currentUserId?
-* Modal Rerenders (on delete, etc...) - Modal rerender when > 70 users kinda disorienting
 * Socket for live friend/user list update

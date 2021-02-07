@@ -5,7 +5,8 @@ import { ListModalWithSearch } from '../generics';
 
 export class UsersListModal extends Component {
     state = {
-        users: []
+        users: [],
+        error: ''
     }
 
     async componentDidMount(){
@@ -18,15 +19,18 @@ export class UsersListModal extends Component {
         .catch((err)=>console.error(err));
     }
 
-    addFriend = (userId) => {
-        axios.post(
+    resetError = () => this.setState({ error: '' })
+
+    addFriend = async (userId) => {
+        await axios.post(
             '/user/add-friend',
             {
                 'userId': this.props.currentUser.id,
                 'friendId': userId
             },
         )
-        .catch((err) => console.error(err));
+        .then((resp) => this.resetError())
+        .catch((err) => this.setState({ error: err.response.data }));
     }
 
     filterFriendsAndSelf = () => {
@@ -38,12 +42,21 @@ export class UsersListModal extends Component {
 
     render(){
         let userList = this.state.users;
+        console.log('render');
+
+        if (!this.state.users.length){
+            return null;
+        }
 
         if (this.props.currentUser){
             userList = this.filterFriendsAndSelf();
         }
 
         let UsersModal = ListModalWithSearch(userList);
-        return (<UsersModal userAction={this.addFriend} {...this.props}/>);
+        return (
+            <UsersModal userAction={this.addFriend}
+                        error={this.state.error}
+                        {...this.props}/>
+        );
     }
 }

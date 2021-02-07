@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Button, Modal } from 'react-bootstrap';
-import { LoadingButton } from './LoadingButton';
+import { LoadingButton } from './';
 
-export class GenericModal extends Component {
+export default class GenericModal extends Component {
     render(){
         const { showModal, title, toggleModal, primaryButtonMsg = null, action = null, loading = false } = this.props;
         let primaryButton = action ? <Button variant="primary" onClick={action}>{primaryButtonMsg}</Button> : null

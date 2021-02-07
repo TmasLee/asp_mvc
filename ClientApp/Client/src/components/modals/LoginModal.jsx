@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 import { GenericModal, FormControlWithError } from '../generics';
-import { LoginMessage } from '../LoginMessage';
+import ModalMessage from '../generics/ModalMessage';
 import authService from '../../AuthenticationService';
 
-export class LoginModal extends Component{
+export default class LoginModal extends Component{
     state = {
         loading: false,
         email: "",
@@ -178,7 +178,7 @@ export class LoginModal extends Component{
                        action={action}
                        loading={loading}
                        {...this.props}>
-                <LoginMessage serverError={serverError} serverResponse={serverResponse} />
+                <ModalMessage error={serverError} response={serverResponse} />
                 <FormControlWithError required={true}
                                       type="text"
                                       name="email"

@@ -3,14 +3,19 @@ import { ListGroupItem, Button } from 'react-bootstrap';
 
 export class RequestLink extends Component {
     render(){
-        const { accept = null, decline = null } = this.props;
-        const { userId, friendId, email } = this.props.request;
+        const { request, accept = null, decline = null } = this.props;
 
-        let acceptBtn = (accept) ? <Button onClick={(e)=>accept(userId, friendId)}>Accept</Button> : null;
-        let declineBtn = (decline) ? <Button onClick={(e)=>decline(userId, friendId)}>Decline</Button> : null;
+        let acceptBtn = null;
+        let declineBtn = null;
+
+        if (accept && decline){
+            acceptBtn = <Button onClick={(e)=>accept(request.userId, request.friendId)}>Accept</Button>
+            declineBtn = <Button onClick={(e)=>decline(request.userId, request.friendId)}>Decline</Button>
+        }
+
         return (
             <ListGroupItem>
-                {email}
+                {request.email}
                 {acceptBtn}
                 {declineBtn}
             </ListGroupItem>

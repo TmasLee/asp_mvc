@@ -1,61 +1,57 @@
 import React, { Component } from 'react';
 import { ListGroup, ListGroupItem, Button, InputGroup, FormControl } from 'react-bootstrap';
 
-import { GenericModal } from '../generics';
+import { GenericModal, ModalMessage } from '../generics';
 
-// Unncessary HOC? Maybe merge function and component
-class ListModal extends Component {
-    render(){
-        const { title, currentUser, userAction, list } = this.props;
-
-        if (!currentUser){
-            return (
-                <GenericModal {...this.props}>
-                    {this.props.children}
-                    <br/>
-                    <ListGroup>
-                        {
-                            list.map((item, i) => {
-                                return (
-                                    <ListGroupItem key={i}>
-                                        <a href={`/user/${item.id}`} style={{textDecoration: 'none'}}>
-                                            {item.email}
-                                        </a>
-                                    </ListGroupItem>
-                                )
-                            })
-                        }
-                    </ListGroup>
-                </GenericModal>
-            )
-        }
-
-        return(
-            <GenericModal {...this.props}>
-                {this.props.children}
+export const ListModal = (props) => {
+    const { title, currentUser, userAction, list } = props;
+    if (!currentUser){
+        return (
+            <GenericModal {...props}>
+                {props.children}
                 <br/>
                 <ListGroup>
                     {
                         list.map((item, i) => {
-                            let actionBtn = (title === 'Friends') ? <Button variant='danger' onClick={(e)=>userAction(item.id)}>Delete</Button>
-                                                                : <Button onClick={(e)=>userAction(item.id)}>Add</Button>
                             return (
                                 <ListGroupItem key={i}>
                                     <a href={`/user/${item.id}`} style={{textDecoration: 'none'}}>
                                         {item.email}
                                     </a>
-                                    {actionBtn}
                                 </ListGroupItem>
                             )
                         })
                     }
                 </ListGroup>
             </GenericModal>
-        );
+        )
     }
+
+    return (
+        <GenericModal {...props}>
+            {props.children}
+            <br/>
+            <ListGroup>
+                {
+                    list.map((item, i) => {
+                        let actionBtn = (title === 'Friends') ? <Button variant='danger' onClick={(e)=>userAction(item.id)}>Delete</Button>
+                                                            : <Button onClick={(e)=>userAction(item.id)}>Add</Button>
+                        return (
+                            <ListGroupItem key={i}>
+                                <a href={`/user/${item.id}`} style={{textDecoration: 'none'}}>
+                                    {item.email}
+                                </a>
+                                {actionBtn}
+                            </ListGroupItem>
+                        )
+                    })
+                }
+            </ListGroup>
+        </GenericModal>
+    )
 }
 
-export default function ListModalWithSearch(list){
+export function ListModalWithSearch(list){
     return class extends Component {
         constructor(props){
             super(props);
@@ -79,8 +75,10 @@ export default function ListModalWithSearch(list){
         }
 
         render() {
+            const { error = '' } = this.props;
             return (
                 <ListModal list={this.state.queriedList} {...this.props}>
+                    <ModalMessage error={error}/>
                     <InputGroup>
                         <FormControl placeholder='Search an email'
                                     name='searchField'

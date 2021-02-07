@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { LoginModal } from './LoginModal';
+import LoginModal from './LoginModal';
 import { UsersListModal } from './UsersListModal';
 import { RequestsModal } from './RequestsModal';
 import { FriendListModal } from './FriendListModal';

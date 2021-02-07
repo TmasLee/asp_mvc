@@ -42,7 +42,7 @@ namespace asp_mvc.DAL.Managers
             List<UserFriendship> pendingRequest = await _friendshipRepo.RetrievePendingRequest(friendRequest);
             if (pendingRequest.Any())
             {
-                throw new FriendshipException("Pending request already exists!");
+                throw new FriendshipException("Pending request exists!");
             }
         }
     }
