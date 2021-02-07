@@ -3,25 +3,22 @@
 A small web app project built using C#, ASP.NET Core, and JS/React.
 
 ### **To-Do**:
-* Handle DB duplicate key constraint exception
-* Fix add friend - how am i adding myself lol - might need to implement actionUser - Pending section in request modal
-* Clean up endpoints - Smarter requests for friends/requests (there's probably a better way to pass currentUserId)
+* Check pending request when sending request
+* Accepter email showing up in friendlist
+* After adding or deleting user - other user needs to refresh friend modal once to see updated list
+* Update request modal?
+* Modal Rerenders (on delete, etc...) - Modal rerender when > 70 users kinda disorienting
+
 * Add indexes --> Update queries? Why use composite index?
 
 * Generic repository - Parameterized table name - What is "persistence layer"?
-* About me - Pic lol
-
-* Format SQL in code
+* About me - CV + Pic lol
+* Forgot password
+* See other user friends list
 * AirBnb JS style
 * MS or Google C# style
 
-* Test another user in incognito
-* Forgot password
-* See other user friends
-
 * Test xss / sql injection
-* Web server logging
-
 * Set up SSL
 * Dockerize
 * Set up prod environment / db connection string / salt / token payload
@@ -34,4 +31,7 @@ A small web app project built using C#, ASP.NET Core, and JS/React.
 * Use functional components wherever I can
 * Site icon favicon?
 * Add form submit - submit with Enter
-* Modal rerender when > 70 users kinda disorienting
+* ASP.NET Core request logging
+* Clean up endpoints / queries - Reuse endpoints/queries? Better way to pass currentUserId?
+* Handle DB exceptions and send appropriate message to front end
+* Socket for live friend/user list update

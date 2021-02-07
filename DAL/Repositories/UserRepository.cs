@@ -19,22 +19,46 @@ namespace asp_mvc.DAL
 
         public async override Task Create(User user)
         {
-            await context.User.FromSqlInterpolated($"INSERT INTO \"User\" (Email, FirstName, LastName, Password) OUTPUT INSERTED.* VALUES ({user.Email}, {user.FirstName}, {user.LastName}, {user.Password})").ToListAsync();
+            await context.User.FromSqlInterpolated($@"
+            INSERT INTO
+                ""User"" (Email, FirstName, LastName, Password) OUTPUT INSERTED.* 
+            VALUES
+                (
+                    {user.Email}, {user.FirstName}, {user.LastName}, {user.Password}
+                )
+            ").ToListAsync();
         }
 
         public async Task<User> RetrieveUserByEmail(string email)
         {
-            return await context.User.FromSqlInterpolated($"SELECT * FROM \"User\" WHERE email = {email}").FirstOrDefaultAsync<User>();
+            return await context.User.FromSqlInterpolated($@"
+            SELECT
+                *
+            FROM
+                ""User""
+                WHERE
+                    email = {email}
+            ").FirstOrDefaultAsync<User>();
         }
 
         public async override Task Update(User user)
         {
-            await context.User.FromSqlInterpolated($"UPDATE \"User\" SET ").FirstAsync();
+            await context.User.FromSqlInterpolated($@"
+            UPDATE
+                ""User""
+            SET
+            ").FirstAsync();
         }
 
         public async Task DeleteByEmail(string email)
         {
-            await context.User.FromSqlInterpolated($"DELETE FROM \"User\" OUTPUT DELETED.* WHERE email = {email}").ToListAsync();
+            await context.User.FromSqlInterpolated($@"
+            DELETE
+            FROM
+                ""User"" OUTPUT DELETED.*
+            WHERE
+                email = {email}
+            ").ToListAsync();
         }
     }
 }

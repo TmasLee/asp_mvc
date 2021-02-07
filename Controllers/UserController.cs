@@ -60,7 +60,6 @@ namespace asp_mvc.Controllers
             {
                 return BadRequest(e.Message);
             }
-
             return Ok();
         }
 
@@ -91,7 +90,6 @@ namespace asp_mvc.Controllers
             User user = await _userRepo.RetrieveUserByEmail(email);
             List<UserFriendship> friends = await _friendshipRepo.RetrieveFriends(user.Id);
             UserDto userDto = user.CurrentUserToDto(friends);
-
             return Ok(userDto);
         }
 
@@ -124,7 +122,6 @@ namespace asp_mvc.Controllers
         public async Task<ActionResult> GetFriends([FromQuery(Name = "userId")]int userId)
         {
             List<UserFriendship> friends = await _friendshipRepo.RetrieveFriends(userId);
-
             return Ok(friends);
         }
 
@@ -133,8 +130,14 @@ namespace asp_mvc.Controllers
         [HttpPost("add-friend")]
         public async Task<ActionResult> AddFriendRequest([FromBody]Friendship friendRequest)
         {
-            await _friendshipRepo.Create(friendRequest);
+            bool pendingRequestExists = await _friendshipMgr.PendingRequestExists(friendRequest);
 
+            if (pendingRequestExists)
+            {
+                return BadRequest();
+            }
+
+            await _friendshipRepo.Create(friendRequest);
             return Ok();
         }
 
@@ -145,7 +148,6 @@ namespace asp_mvc.Controllers
         {
             await _friendshipRepo.DeleteById(friendship.FriendId);
             List<UserFriendship> friends = await _friendshipRepo.RetrieveFriends(friendship.UserId);
-
             return Ok(friends);
         }
 
@@ -154,9 +156,8 @@ namespace asp_mvc.Controllers
         [HttpGet("get-requests")]
         public async Task<ActionResult> GetRequests([FromQuery(Name = "currentUserId")]int currentUserId)
         {
-            List<UserFriendship> pendingRequests = await _friendshipRepo.RetrievePendingRequests(currentUserId);
-
-            return Ok(pendingRequests);
+            var requests = await _friendshipMgr.GetPendingRequests(currentUserId);
+            return Ok(requests);
         }
 
         [Authorize]
@@ -165,9 +166,8 @@ namespace asp_mvc.Controllers
         public async Task<ActionResult> AcceptRequest([FromBody]Friendship friendRequest)
         {
             await _friendshipRepo.Update(friendRequest);
-            List<UserFriendship> pendingRequests = await _friendshipRepo.RetrievePendingRequests(friendRequest.UserId);
-
-            return Ok(pendingRequests);
+            var requests = await _friendshipMgr.GetPendingRequests(friendRequest.UserId);
+            return Ok(requests);
         }
 
         [Authorize]
@@ -176,10 +176,8 @@ namespace asp_mvc.Controllers
         public async Task<ActionResult> DeclineRequest([FromBody]Friendship friendRequest)
         {
             await _friendshipRepo.DeleteById(friendRequest.FriendId);
-            List<UserFriendship> pendingRequests = await _friendshipRepo.RetrievePendingRequests(friendRequest.UserId);
-
-            return Ok(pendingRequests);
+            var requests = await _friendshipMgr.GetPendingRequests(friendRequest.UserId);
+            return Ok(requests);
         }
-
     }
 }

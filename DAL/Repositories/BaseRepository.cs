@@ -20,13 +20,25 @@ namespace asp_mvc.DAL
 
         public async Task<T> RetrieveById(int id)
         {
-            string q = $"SELECT * FROM \"{tableName}\" WHERE Id = {id}";
+            string q = $@"
+            SELECT
+                *
+            FROM
+                ""{tableName}""
+            WHERE
+                Id = {id}
+            ";
             return await model.FromSqlRaw(q).FirstOrDefaultAsync<T>();
         }
 
         public async Task<List<T>> RetrieveAll()
         {
-            string q = $"SELECT * FROM \"{tableName}\"";
+            string q = $@"
+            SELECT
+                *
+            FROM
+                ""{tableName}""
+            ";
             return await model.FromSqlRaw(q).ToListAsync<T>();
         }
 
@@ -35,7 +47,13 @@ namespace asp_mvc.DAL
 
         public virtual async Task DeleteById(int id)
         {
-            string q = $"DELETE FROM \"{tableName}\" OUTPUT DELETED.* WHERE Id = {id}";
+            string q = $@"
+            DELETE
+            FROM
+                ""{tableName}"" OUTPUT DELETED.*
+            WHERE
+                Id = {id}
+            ";
             await model.FromSqlRaw(q).FirstAsync();
         }
 

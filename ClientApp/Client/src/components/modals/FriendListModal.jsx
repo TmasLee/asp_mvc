@@ -9,8 +9,9 @@ export class FriendListModal extends Component {
         users: []
     }
 
-    componentDidMount(){
+    async componentDidMount(){
         const { currentUser } = this.props;
+        this.props.setUser(await authService.retrieveUser());
         this.setState({
             users: currentUser.friends
         });

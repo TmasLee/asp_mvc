@@ -8,7 +8,10 @@ import authService from '../../AuthenticationService';
 
 export class RequestsModal extends Component {
     state = {
-        requests: []
+        requests: {
+            pendingRequests: [],
+            pendingSentRequests: []
+        }
     }
 
     componentDidMount(){
@@ -33,6 +36,7 @@ export class RequestsModal extends Component {
             }
         )
         .then(async (resp) => {
+            console.log(resp.data)
             this.setState({ requests: resp.data });
             this.props.setUser(await authService.retrieveUser());
         })
@@ -54,14 +58,26 @@ export class RequestsModal extends Component {
     }
 
     render(){
+        const { requests } = this.state;
         return(
             <GenericModal {...this.props}>
+                <h6>Pending Requests</h6>
                 <ListGroup>
                     {
-                        this.state.requests.map((request, i) => {
+                        requests.pendingRequests.map((request, i) => {
                             return <RequestLink key={i}
                                                 accept={this.acceptRequest}
                                                 decline={this.declineRequest}
+                                                request={request}/>
+                        })
+                    }
+                </ListGroup>
+                <br/>
+                <h6>Pending Sent Requests</h6>
+                <ListGroup>
+                    {
+                        requests.pendingSentRequests.map((request, i) => {
+                            return <RequestLink key ={i}
                                                 request={request}/>
                         })
                     }

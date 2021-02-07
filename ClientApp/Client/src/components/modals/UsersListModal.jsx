@@ -18,12 +18,12 @@ export class UsersListModal extends Component {
         .catch((err)=>console.error(err));
     }
 
-    addFriend = (friendId) => {
+    addFriend = (userId) => {
         axios.post(
             '/user/add-friend',
             {
                 'userId': this.props.currentUser.id,
-                'friendId': friendId
+                'friendId': userId
             },
         )
         .catch((err) => console.error(err));

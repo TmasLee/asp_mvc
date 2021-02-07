@@ -59,8 +59,8 @@ namespace asp_mvc.Models
 
         public static string GenerateEmail()
         {
-            string domain = "@" + RandomString(3) + ".com";
-            string email = RandomString(3) + domain;
+            string domain = "@" + RandomString(5) + ".com";
+            string email = RandomString(5) + domain;
             return email;
         }
 
