@@ -130,14 +130,14 @@ namespace asp_mvc.DAL
                     ON ""User"".Id = ""Friendship"".UserId
             WHERE
                 (
-                    FriendId = {friendRequest.FriendId}
-                    AND UserId = {friendRequest.UserId}
+                    UserId = {friendRequest.UserId}
+                    AND FriendId = {friendRequest.FriendId}
                     AND Status = 0
                 )
                 OR
                 (
-                    UserId = {friendRequest.UserId}
-                    AND FriendId = {friendRequest.FriendId}
+                    UserId = {friendRequest.FriendId}
+                    AND FriendId = {friendRequest.UserId}
                     AND Status = 0
                 )
             ").ToListAsync();

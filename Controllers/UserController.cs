@@ -130,11 +130,13 @@ namespace asp_mvc.Controllers
         [HttpPost("add-friend")]
         public async Task<ActionResult> AddFriendRequest([FromBody]Friendship friendRequest)
         {
-            bool pendingRequestExists = await _friendshipMgr.PendingRequestExists(friendRequest);
-
-            if (pendingRequestExists)
+            try
             {
-                return BadRequest();
+                await _friendshipMgr.CheckForPendingRequest(friendRequest);
+            }
+            catch (FriendshipException e)
+            {
+                return BadRequest(e.Message);
             }
 
             await _friendshipRepo.Create(friendRequest);

@@ -3,7 +3,6 @@
 A small web app project built using C#, ASP.NET Core, and JS/React.
 
 ### **To-Do**:
-* Check pending request when sending request
 * Accepter email showing up in friendlist
 * After adding or deleting user - other user needs to refresh friend modal once to see updated list
 * Update request modal?
@@ -33,5 +32,5 @@ A small web app project built using C#, ASP.NET Core, and JS/React.
 * Add form submit - submit with Enter
 * ASP.NET Core request logging
 * Clean up endpoints / queries - Reuse endpoints/queries? Better way to pass currentUserId?
-* Handle DB exceptions and send appropriate message to front end
+* User modal error message
 * Socket for live friend/user list update

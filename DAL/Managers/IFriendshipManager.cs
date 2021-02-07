@@ -8,6 +8,6 @@ namespace asp_mvc.DAL.Managers
     public interface IFriendshipManager
     {
         Task<Dictionary<string, List<UserFriendship>>> GetPendingRequests(int userId);
-        Task<bool> PendingRequestExists(Friendship friendRequest);
+        Task CheckForPendingRequest(Friendship friendRequest);
     }
 }

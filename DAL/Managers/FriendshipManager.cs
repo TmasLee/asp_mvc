@@ -7,6 +7,15 @@ using asp_mvc.Models;
 
 namespace asp_mvc.DAL.Managers
 {
+    public class FriendshipException : Exception
+    {
+        public FriendshipException() : base() { }
+        public FriendshipException(string message) : base(message) { }
+        public FriendshipException(string message, Exception inner) : base(message, inner) { }
+        protected FriendshipException(System.Runtime.Serialization.SerializationInfo info,
+            System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
+    }
+
     public class FriendshipManager : IFriendshipManager
     {
         private readonly IFriendshipRepository _friendshipRepo;
@@ -28,14 +37,13 @@ namespace asp_mvc.DAL.Managers
             return requests;
         }
 
-        public async Task<bool> PendingRequestExists(Friendship friendRequest)
+        public async Task CheckForPendingRequest(Friendship friendRequest)
         {
             List<UserFriendship> pendingRequest = await _friendshipRepo.RetrievePendingRequest(friendRequest);
             if (pendingRequest.Any())
             {
-                return true;
+                throw new FriendshipException("Pending request already exists!");
             }
-            return false;
         }
     }
 }
