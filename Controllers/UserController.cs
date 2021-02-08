@@ -158,13 +158,17 @@ namespace asp_mvc.Controllers
             return Ok(requests);
         }
 
+
+        /*
+        Request recipient user is friendId when accepting or declining requests
+        */
         [Authorize]
         [ServiceFilter(typeof(ApiAntiforgeryTokenAuthorizationFilter))]
         [HttpPut("accept-request")]
         public async Task<ActionResult> AcceptRequest([FromBody]Friendship friendRequest)
         {
             await _friendshipRepo.Update(friendRequest);
-            var requests = await _friendshipMgr.GetPendingRequests(friendRequest.UserId);
+            var requests = await _friendshipMgr.GetPendingRequests(friendRequest.FriendId);
             return Ok(requests);
         }
 
@@ -174,7 +178,7 @@ namespace asp_mvc.Controllers
         public async Task<ActionResult> DeclineRequest([FromBody]Friendship friendRequest)
         {
             await _friendshipRepo.DeleteById(friendRequest.FriendId);
-            var requests = await _friendshipMgr.GetPendingRequests(friendRequest.UserId);
+            var requests = await _friendshipMgr.GetPendingRequests(friendRequest.FriendId);
             return Ok(requests);
         }
     }
