@@ -18,9 +18,8 @@ A small web app project built using C#, ASP.NET Core, and JS/React.
 * On initial site request, return signed in view instead of separate login request
 * Logout redirect / Log out + Unauthorized message
 * ASP.NET Core request logging
-* Clean up endpoints / queries - Reuse endpoints/queries? Better way to pass currentUserId?
+* Reuse endpoints/queries? Reduce # of trips to DB? Better way to pass currentUserId?
 * Socket for live friend/user list update
 * Clean up LoginModal + GenericModal
 * Clean up passed down props - a lot of unnecessary props passed
-* Can optimize queries - reduce # of trips to DB
 * Better way to update user data instead of repeated setUser/authService.retrieveUser calls

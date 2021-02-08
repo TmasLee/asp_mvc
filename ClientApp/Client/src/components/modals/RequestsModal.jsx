@@ -51,7 +51,7 @@ export class RequestsModal extends Component {
                 friendId: friendId
             }
         )
-        .then((resp) => {
+        .then(async (resp) => {
             this.setState({ requests: resp.data });
             this.props.setUser(await authService.retrieveUser());
         })
