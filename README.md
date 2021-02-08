@@ -3,7 +3,6 @@
 A small web app project built using C#, ASP.NET Core, and JS/React.
 
 ### **To-Do**:
-* Requests badge - update # after accept/decline requests
 * See other user friends list
 
 * About me - CV + Pic lol
@@ -22,3 +21,6 @@ A small web app project built using C#, ASP.NET Core, and JS/React.
 * Clean up endpoints / queries - Reuse endpoints/queries? Better way to pass currentUserId?
 * Socket for live friend/user list update
 * Clean up LoginModal + GenericModal
+* Clean up passed down props - a lot of unnecessary props passed
+* Can optimize queries - reduce # of trips to DB
+* Better way to update user data instead of repeated setUser/authService.retrieveUser calls

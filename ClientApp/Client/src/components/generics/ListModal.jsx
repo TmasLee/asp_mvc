@@ -34,8 +34,9 @@ export function ListModal(props){
             <ListGroup>
                 {
                     list.map((item, i) => {
-                        let actionBtn = (title === 'Friends') ? <Button variant='danger' onClick={(e)=>userAction(item.id)}>Delete</Button>
-                                                            : <Button onClick={(e)=>userAction(item.id)}>Add</Button>
+                        let actionBtn = (title === 'Friends') ?
+                                        <Button variant='danger' onClick={(e)=>userAction(item.id)}>Delete</Button>
+                                        : <Button onClick={(e)=>userAction(item.id)}>Add</Button>
                         return (
                             <ListGroupItem key={i}>
                                 <a href={`/user/${item.id}`} style={{textDecoration: 'none'}}>

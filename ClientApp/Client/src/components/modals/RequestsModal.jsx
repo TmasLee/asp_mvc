@@ -15,6 +15,7 @@ export class RequestsModal extends Component {
     }
 
     async componentDidMount(){
+        this.props.setUser(await authService.retrieveUser());
         await axios.get(
             '/user/get-requests', {
             params: {
@@ -52,6 +53,7 @@ export class RequestsModal extends Component {
         )
         .then((resp) => {
             this.setState({ requests: resp.data });
+            this.props.setUser(await authService.retrieveUser());
         })
         .catch((err) => console.error(err));
     }

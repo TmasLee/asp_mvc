@@ -88,8 +88,13 @@ namespace asp_mvc.Controllers
         {
             var email = User.Claims.Where(x => x.Type == ClaimTypes.Email).FirstOrDefault()?.Value;
             User user = await _userRepo.RetrieveUserByEmail(email);
+
             List<UserFriendship> friends = await _friendshipRepo.RetrieveFriends(user.Id);
+            var requests = await _friendshipRepo.RetrievePendingRequests(user.Id);
+
             UserDto userDto = user.CurrentUserToDto(friends);
+            userDto.RequestCount = requests.Count;
+
             return Ok(userDto);
         }
 

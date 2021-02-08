@@ -70,7 +70,7 @@ namespace asp_mvc.DAL
             ").ToListAsync();
         }
 
-        public async Task<List<UserFriendship>> RetrievePendingRequests(int currentUserId)
+        public async Task<List<UserFriendship>> RetrievePendingRequests(int userId)
         {
             return await context.UserFriendship.FromSqlInterpolated($@"
             SELECT
@@ -86,12 +86,12 @@ namespace asp_mvc.DAL
                 INNER JOIN
                     ""User""
                     ON ""User"".Id = ""Friendship"".UserId
-            WHERE FriendId = {currentUserId}
+            WHERE FriendId = {userId}
                 AND Status = 0
             ").ToListAsync();
         }
 
-        public async Task<List<UserFriendship>> RetrievePendingSentRequests(int currentUserId)
+        public async Task<List<UserFriendship>> RetrievePendingSentRequests(int userId)
         {
             return await context.UserFriendship.FromSqlInterpolated($@"
             SELECT
@@ -107,7 +107,7 @@ namespace asp_mvc.DAL
                 INNER JOIN
                     ""User""
                     ON ""User"".Id = ""Friendship"".FriendId
-            WHERE UserId = {currentUserId}
+            WHERE UserId = {userId}
                 AND Status = 0
             ").ToListAsync();
         }
