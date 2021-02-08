@@ -77,13 +77,14 @@ export function ListModalWithSearch(list){
         render() {
             const { error = '' } = this.props;
             return (
-                <ListModal list={this.state.queriedList} {...this.props}>
+                <ListModal list={this.state.queriedList} {...this.props} searchFunc={this.searchUsers}>
                     <ModalMessage error={error}/>
                     <InputGroup>
-                        <FormControl placeholder='Search an email'
-                                    name='searchField'
-                                    onChange={this.handleInputOnChange}
-                                    />
+                        <FormControl
+                            placeholder='Search an email'
+                            name='searchField'
+                            onChange={this.handleInputOnChange}
+                        />
                         <InputGroup.Append>
                             <Button onClick={this.searchUsers}>Search</Button>
                         </InputGroup.Append>
