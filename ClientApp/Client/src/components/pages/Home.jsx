@@ -2,6 +2,7 @@ import React from 'react';
 import { Row } from 'react-bootstrap';
 import sloth_astronaut from '../../../../assets/sloth_astronaut.jpg';
 import elon from '../../../../assets/elon.jpg';
+import sloth_gif from '../../../../assets/so_tired.gif';
 
 export function Home(){
     return (
@@ -22,7 +23,12 @@ export function Home(){
             <Row className='row'>
                 <img src={sloth_astronaut} alt="Sloth Astronaut" width={300}/>
             </Row>
-            <Row className='row' style={{marginTop: '35vh'}}>
+            <br/>
+            <br/>
+            <Row className='row'>
+                <img src={sloth_gif} alt="Sloth Gif" width={500}/>
+            </Row>
+            <Row className='row' style={{marginTop: '30vh'}}>
                 <img src={elon} alt="Elon Musk" width={300}/>
             </Row>
         </div>
