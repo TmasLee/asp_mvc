@@ -6,7 +6,7 @@ import sloth_gif from '../../../../assets/so_tired.gif';
 
 export function Home(){
     return (
-        <div style={{height: '110vh'}}>
+        <div style={{height: '105vh'}}>
             <h1>Welcome to SlothBook</h1>
             <br/>
             <img/>
@@ -20,15 +20,15 @@ export function Home(){
             <p><i>**DISCLAIMER: This is still a WIP. There are a number of things that can be done in a smarter/cleaner way and a few things I'm still figuring out how to do with ASP.NET </i>😅. 
                 Don't worry, I'm figuring it all out 💪.</p>
             <br/><br/>
-            <Row className='row'>
+            {/* <Row className='row'>
                 <img src={sloth_astronaut} alt="Sloth Astronaut" width={300}/>
             </Row>
-            <br/>
+            <br/> */}
             <br/>
             <Row className='row'>
                 <img src={sloth_gif} alt="Sloth Gif" width={500}/>
             </Row>
-            <Row className='row' style={{marginTop: '30vh'}}>
+            <Row className='row' style={{marginTop: '40vh'}}>
                 <img src={elon} alt="Elon Musk" width={300}/>
             </Row>
         </div>

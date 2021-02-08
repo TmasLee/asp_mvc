@@ -107,6 +107,15 @@ namespace asp_mvc
                 RequestPath = "/dist"
             });
 
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                    Path.Combine(env.ContentRootPath, "ClientApp/assets")
+                ),
+                RequestPath = "/assets"
+            });
+
+
             app.UseRouting();
 
             app.UseAuthentication();

@@ -3,8 +3,7 @@
 A small web app project built using C#, ASP.NET Core, and JS/React.
 
 ### **To-Do**:
-* New # of requests badge
-* Site icon favicon?
+* Requests badge - update # after accept/decline requests
 * See other user friends list
 
 * About me - CV + Pic lol
