@@ -42,7 +42,6 @@ export class UsersListModal extends Component {
 
     render(){
         let userList = this.state.users;
-        console.log('render');
 
         if (!this.state.users.length){
             return null;
@@ -54,9 +53,11 @@ export class UsersListModal extends Component {
 
         let UsersModal = ListModalWithSearch(userList);
         return (
-            <UsersModal userAction={this.addFriend}
-                        error={this.state.error}
-                        {...this.props}/>
+            <UsersModal 
+                userAction={this.addFriend}
+                error={this.state.error}
+                {...this.props}
+            />
         );
     }
 }

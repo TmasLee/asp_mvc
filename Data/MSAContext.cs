@@ -21,8 +21,6 @@ namespace asp_mvc.Data
                             entity.UserId,
                             entity.FriendId
                         });
-            // Constraint FK_Friendship_User_FriendId foreign key (user) references User.Id
-            // Constraint FK_Friendship_User_UserId foreign key (friend) references User.Id
             modelBuilder.Entity<Friendship>()
                         .HasOne(Friendship => Friendship.User)
                         .WithMany(User => User.Friends)
@@ -30,7 +28,6 @@ namespace asp_mvc.Data
             modelBuilder.Entity<Friendship>()
                         .Property(Friendship => Friendship.Status)
                         .HasDefaultValue(0);
-            // Composite Index? - key(friend, user) ---> index
 
             modelBuilder.Entity<UserFriendship>()
                         .HasNoKey();

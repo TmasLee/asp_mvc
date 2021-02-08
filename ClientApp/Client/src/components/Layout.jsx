@@ -10,7 +10,7 @@ export class Layout extends Component {
         modalType: ''
     }
 
-    toggleModal = (modalType='') => {
+    toggleModal = (modalType = '') => {
         this.setState({
             showModal: !this.state.showModal,
             modalType: modalType
@@ -18,16 +18,20 @@ export class Layout extends Component {
     }
 
     render () {
-        const {handleLogout, setUser, currentUser} = this.props;
+        const { handleLogout, setUser, currentUser } = this.props;
         return (
             <div>
-                <NavMenu toggleModal={this.toggleModal}
-                         logout={handleLogout}
-                         currentUser={currentUser}/>
-                <ModalSwitch {...this.state}
-                            currentUser={currentUser}
-                            setUser={setUser}
-                            toggleModal={this.toggleModal}/>
+                <NavMenu
+                    toggleModal={this.toggleModal}
+                    logout={handleLogout}
+                    currentUser={currentUser}
+                />
+                <ModalSwitch
+                    {...this.state}
+                    currentUser={currentUser}
+                    setUser={setUser}
+                    toggleModal={this.toggleModal}
+                />
                 <Container>
                     {this.props.children}
                 </Container>

@@ -3,7 +3,7 @@ import { ListGroup, ListGroupItem, Button, InputGroup, FormControl } from 'react
 
 import { GenericModal, ModalMessage } from '../generics';
 
-export const ListModal = (props) => {
+export function ListModal(props){
     const { title, currentUser, userAction, list } = props;
     if (!currentUser){
         return (

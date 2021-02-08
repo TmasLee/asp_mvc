@@ -3,8 +3,6 @@
 A small web app project built using C#, ASP.NET Core, and JS/React.
 
 ### **To-Do**:
-* Add indexes --> Update queries? Why use composite index?
-* AirBnb JS style
 * MS or Google C# style
 
 * About me - CV + Pic lol

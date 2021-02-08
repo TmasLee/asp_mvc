@@ -1,7 +1,7 @@
 import React from 'react';
 import { Spinner, Fade } from 'react-bootstrap';
 
-export const Loading = () => {
+export function Loading(){
     return (
         <div>
             <Spinner animation="border" role="status">

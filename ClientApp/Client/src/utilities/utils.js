@@ -1,4 +1,3 @@
-
 export function getCsrfToken() {
     let cookies = document.cookie.split(';');
 

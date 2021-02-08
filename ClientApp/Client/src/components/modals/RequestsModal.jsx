@@ -64,10 +64,12 @@ export class RequestsModal extends Component {
                 <ListGroup>
                     {
                         requests.pendingRequests.map((request, i) => {
-                            return <RequestLink key={i}
-                                                accept={this.acceptRequest}
-                                                decline={this.declineRequest}
-                                                request={request}/>
+                            return <RequestLink
+                                        key={i}
+                                        accept={this.acceptRequest}
+                                        decline={this.declineRequest}
+                                        request={request}
+                                    />
                         })
                     }
                 </ListGroup>
@@ -76,8 +78,7 @@ export class RequestsModal extends Component {
                 <ListGroup>
                     {
                         requests.pendingSentRequests.map((request, i) => {
-                            return <RequestLink key ={i}
-                                                request={request}/>
+                            return <RequestLink key ={i} request={request}/>
                         })
                     }
                 </ListGroup>
