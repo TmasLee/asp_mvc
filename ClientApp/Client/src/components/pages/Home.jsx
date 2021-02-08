@@ -11,7 +11,7 @@ export function Home(){
             <br/>
             <img/>
             <p>Hey friend.</p>
-            <p>This is a small project built with React and a customized backend combining ASP.NET Core MVC and WebApi that implements hand-coded user management and web security for some C# and ASP.NET Core practice.</p>
+            <p>This is a small experimental project built with React and a customized backend combining ASP.NET Core MVC and WebApi that implements hand-coded user management and web security for some C# and ASP.NET Core practice.</p>
             <p>
                 While using .NET template projects and other libraries is practical, I figured I'd get a better learning experience by trying my hand at "rebuilding the wheel" (mostly) from scratch.
                 Also, some custom configurations (like ripping out Razor Pages 🤮) are a bit easier to set up this way.

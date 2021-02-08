@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { Button, OverlayTrigger, Tooltip, Form } from 'react-bootstrap';
 
-import { GenericModal, FormControlWithError } from '../generics';
+import { GenericModal, FormControlWithError, LoadingButton } from '../generics';
 import { ModalMessage } from '../generics/ModalMessage';
 import authService from '../../AuthenticationService';
 
@@ -42,7 +42,7 @@ export default class LoginModal extends Component{
         });
     }
 
-    autoToggle = (time=700) => {
+    autoToggle = (time = 700) => {
         setTimeout(() => {
             this.resetAndToggleModal();
         }, time);
@@ -163,86 +163,97 @@ export default class LoginModal extends Component{
             </div>
         )
         let title = "Login";
-        let primaryButtonMsg = "Login";
+        let actionButtonMsg = "Login";
         let action = this.validateAndLogin;
 
         if (newUser){
             title = "Sign Up";
-            primaryButtonMsg = "Register";
+            actionButtonMsg = "Register"
             action = this.validateAndSignUp;
         }
 
+        let buttons = (
+            <div>
+                <Button type="submit">{actionButtonMsg}</Button>
+                {' '}
+                <Button variant="secondary" onClick={this.resetAndToggleModal}>Cancel</Button>
+            </div>
+            
+            )
+
         if (loading){
             userOptions = null;
+            buttons = <LoadingButton />;
         }
 
         return (
             <GenericModal
                 title={title}
-                primaryButtonMsg={primaryButtonMsg}
                 toggleModal={this.resetAndToggleModal}
-                action={action}
                 loading={loading}
-                {...this.props}
+                showModal={this.props.showModal}
             >
                 <ModalMessage error={serverError} response={serverResponse} />
-                <FormControlWithError
-                    required={true}
-                    type="text"
-                    name="email"
-                    value={email}
-                    onChange={this.handleInputOnChange}
-                    placeholder="Email"
-                    error={errors.email}
-                />
-                {
-                    newUser ? (
-                        <div>
+                <Form onSubmit={(e)=>{e.preventDefault(); action()}}>
+                    <FormControlWithError
+                        required={true}
+                        type="text"
+                        name="email"
+                        value={email}
+                        onChange={this.handleInputOnChange}
+                        placeholder="Email"
+                        error={errors.email}
+                    />
+                    {
+                        newUser ? (
+                            <div>
+                                <FormControlWithError
+                                    required={true}
+                                    type="text"
+                                    name="firstName"
+                                    value={firstName}
+                                    onChange={this.handleInputOnChange}
+                                    placeholder="First Name"
+                                    error={errors.firstName}
+                                />
+                                <FormControlWithError
+                                    required={true}
+                                    type="text"
+                                    name="lastName"
+                                    value={lastName}
+                                    onChange={this.handleInputOnChange}
+                                    placeholder="Last Name"
+                                    error={errors.lastName}
+                                />
+                            </div>
+                        )
+                        : null
+                    }
+                    <FormControlWithError
+                        required={true}
+                        type="password"
+                        name="password"
+                        value={password}
+                        onChange={this.handleInputOnChange}
+                        placeholder="Password"
+                        error={errors.password}
+                    />
+                    {
+                        newUser ? (
                             <FormControlWithError
                                 required={true}
-                                type="text"
-                                name="firstName"
-                                value={firstName}
+                                type="password"
+                                name="reenteredPassword"
+                                value={reenteredPassword}
                                 onChange={this.handleInputOnChange}
-                                placeholder="First Name"
-                                error={errors.firstName}
+                                placeholder="Re-enter Password"
+                                error={errors.reenteredPassword}
                             />
-                            <FormControlWithError
-                                required={true}
-                                type="text"
-                                name="lastName"
-                                value={lastName}
-                                onChange={this.handleInputOnChange}
-                                placeholder="Last Name"
-                                error={errors.lastName}
-                            />
-                        </div>
-                    )
-                    : null
-                }
-                <FormControlWithError
-                    required={true}
-                    type="password"
-                    name="password"
-                    value={password}
-                    onChange={this.handleInputOnChange}
-                    placeholder="Password"
-                    error={errors.password}
-                />
-                {
-                    newUser ? (
-                        <FormControlWithError
-                            required={true}
-                            type="password"
-                            name="reenteredPassword"
-                            value={reenteredPassword}
-                            onChange={this.handleInputOnChange}
-                            placeholder="Re-enter Password"
-                            error={errors.reenteredPassword}
-                        />
-                    )
-                    : userOptions
-                }
+                        )
+                        : userOptions
+                    }
+                    {buttons}
+                </Form>
             </GenericModal>
         )
     }

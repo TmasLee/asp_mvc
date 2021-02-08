@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ListGroup, ListGroupItem, Button, InputGroup, FormControl } from 'react-bootstrap';
+import { ListGroup, ListGroupItem, Button, InputGroup, FormControl, Form } from 'react-bootstrap';
 
 import { GenericModal, ModalMessage } from '../generics';
 
@@ -78,18 +78,20 @@ export function ListModalWithSearch(list){
         render() {
             const { error = '' } = this.props;
             return (
-                <ListModal list={this.state.queriedList} {...this.props} searchFunc={this.searchUsers}>
+                <ListModal list={this.state.queriedList} {...this.props}>
                     <ModalMessage error={error}/>
-                    <InputGroup>
-                        <FormControl
-                            placeholder='Search an email'
-                            name='searchField'
-                            onChange={this.handleInputOnChange}
-                        />
-                        <InputGroup.Append>
-                            <Button onClick={this.searchUsers}>Search</Button>
-                        </InputGroup.Append>
-                    </InputGroup>
+                    <Form onSubmit={(e)=>{e.preventDefault(); this.searchUsers()}}>
+                        <InputGroup>
+                            <FormControl
+                                placeholder='Search an email'
+                                name='searchField'
+                                onChange={this.handleInputOnChange}
+                            />
+                            <InputGroup.Append>
+                                <Button type="submit">Search</Button>
+                            </InputGroup.Append>
+                        </InputGroup>
+                    </Form>
                 </ListModal>
             )
         }
