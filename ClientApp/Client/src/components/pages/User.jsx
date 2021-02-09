@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
-import { Container, Row } from 'react-bootstrap';
+import { Container, Row, Button } from 'react-bootstrap';
 import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 
+import FriendListModal from '../modals/FriendListModal';
+import ListModal from '../generics';
 import '../../../../css/UserPage.css';
 import sloth from '../../../../assets/handsome_sloth.png';
 
 class User extends Component {
     state = {
-        user: null
+        user: null,
+        toggleModal: false
     }
 
     componentDidMount(){
@@ -34,7 +37,10 @@ class User extends Component {
                         {user.email}
                         <br/>
                         {user.firstName} {user.lastName}
+                        <br/><br/>
                     </Row>
+                    <Row>I guess I would add Farmville here in the future?</Row>
+                    {/* <Button>Friends</Button> */}
                 </Container>
             )
         } else {

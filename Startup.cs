@@ -67,13 +67,9 @@ namespace asp_mvc
             {
                 options.HeaderName = "csrf-token";
             });
-            // Custom CSRF token validation attribute - Antiforgery not supported for APIs with no views
-            services.AddScoped<ApiAntiforgeryTokenAuthorizationFilter>();
-
-            services.AddSingleton<IDateTime, SystemDateTime>();
+            services.AddScoped<ApiAntiforgeryTokenAuthorizationFilter>(); // Custom CSRF token validation attribute - Antiforgery not supported for APIs with no views
             services.AddScoped<ITokenAuthService, TokenAuthService>();
-            // Test UserRepository with fake dependencies
-            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IUserRepository, UserRepository>(); // Test UserRepository with fake dependencies
             services.AddScoped<IFriendshipRepository, FriendshipRepository>();
             services.AddScoped<IUserManager, UserManager>();
             services.AddScoped<IFriendshipManager, FriendshipManager>();
@@ -127,18 +123,5 @@ namespace asp_mvc
                 endpoints.MapFallbackToController("Index", "Index");
             });
         }
-    }
-}
-
-public interface IDateTime
-{
-    DateTime Now { get; }
-}
-
-public class SystemDateTime : IDateTime
-{
-    public DateTime Now
-    {
-        get { return DateTime.Now; }
     }
 }

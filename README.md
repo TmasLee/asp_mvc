@@ -3,9 +3,7 @@
 A small web app project built using C#, ASP.NET Core, and JS/React.
 
 ### **To-Do**:
-* See other user friends list
-
-* About me - CV + Pic lol
+* About me - CV
 * Generic repository - Parameterized table name - What is "persistence layer"?
 
 * Test xss / sql injection
@@ -23,3 +21,5 @@ A small web app project built using C#, ASP.NET Core, and JS/React.
 * Socket for live updates
 * Clean up LoginModal
 * Modal reload on adding or deleting friend / responding to request
+* See other user friends list
+* User avatar + pic upload
