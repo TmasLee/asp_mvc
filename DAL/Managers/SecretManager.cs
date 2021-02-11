@@ -13,6 +13,12 @@ namespace asp_mvc.DAL.Managers
         {
             string region = "us-east-1";
 
+            // To call AWS API locally
+            // IAmazonSecretsManager client = new AmazonSecretsManagerClient(
+            //     clientAccessKey,
+            //     clientAccessKeySecret,
+            //     RegionEndpoint.GetBySystemName(region));
+
             IAmazonSecretsManager client = new AmazonSecretsManagerClient(RegionEndpoint.GetBySystemName(region));
 
             GetSecretValueRequest request = new GetSecretValueRequest();

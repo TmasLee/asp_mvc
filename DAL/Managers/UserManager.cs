@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using Microsoft.AspNetCore.Hosting;
+using Newtonsoft.Json;
 
 using asp_mvc.Models;
 
@@ -25,10 +27,20 @@ namespace asp_mvc.DAL.Managers
         private readonly IUserRepository _userRepo;
         private static byte[] _salt;
 
-        public UserManager(IUserRepository userRepository, IConfiguration Configuration)
+        public UserManager(IUserRepository userRepository, IWebHostEnvironment env, IConfiguration Configuration)
         {
+            // This is wrong - should only need to check environment in StartUp ConfigureServices?
+            if (Environment.GetEnvironmentVariable("PASSWORD_SALT") is not null)
+            {
+                dynamic saltJson = JsonConvert.DeserializeObject(Environment.GetEnvironmentVariable("PASSWORD_SALT"));
+                _salt = Encoding.ASCII.GetBytes(saltJson.salt);
+            }
+            else
+            {
+                _salt = Encoding.ASCII.GetBytes(Configuration["salt"]);
+            }
+
             _userRepo = userRepository;
-            _salt = Encoding.ASCII.GetBytes(Configuration["salt"]);
         }
 
         public async Task<bool> IsValidUser(string email, string password)
