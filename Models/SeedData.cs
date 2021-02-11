@@ -35,17 +35,83 @@ namespace asp_mvc.Models
 
         public static List<User> GenerateUsers()
         {
-            List<User> users = new List<User>(100);
-            for (int i = 0; i < 100; i++)
+            List<string> names = new List<string>{
+                "Kristofer Gidley",
+                "Shaunna Raco",
+                "Jayna Ginter",
+                "Rashida Walkes",
+                "Marvin Brathwaite",
+                "Reyna Iles",
+                "Norma Walker",
+                "Soraya Edmondson",
+                "Valene Staff",
+                "Rivka Clayton",
+                "Fermin Dches",
+                "Krystyna Castillo",
+                "Kimi Lollis",
+                "Artie Bidwell",
+                "Macie Couvillion",
+                "Willene Lenton",
+                "Sherika Coache",
+                "Billye Sherburne",
+                "Julia Stadler",
+                "Valorie Lish",
+                "Lelia Mcandrews",
+                "Toby Raiford",
+                "Cameron Winkleman",
+                "Tasia Clink",
+                "Brooks Campoverde",
+                "Alejandra Scroggins",
+                "Val Bird",
+                "Elease Wolak",
+                "Bobbye Green",
+                "Mireya Southworth",
+                "Lajuana Lawyer",
+                "Lorina Dykstra",
+                "Kotney Rendon",
+                "Gema Alpaugh",
+                "Ashli Carboni",
+                "Darci Fujita",
+                "Jae Rahman",
+                "Vannessa Busby",
+                "Jena Shimp",
+                "Christene Wall",
+                "Violet Reiss",
+                "Dorathy Caro",
+                "Suzann Mcpartland",
+                "Benedit Guadalupe",
+                "Sylvie China",
+                "Altagracia Cottle",
+                "Victor Lemke",
+                "Galen Mcquire",
+                "Antonio Lee",
+                "Chris Treibs",
+                "Dan Duman",
+                "Lil Wayne",
+                "Fitty sent",
+                "Naruto Uzumaki",
+                "Clyde Frog",
+                "Luigi Dog",
+                "Guy One",
+                "Guy Two",
+                "James Lee",
+                "Jesus Christ",
+                "Mike Tyson"
+            };
+            List<User> users = new List<User>(names.Count());
+
+            for (int i = 0; i < names.Count(); i++)
             {
                 try
                 {
+                    var name = names[i].Replace(" ", "_");
+                    var splitName = name.Split("_");
                     users.Add(
                         new User {
-                            Email = GenerateEmail(),
+                            Email = GenerateEmail(name),
                             Password = RandomString(8),
-                            FirstName = RandomString(3),
-                            LastName = RandomString(3)
+                            FirstName = splitName[0],
+                            LastName = splitName[1]
                         }
                     );
                 }
@@ -57,10 +123,10 @@ namespace asp_mvc.Models
             return users;
         }
 
-        public static string GenerateEmail()
+        public static string GenerateEmail(string name)
         {
-            string domain = "@" + RandomString(5) + ".com";
-            string email = RandomString(5) + domain;
+            string domain = "@gmail.com";
+            string email = name + domain;
             return email;
         }
 

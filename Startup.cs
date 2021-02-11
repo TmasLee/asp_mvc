@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.FileProviders;
+using Newtonsoft.Json;
 
 using asp_mvc.Data;
 using asp_mvc.DAL;
@@ -23,44 +24,87 @@ namespace asp_mvc
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public IConfiguration Configuration { get; }
+        private readonly IWebHostEnvironment _env;
+
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
+            _env = env;
         }
-
-        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to inject services to the container
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<MSAContext>(options =>
-                options.UseSqlServer(Configuration["MultiSpaApp:ConnectionString"]));
-            services.AddDatabaseDeveloperPageExceptionFilter();
-
-            services.Configure<TokenManagement>(Configuration.GetSection("tokenManagement"));
-            var token = Configuration.GetSection("tokenManagement").Get<TokenManagement>();
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+            if (_env.IsProduction())
             {
-                options.Events = new JwtBearerEvents
+                var secretsMgr = new SecretsManager();
+
+                string dbConnectionString = secretsMgr.GetDbConnectionString();
+
+                services.AddDbContext<MSAContext>(options =>
+                    options.UseSqlServer(dbConnectionString));
+
+                dynamic token = JsonConvert.DeserializeObject(secretsMgr.GetSecret("slothbook/jwt"));
+                string tokenSecret = token.secret;
+                string tokenIssuer = token.Issuer;
+                string tokenAudience = token.audience;
+
+                services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
                 {
-                    OnMessageReceived = context =>
+                    options.Events = new JwtBearerEvents
                     {
-                        context.Token = context.Request.Cookies["auth-token"];
-                        return Task.CompletedTask;
-                    },
-                };
-                options.RequireHttpsMetadata = false;
-                options.SaveToken = true;
-                options.TokenValidationParameters = new TokenValidationParameters
+                        OnMessageReceived = context =>
+                        {
+                            context.Token = context.Request.Cookies["auth-token"];
+                            return Task.CompletedTask;
+                        },
+                    };
+                    options.RequireHttpsMetadata = false;
+                    options.SaveToken = true;
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey =  new SymmetricSecurityKey(Encoding.ASCII.GetBytes(tokenSecret)),
+                        ValidIssuer = tokenIssuer,
+                        ValidAudience = tokenAudience,
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+                    };
+                });
+            }
+            else
+            {
+                services.AddDbContext<MSAContext>(options =>
+                    options.UseSqlServer(Configuration["MultiSpaApp:ConnectionString"]));
+
+                services.AddDatabaseDeveloperPageExceptionFilter();
+
+                services.Configure<TokenManagement>(Configuration.GetSection("tokenManagement"));
+                var token = Configuration.GetSection("tokenManagement").Get<TokenManagement>();
+                services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
                 {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey =  new SymmetricSecurityKey(Encoding.ASCII.GetBytes(token.Secret)),
-                    ValidIssuer = token.Issuer,
-                    ValidAudience = token.Audience,
-                    ValidateIssuer = false,
-                    ValidateAudience = false
-                };
-            });
+                    options.Events = new JwtBearerEvents
+                    {
+                        OnMessageReceived = context =>
+                        {
+                            context.Token = context.Request.Cookies["auth-token"];
+                            return Task.CompletedTask;
+                        },
+                    };
+                    options.RequireHttpsMetadata = false;
+                    options.SaveToken = true;
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey =  new SymmetricSecurityKey(Encoding.ASCII.GetBytes(token.Secret)),
+                        ValidIssuer = token.Issuer,
+                        ValidAudience = token.Audience,
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+                    };
+                });
+            }
 
             // CSRF token service
             services.AddAntiforgery(options =>
@@ -73,6 +117,7 @@ namespace asp_mvc
             services.AddScoped<IFriendshipRepository, FriendshipRepository>();
             services.AddScoped<IUserManager, UserManager>();
             services.AddScoped<IFriendshipManager, FriendshipManager>();
+            services.AddScoped<SecretsManager>();
             services.AddTransient<StupidLoader>();
 
             services.AddControllers();
@@ -80,9 +125,9 @@ namespace asp_mvc
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app)
         {
-            if (env.IsDevelopment())
+            if (_env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
@@ -98,7 +143,7 @@ namespace asp_mvc
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = new PhysicalFileProvider(
-                    Path.Combine(env.ContentRootPath, "ClientApp/dist")
+                    Path.Combine(_env.ContentRootPath, "ClientApp/dist")
                 ),
                 RequestPath = "/dist"
             });
@@ -106,7 +151,7 @@ namespace asp_mvc
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = new PhysicalFileProvider(
-                    Path.Combine(env.ContentRootPath, "ClientApp/assets")
+                    Path.Combine(_env.ContentRootPath, "ClientApp/assets")
                 ),
                 RequestPath = "/assets"
             });

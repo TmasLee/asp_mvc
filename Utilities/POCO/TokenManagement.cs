@@ -15,10 +15,10 @@ namespace asp_mvc.Utilities.POCO
         public string Audience { get; set; }
         
         [JsonProperty("accessExpiration")]
-        public int AccessExpiration { get; set; }
+        public int AccessExpiration { get; set; } = 120;
         
         [JsonProperty("refreshExpiration")]
-        public int RefreshExpiration { get; set; }
+        public int RefreshExpiration { get; set; } = 60;
         
     }
 }
