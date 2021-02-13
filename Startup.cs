@@ -45,7 +45,7 @@ namespace asp_mvc
                 services.AddDbContext<MSAContext>(options =>
                     options.UseSqlServer(dbConnectionString));
 
-                dynamic token = JsonConvert.DeserializeObject(secretsMgr.GetSecret("slothbook/jwt"));
+                dynamic token = JsonConvert.DeserializeObject(secretsMgr.GetSecret("astronautsloth/jwt"));
                 string tokenSecret = token.secret;
                 string tokenIssuer = token.Issuer;
                 string tokenAudience = token.audience;
@@ -137,7 +137,6 @@ namespace asp_mvc
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-            app.UseHttpsRedirection();
 
             // Serve JS bundles from here
             app.UseStaticFiles(new StaticFileOptions

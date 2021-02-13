@@ -13,7 +13,8 @@ namespace asp_mvc.DAL.Managers
         {
             string region = "us-east-1";
 
-            // To call AWS API locally
+            // To call AWS API locally + command to run docker image locally with port forward
+            // docker run -it --rm -p 5000:443 --name asp_mvc 884207845078.dkr.ecr.us-east-1.amazonaws.com/astronautsloth
             // IAmazonSecretsManager client = new AmazonSecretsManagerClient(
             //     clientAccessKey,
             //     clientAccessKeySecret,
@@ -49,7 +50,7 @@ namespace asp_mvc.DAL.Managers
 
         public string GetDbConnectionString()
         {
-            string dbSecret = GetSecret("slothbook/db");
+            string dbSecret = GetSecret("astronautsloth/db");
             dynamic dbSecretJson = JsonConvert.DeserializeObject(dbSecret);
             string host = dbSecretJson.host;
             string dbname = dbSecretJson.dbInstanceIdentifier;

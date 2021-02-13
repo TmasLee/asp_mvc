@@ -9,12 +9,6 @@ A small web app project built using C#, ASP.NET Core, and JS/React.
     - What is "persistence layer"?
 * Test xss / sql injection
 
-* Set up ECS
-    - Connection to ECS and RDS (security groups)
-    - Inject secrets
-* Deploy script - need to handle migrations `dotnet ef migrations script`
-* Set up SSL
-
 ### **Improvements/Features To-Do**
 * On initial site request, return signed in view instead of separate login request
 * Logout redirect / Log out + Unauthorized message
@@ -28,3 +22,10 @@ A small web app project built using C#, ASP.NET Core, and JS/React.
 * User avatar + pic upload
 * Inline styles
 * Set all environment based values (salt) in StartUp
+* Catch and handle unpredictable errors?
+    - Invalid CSRF cookie - wipe cookies?
+* Check Asset webpack bundle
+* Handle migrations in deploy script? - `dotnet ef migrations script`
+* Warnings
+    * Storing keys in a directory '/root/.aspnet/DataProtection-Keys' that may not be persisted outside of the container. Protected data will be unavailable when container is destroyed.
+    * No XML encryptor configured. Key {3379971b-b818-4fde-97e1-d11d1dd2b80a} may be persisted to storage in unencrypted form.

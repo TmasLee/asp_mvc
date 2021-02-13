@@ -14,7 +14,7 @@ export function NavMenu(props){
                 bg="light"
             >
                 <Container>
-                    <Navbar.Brand as={Link} to="/">SlothBook</Navbar.Brand>
+                    <Navbar.Brand as={Link} to="/">Astronaut Sloth</Navbar.Brand>
                     <ul className="navbar-nav flex-grow">
                         <Nav.Item>
                             <Nav.Link as={Link} className="text-dark" to="/">Home</Nav.Link>

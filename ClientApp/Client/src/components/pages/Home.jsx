@@ -7,9 +7,9 @@ import sloth_gif from '../../../../assets/so_tired.gif';
 export function Home(){
     return (
         <div style={{height: '105vh', margin: '0 15% 10% 15%'}}>
-            <h1>Welcome to SlothBook</h1>
+            <h1>Welcome to Astronaut Sloth</h1>
             <br/>
-            <p>Welcome to SlothBook friend.</p>
+            <p>Welcome friend.</p>
             <p>This is a small experimental project built with React and a customized backend combining ASP.NET Core MVC and WebApi that implements hand-coded user management and web security for some C# and ASP.NET Core practice.</p>
             <p>
                 While using .NET template projects and other libraries would've been practical, I figured I'd get a better learning experience trying my hand at "rebuilding the wheel" from scratch (...mostly).

@@ -1,12 +1,12 @@
 #!/bin/sh
 
-DOCKER_IMAGE="884207845078.dkr.ecr.us-east-1.amazonaws.com/slothbook:latest"
+DOCKER_IMAGE="884207845078.dkr.ecr.us-east-1.amazonaws.com/astronautsloth:latest"
 AWS_PROFILE="xdwarrior"
 DOCKER_LOGIN=$( aws ecr get-login-password --region us-east-1 --profile $AWS_PROFILE | docker login --username AWS --password-stdin 884207845078.dkr.ecr.us-east-1.amazonaws.com )
 
 docker push $DOCKER_IMAGE
 
-cluster=slothbook
+cluster=AstronautSloth
 
 # Get services - figure out how to get specific service in case we need to add more services
 service=$(aws ecs list-services --cluster $cluster --output text --region us-east-1 --query serviceArns --profile $AWS_PROFILE)
