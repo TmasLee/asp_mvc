@@ -93,6 +93,8 @@ namespace asp_mvc
 
                 services.AddDatabaseDeveloperPageExceptionFilter();
 
+                services.Configure<Salt>(Configuration.GetSection("salt"));
+
                 services.Configure<TokenManagement>(Configuration.GetSection("tokenManagement"));
                 var token = Configuration.GetSection("tokenManagement").Get<TokenManagement>();
                 services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
