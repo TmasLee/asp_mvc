@@ -45,10 +45,23 @@ namespace asp_mvc
                 services.AddDbContext<MSAContext>(options =>
                     options.UseSqlServer(dbConnectionString));
 
+                // Get salt and bind to option model
+                services.PostConfigure<Salt>(options => 
+                {
+                    options.salt = secretsMgr.GetSecret("astronautsloth/salt");
+                });
+
+                // Get JWT secret and bind to option model
                 dynamic token = JsonConvert.DeserializeObject(secretsMgr.GetSecret("astronautsloth/jwt"));
                 string tokenSecret = token.secret;
-                string tokenIssuer = token.Issuer;
+                string tokenIssuer = token.issuer;
                 string tokenAudience = token.audience;
+                services.PostConfigure<TokenManagement>(options =>
+                {
+                    options.Secret = tokenSecret;
+                    options.Issuer = tokenIssuer;
+                    options.Audience = tokenAudience;
+                });
 
                 services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
                 {

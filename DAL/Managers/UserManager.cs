@@ -4,12 +4,11 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using System.Security.Cryptography;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
-using Microsoft.AspNetCore.Hosting;
-using Newtonsoft.Json;
 
 using asp_mvc.Models;
+using asp_mvc.Utilities.POCO;
 
 namespace asp_mvc.DAL.Managers
 {
@@ -27,19 +26,9 @@ namespace asp_mvc.DAL.Managers
         private readonly IUserRepository _userRepo;
         private static byte[] _salt;
 
-        public UserManager(IUserRepository userRepository, IWebHostEnvironment env, IConfiguration Configuration)
+        public UserManager(IUserRepository userRepository, IOptions<Salt> salt)
         {
-            // This is wrong - should only need to check environment in StartUp ConfigureServices?
-            if (Environment.GetEnvironmentVariable("PASSWORD_SALT") is not null)
-            {
-                dynamic saltJson = JsonConvert.DeserializeObject(Environment.GetEnvironmentVariable("PASSWORD_SALT"));
-                _salt = Encoding.ASCII.GetBytes(saltJson.salt);
-            }
-            else
-            {
-                _salt = Encoding.ASCII.GetBytes(Configuration["salt"]);
-            }
-
+            _salt = Encoding.ASCII.GetBytes(salt.Value.salt);
             _userRepo = userRepository;
         }
 

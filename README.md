@@ -4,6 +4,7 @@ A small web app project built using C#, ASP.NET Core, and JS/React.
 
 ### **To-Do**:
 * About me
+* Flesh out User page - User avatar + pic upload
 * Generic repository
     - Parameterized table name
     - What is "persistence layer"?
@@ -19,13 +20,8 @@ A small web app project built using C#, ASP.NET Core, and JS/React.
 * Clean up LoginModal
 * Modal reload on adding or deleting friend / responding to request
 * See other user friends list
-* User avatar + pic upload
 * Inline styles
-* Set all environment based values (salt) in StartUp
 * Catch and handle unpredictable errors?
     - Invalid CSRF cookie - wipe cookies?
 * Check Asset webpack bundle
 * Handle migrations in deploy script? - `dotnet ef migrations script`
-* Warnings
-    * Storing keys in a directory '/root/.aspnet/DataProtection-Keys' that may not be persisted outside of the container. Protected data will be unavailable when container is destroyed.
-    * No XML encryptor configured. Key {3379971b-b818-4fde-97e1-d11d1dd2b80a} may be persisted to storage in unencrypted form.

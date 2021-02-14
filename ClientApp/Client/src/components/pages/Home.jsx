@@ -6,7 +6,7 @@ import sloth_gif from '../../../../assets/so_tired.gif';
 
 export function Home(){
     return (
-        <div style={{height: '105vh', margin: '0 15% 10% 15%'}}>
+        <div className="margins" style={{height: '105vh'}}>
             <h1>Welcome to Astronaut Sloth</h1>
             <br/>
             <p>Welcome friend.</p>

@@ -23,6 +23,10 @@ a.navbar-brand {
     background-color: #1b6ec2;
     border-color: #1861ac;
   }
+
+  div.margins {
+      margin: 0 15% 10% 15%
+  }
   
   /* Sticky footer styles
   -------------------------------------------------- */
