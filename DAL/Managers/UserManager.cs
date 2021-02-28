@@ -34,7 +34,7 @@ namespace asp_mvc.DAL.Managers
 
         public async Task<bool> IsValidUser(string email, string password)
         {
-            var storedUser = await _userRepo.RetrieveUserByEmail(email);
+            var storedUser = await _userRepo.Retrieve(email);
 
             if (storedUser == null)
             {
@@ -71,7 +71,7 @@ namespace asp_mvc.DAL.Managers
             if (!IsValidEmail(email))
                 throw new UserException("Invalid email format");
 
-            if (await _userRepo.RetrieveUserByEmail(email) != null)
+            if (await _userRepo.Retrieve(email) != null)
                 throw new UserException("Email already in use!");
         }
 

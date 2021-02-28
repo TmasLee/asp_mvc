@@ -29,7 +29,7 @@ namespace asp_mvc.DAL
             ").ToListAsync();
         }
 
-        public async Task<User> RetrieveUserByEmail(string email)
+        public async Task<User> Retrieve(string email)
         {
             return await context.User.FromSqlInterpolated($@"
             SELECT
@@ -50,7 +50,7 @@ namespace asp_mvc.DAL
             ").FirstAsync();
         }
 
-        public async Task DeleteByEmail(string email)
+        public async Task Delete(string email)
         {
             await context.User.FromSqlInterpolated($@"
             DELETE

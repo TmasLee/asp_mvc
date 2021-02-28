@@ -9,15 +9,24 @@ export function Home(){
         <div className="margins" style={{height: '105vh'}}>
             <h1>Welcome to Astronaut Sloth</h1>
             <br/>
-            <p>Welcome friend.</p>
-            <p>This is a small experimental project built with React and a customized backend combining ASP.NET Core MVC and WebApi that implements hand-coded user management and web security for some C# and ASP.NET Core practice.</p>
             <p>
-                While using .NET template projects and other libraries would've been practical, I figured I'd get a better learning experience trying my hand at "rebuilding the wheel" from scratch (...mostly).
-                Also, some custom configurations (like ripping out Razor Pages 🤮) are a bit easier to set up this way.
+                Welcome friend.
             </p>
-            <p>You can check out the source code here: <a href="https://github.com/TmasLee/asp_mvc">https://github.com/TmasLee/asp_mvc</a></p>
-            <p><i>**DISCLAIMER: This is still a WIP. There are a number of things that can be done in a smarter/cleaner way and a few things I'm still figuring out how to do with ASP.NET </i>😅. 
-                <i> Don't worry, I'm figuring it all out</i> 💪.</p>
+            <p>
+                This is a small project built with React and a customized backend combining ASP.NET Core MVC and WebApi that implements hand-coded
+                user management and web security for some C# and .NET practice.
+            </p>
+            <p>
+                While using .NET template projects and other libraries would've been practical, I figured I'd get a better learning experience
+                trying my hand at "rebuilding the wheel" from scratch (mostly). Also, some custom configurations (like ripping out Razor Pages 🤮)
+                are a bit easier to set up this way.
+            </p>
+            <p>
+                You can check out the source code here: <a href="https://github.com/TmasLee/asp_mvc">https://github.com/TmasLee/asp_mvc</a>
+            </p>
+            <p>
+                <i>**DISCLAIMER: This is still a WIP. There are a few things that can be done in a cleaner way with ASP.NET </i>😅.
+            </p>
             <br/><br/>
             <Row className='row'>
                 <img src={sloth_astronaut} alt="Sloth Astronaut" width={300}/>

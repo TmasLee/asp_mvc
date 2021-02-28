@@ -7,7 +7,7 @@ namespace asp_mvc.DAL
     {
         Task Create(T model);
         Task Update(T model);
-        Task DeleteById(int id);
+        Task Delete(int id);
         void Save();
     }
 }

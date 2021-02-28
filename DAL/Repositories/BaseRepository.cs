@@ -18,7 +18,7 @@ namespace asp_mvc.DAL
         // Generic insert possible?
         public abstract Task Create(T model);
 
-        public async Task<T> RetrieveById(int id)
+        public async Task<T> Retrieve(int id)
         {
             string q = $@"
             SELECT
@@ -45,7 +45,7 @@ namespace asp_mvc.DAL
         // Generic update possible?
         public abstract Task Update(T model);
 
-        public virtual async Task DeleteById(int id)
+        public virtual async Task Delete(int id)
         {
             string q = $@"
             DELETE

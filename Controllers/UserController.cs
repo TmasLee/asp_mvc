@@ -87,7 +87,7 @@ namespace asp_mvc.Controllers
         public async Task<ActionResult> GetUserDatas()
         {
             var email = User.Claims.Where(x => x.Type == ClaimTypes.Email).FirstOrDefault()?.Value;
-            User user = await _userRepo.RetrieveUserByEmail(email);
+            User user = await _userRepo.Retrieve(email);
 
             List<UserFriendship> friends = await _friendshipRepo.RetrieveFriends(user.Id);
             var requests = await _friendshipRepo.RetrievePendingRequests(user.Id);
@@ -103,7 +103,7 @@ namespace asp_mvc.Controllers
         [HttpGet("get-user")]
         public async Task<ActionResult> GetUser([FromQuery(Name = "userId")]int userId)
         {
-            User user = await _userRepo.RetrieveById(userId);
+            User user = await _userRepo.Retrieve(userId);
             UserDto userDto = user.ToDto();
             return Ok(userDto);
         }
@@ -144,7 +144,7 @@ namespace asp_mvc.Controllers
         [HttpPost("remove-friend")]
         public async Task<ActionResult> RemoveFriend([FromBody]Friendship friendship)
         {
-            await _friendshipRepo.DeleteById(friendship.FriendId);
+            await _friendshipRepo.Delete(friendship.FriendId);
             List<UserFriendship> friends = await _friendshipRepo.RetrieveFriends(friendship.UserId);
             return Ok(friends);
         }
@@ -177,7 +177,7 @@ namespace asp_mvc.Controllers
         [HttpPost("decline-request")]
         public async Task<ActionResult> DeclineRequest([FromBody]Friendship friendRequest)
         {
-            await _friendshipRepo.DeleteById(friendRequest.FriendId);
+            await _friendshipRepo.Delete(friendRequest.FriendId);
             var requests = await _friendshipMgr.GetPendingRequests(friendRequest.FriendId);
             return Ok(requests);
         }

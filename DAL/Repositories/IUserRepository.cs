@@ -6,7 +6,7 @@ namespace asp_mvc.DAL
 {
     public interface IUserRepository : IRepository<User>
     {
-        Task<User> RetrieveUserByEmail(string email);
-        Task DeleteByEmail(string email);
+        Task<User> Retrieve(string email);
+        Task Delete(string email);
     }
 }

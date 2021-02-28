@@ -191,7 +191,7 @@ namespace asp_mvc.DAL
         }
 
         // Delete a friend or decline a request
-        public override async Task DeleteById(int friendId)
+        public override async Task Delete(int friendId)
         {
             await context.Friendship.FromSqlRaw($@"
             DELETE
