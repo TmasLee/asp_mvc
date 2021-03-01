@@ -13,8 +13,8 @@ export function Home(){
                 Welcome friend.
             </p>
             <p>
-                This is a small project built with React and a customized backend combining ASP.NET Core MVC and WebApi that implements hand-coded
-                user management and web security for some C# and .NET practice.
+                This is a small project nearly all hand built with React and a customized backend combining ASP.NET Core MVC and WebApi that
+                implements user management and web security for some C# and .NET practice.
             </p>
             <p>
                 While using .NET template projects and other libraries would've been practical, I figured I'd get a better learning experience
