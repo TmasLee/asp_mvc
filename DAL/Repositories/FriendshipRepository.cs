@@ -8,7 +8,7 @@ using System.Linq;
 using asp_mvc.Models;
 using asp_mvc.Data;
 
-namespace asp_mvc.DAL
+namespace asp_mvc.DAL.Repositories
 {
     public class FriendshipRepository : BaseRepository<Friendship>, IFriendshipRepository
     {

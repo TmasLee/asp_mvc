@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using asp_mvc.Models;
 using asp_mvc.DAL.Managers;
-using asp_mvc.DAL;
+using asp_mvc.DAL.Repositories;
 using asp_mvc.Utilities;
 
 // ActionResults (represent various HTTP status codes) are used when multiple return types are possible

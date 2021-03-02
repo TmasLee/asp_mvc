@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using asp_mvc.Models;
 
-namespace asp_mvc.DAL
+namespace asp_mvc.DAL.Repositories
 {
     public interface IFriendshipRepository : IRepository<Friendship>
     {

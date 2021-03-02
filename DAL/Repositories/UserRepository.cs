@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using asp_mvc.Models;
 using asp_mvc.Data;
 
-namespace asp_mvc.DAL
+namespace asp_mvc.DAL.Repositories
 {
     public class UserRepository : BaseRepository<User>, IUserRepository
     {

@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using System.Collections.Generic;
 
-namespace asp_mvc.DAL
+namespace asp_mvc.DAL.Repositories
 {
     public interface IReadOnlyRepository<T>
     {

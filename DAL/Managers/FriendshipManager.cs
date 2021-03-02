@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using asp_mvc.Models;
+using asp_mvc.DAL.Repositories;
 
 namespace asp_mvc.DAL.Managers
 {
