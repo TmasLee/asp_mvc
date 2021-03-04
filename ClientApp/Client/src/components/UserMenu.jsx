@@ -11,7 +11,6 @@ export function UserMenu(props) {
     let userMenuOptions = null;
 
     if (currentUser){
-        console.log(currentUser);
         userMenuOptions = (
             <Fragment>
                 <Nav.Item>

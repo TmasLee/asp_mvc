@@ -12,5 +12,6 @@ namespace asp_mvc.DAL.Repositories
         Task<List<UserFriendship>> RetrievePendingSentRequests(int currentUserId);
         Task<List<UserFriendship>> RetrievePendingRequest(Friendship friendRequest);
         Task<List<UserFriendship>> RetrieveFriends(int userId);
+        Task Delete(Friendship friendship);
     }
 }

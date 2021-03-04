@@ -185,22 +185,29 @@ namespace asp_mvc.DAL.Repositories
             SET
                 Status = 1 OUTPUT INSERTED.*
             WHERE
-            UserId = {friendship.UserId} 
-            AND FriendId = {friendship.FriendId}
+                (
+                    UserId = {friendship.UserId} 
+                    AND FriendId = {friendship.FriendId}
+                )
             ").IgnoreQueryFilters().ToListAsync();
         }
 
         // Delete a friend or decline a request
-        public override async Task Delete(int friendId)
+        public async Task Delete(Friendship friendship)
         {
             await context.Friendship.FromSqlInterpolated($@"
             DELETE
             FROM
-                ""Friendship"" OUTPUT DELETED.* 
+                ""Friendship"" OUTPUT DELETED.*
             WHERE
                (
-                   FriendId = {friendId}
-                   OR UserId = {friendId}
+                   UserId = {friendship.UserId}
+                   AND FriendId = {friendship.FriendId}
+                )
+                OR
+                (
+                    UserId = {friendship.FriendId}
+                    AND FriendId = {friendship.UserId}
                 )
             ").IgnoreQueryFilters().ToListAsync();
         }

@@ -70,7 +70,7 @@ namespace asp_mvc.Controllers
         [HttpPost("remove-friend")]
         public async Task<ActionResult> RemoveFriend([FromBody]Friendship friendship)
         {
-            await _friendshipRepo.Delete(friendship.FriendId);
+            await _friendshipRepo.Delete(friendship);
             List<UserFriendship> friends = await _friendshipRepo.RetrieveFriends(friendship.UserId);
             return Ok(friends);
         }
@@ -102,7 +102,7 @@ namespace asp_mvc.Controllers
         [HttpPost("decline-request")]
         public async Task<ActionResult> DeclineRequest([FromBody]Friendship friendRequest)
         {
-            await _friendshipRepo.Delete(friendRequest.FriendId);
+            await _friendshipRepo.Delete(friendRequest);
             var requests = await _friendshipMgr.GetPendingRequests(friendRequest.FriendId);
             return Ok(requests);
         }

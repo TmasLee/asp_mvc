@@ -27,13 +27,13 @@ namespace asp_mvc.DAL.Managers
 
         public async Task<Dictionary<string, List<UserFriendship>>> GetPendingRequests(int userId)
         {
-            List<UserFriendship> pendingRequests = await _friendshipRepo.RetrievePendingRequests(userId);
-            List<UserFriendship> pendingSentRequests = await _friendshipRepo.RetrievePendingSentRequests(userId);
+            List<UserFriendship> receivedRequests = await _friendshipRepo.RetrievePendingRequests(userId);
+            List<UserFriendship> sentRequests = await _friendshipRepo.RetrievePendingSentRequests(userId);
             Dictionary<string, List<UserFriendship>> requests = 
                 new Dictionary<string, List<UserFriendship>>()
                 {
-                    { "pendingRequests", pendingRequests },
-                    { "pendingSentRequests", pendingSentRequests }
+                    { "received", receivedRequests },
+                    { "sent", sentRequests }
                 };
             return requests;
         }
