@@ -11,7 +11,7 @@ export class FriendListModal extends Component {
 
     deleteFriend = async (friendId) => {
         await axios.post(
-            '/user/remove-friend',
+            '/friendship/remove-friend',
             {
                 'userId': this.props.currentUser.id,
                 'friendId': friendId

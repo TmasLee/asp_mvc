@@ -5,7 +5,7 @@ using asp_mvc.Models;
 
 namespace asp_mvc.DAL.Repositories
 {
-    public interface IFriendshipRepository : IRepository<Friendship>
+    public interface IFriendshipRepository : IBaseRepository<Friendship>
     {
         Task<List<UserFriendship>> RetrieveAllPendingRequests(int currentUserId);
         Task<List<UserFriendship>> RetrievePendingRequests(int currentUserId);

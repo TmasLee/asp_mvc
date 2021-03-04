@@ -1,6 +1,8 @@
 import React, { Fragment } from 'react';
-import { Nav, Badge } from 'react-bootstrap';
+import { Nav } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+
+import { Notifications } from './Notifications';
 
 import '../../../css/NavMenu.css';
 
@@ -9,17 +11,13 @@ export function UserMenu(props) {
     let userMenuOptions = null;
 
     if (currentUser){
-        const requestsBadge = <Badge variant="primary">{currentUser.requestCount}</Badge>;
+        console.log(currentUser);
         userMenuOptions = (
             <Fragment>
                 <Nav.Item>
                     <Nav.Link as={Link} className="text-dark" to="#" onClick={(e)=>{toggleModal('friends')}}>Friends</Nav.Link>
                 </Nav.Item>
-                <Nav.Item>
-                    <Nav.Link as={Link} className="text-dark" to="#" onClick={(e)=>{toggleModal('requests')}}>
-                        Requests {requestsBadge}
-                    </Nav.Link>
-                </Nav.Item>
+                <Notifications {...props}/>
                 <Nav.Item>
                     <Nav.Link as={Link} className="text-dark" to={`/user/${currentUser.id}`}>{currentUser.firstName}</Nav.Link>
                 </Nav.Item>

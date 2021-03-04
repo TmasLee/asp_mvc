@@ -23,7 +23,7 @@ export class UsersListModal extends Component {
 
     addFriend = async (userId) => {
         await axios.post(
-            '/user/add-friend',
+            '/friendship/add-friend',
             {
                 'userId': this.props.currentUser.id,
                 'friendId': userId

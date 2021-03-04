@@ -17,7 +17,7 @@ export class RequestsModal extends Component {
     async componentDidMount(){
         this.props.setUser(await authService.retrieveUser());
         await axios.get(
-            '/user/get-requests', {
+            '/friendship/get-requests', {
             params: {
                 currentUserId: this.props.currentUser.id
             }
@@ -30,7 +30,7 @@ export class RequestsModal extends Component {
 
     acceptRequest = async (userId, friendId) => {
         await axios.put(
-            '/user/accept-request',
+            '/friendship/accept-request',
             {
                 userId: userId,
                 friendId: friendId
@@ -45,7 +45,7 @@ export class RequestsModal extends Component {
 
     declineRequest = async (userId, friendId) => {
         await axios.post(
-            '/user/decline-request',
+            '/friendship/decline-request',
             {
                 userId: userId,
                 friendId: friendId

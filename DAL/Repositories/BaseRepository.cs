@@ -8,7 +8,7 @@ using asp_mvc.Data;
 
 namespace asp_mvc.DAL.Repositories
 {
-    public abstract class BaseRepository<T> : IRepository<T> where T : class
+    public abstract class BaseRepository<T> : IBaseRepository<T> where T : class
     {
         private bool _disposed = false;
         public string tableName;

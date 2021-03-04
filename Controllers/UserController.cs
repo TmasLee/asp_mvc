@@ -11,11 +11,6 @@ using asp_mvc.DAL.Managers;
 using asp_mvc.DAL.Repositories;
 using asp_mvc.Utilities;
 
-// ActionResults (represent various HTTP status codes) are used when multiple return types are possible
-// ActionResults<T> let you return either an ActionResult or specifc type, T.
-// ActionResult is limited to those classes which extend the ActionResult abstract class (which you could also do with custom code, but using an interface allows for something like multiple inheritance, while extending a class does not).
-// IActionResult allows a wider range of return types, including any custom code that implements the IActionResult interface.
-// IActionResult is used when multiple ActionResult return types are possible
 namespace asp_mvc.Controllers
 {
     [ApiController]
@@ -119,67 +114,6 @@ namespace asp_mvc.Controllers
                 userDtos.Add(user.ToDto());
             }
             return Ok(userDtos);
-        }
-
-        [Authorize]
-        [ServiceFilter(typeof(ApiAntiforgeryTokenAuthorizationFilter))]
-        [HttpPost("add-friend")]
-        public async Task<ActionResult> AddFriendRequest([FromBody]Friendship friendRequest)
-        {
-            try
-            {
-                await _friendshipMgr.CheckForPendingRequest(friendRequest);
-            }
-            catch (FriendshipException e)
-            {
-                return BadRequest(e.Message);
-            }
-
-            await _friendshipRepo.Create(friendRequest);
-            return Ok();
-        }
-
-        [Authorize]
-        [ServiceFilter(typeof(ApiAntiforgeryTokenAuthorizationFilter))]
-        [HttpPost("remove-friend")]
-        public async Task<ActionResult> RemoveFriend([FromBody]Friendship friendship)
-        {
-            await _friendshipRepo.Delete(friendship.FriendId);
-            List<UserFriendship> friends = await _friendshipRepo.RetrieveFriends(friendship.UserId);
-            return Ok(friends);
-        }
-
-        [Authorize]
-        [ServiceFilter(typeof(ApiAntiforgeryTokenAuthorizationFilter))]
-        [HttpGet("get-requests")]
-        public async Task<ActionResult> GetRequests([FromQuery(Name = "currentUserId")]int currentUserId)
-        {
-            var requests = await _friendshipMgr.GetPendingRequests(currentUserId);
-            return Ok(requests);
-        }
-
-
-        /*
-        Request recipient user is friendId when accepting or declining requests
-        */
-        [Authorize]
-        [ServiceFilter(typeof(ApiAntiforgeryTokenAuthorizationFilter))]
-        [HttpPut("accept-request")]
-        public async Task<ActionResult> AcceptRequest([FromBody]Friendship friendRequest)
-        {
-            await _friendshipRepo.Update(friendRequest);
-            var requests = await _friendshipMgr.GetPendingRequests(friendRequest.FriendId);
-            return Ok(requests);
-        }
-
-        [Authorize]
-        [ServiceFilter(typeof(ApiAntiforgeryTokenAuthorizationFilter))]
-        [HttpPost("decline-request")]
-        public async Task<ActionResult> DeclineRequest([FromBody]Friendship friendRequest)
-        {
-            await _friendshipRepo.Delete(friendRequest.FriendId);
-            var requests = await _friendshipMgr.GetPendingRequests(friendRequest.FriendId);
-            return Ok(requests);
         }
     }
 }

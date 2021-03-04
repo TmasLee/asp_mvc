@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Configuration;
@@ -13,8 +14,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.FileProviders;
 using Newtonsoft.Json;
 
+using asp_mvc.Hubs;
 using asp_mvc.Data;
-using asp_mvc.DAL;
+using asp_mvc.DAL.Repositories;
 using asp_mvc.DAL.Managers;
 using asp_mvc.Utilities;
 using asp_mvc.Utilities.POCO;
@@ -121,6 +123,8 @@ namespace asp_mvc
                 });
             }
 
+            services.AddSignalR();
+
             // CSRF token service
             services.AddAntiforgery(options =>
             {
@@ -134,6 +138,7 @@ namespace asp_mvc
             services.AddScoped<IFriendshipManager, FriendshipManager>();
             services.AddScoped<SecretsManager>();
             services.AddTransient<StupidLoader>();
+            services.AddSingleton<IUserIdProvider, EmailBasedUserIdProvider>();
 
             services.AddControllers();
             services.AddHttpContextAccessor();
@@ -180,6 +185,7 @@ namespace asp_mvc
             {
                 endpoints.MapControllers();
                 endpoints.MapFallbackToController("Index", "Index");
+                endpoints.MapHub<RequestsHub>("/requestshub");
             });
         }
     }

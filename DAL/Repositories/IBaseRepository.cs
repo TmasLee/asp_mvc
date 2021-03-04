@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace asp_mvc.DAL.Repositories
 {
-    public interface IRepository<T> : IReadOnlyRepository<T>, IDisposable
+    public interface IBaseRepository<T> : IReadOnlyRepository<T>, IDisposable
     {
         Task Create(T model);
         Task Update(T model);
