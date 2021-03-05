@@ -1,14 +1,13 @@
 using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using System.Collections.Concurrent;
 using System.Security.Claims;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.Authorization;
 
-using asp_mvc.Controllers;
 using asp_mvc.DAL.Repositories;
 using asp_mvc.Models;
+using asp_mvc.DAL.Managers;
 
 namespace asp_mvc.Hubs
 {
@@ -16,16 +15,19 @@ namespace asp_mvc.Hubs
     public class RequestsHub : Hub<IRequestsClient>
     {
         private readonly IFriendshipRepository _friendshipRepo;
+        private readonly IFriendshipManager _friendshipMgr;
         private readonly IUserRepository _userRepo;
-        public RequestsHub(IFriendshipRepository friendshipRepo, IUserRepository userRepo, IUserIdProvider userProvider)
+        public RequestsHub(IFriendshipRepository friendshipRepo, IUserRepository userRepo, IFriendshipManager friendshipMgr)
         {
             _friendshipRepo = friendshipRepo;
+            _friendshipMgr = friendshipMgr;
             _userRepo = userRepo;
         }
 
-        public async Task Test2(string connectionId)
+        public async Task<int> GetRequestCount(int userId)
         {
-            await Clients.Client(connectionId).Test();
+            List<UserFriendship> requests = await _friendshipRepo.RetrievePendingRequests(userId);
+            return requests.Count;
         }
     }
 }

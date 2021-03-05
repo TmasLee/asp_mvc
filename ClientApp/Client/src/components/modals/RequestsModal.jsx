@@ -9,8 +9,8 @@ import authService from '../../AuthenticationService';
 export class RequestsModal extends Component {
     state = {
         requests: {
-            pendingRequests: [],
-            pendingSentRequests: []
+            received: [],
+            sent: []
         }
     }
 
@@ -26,6 +26,12 @@ export class RequestsModal extends Component {
             this.setState({ requests: resp.data })
         })
         .catch((err) => console.error(err));
+
+        if (this.props.connection){
+            this.props.connection.on("ReceiveRequestsList", (requests) => {
+                this.setState({ requests: requests });
+            });
+        }
     }
 
     acceptRequest = async (userId, friendId) => {
@@ -38,7 +44,6 @@ export class RequestsModal extends Component {
         )
         .then(async (resp) => {
             this.setState({ requests: resp.data });
-            this.props.setUser(await authService.retrieveUser());
         })
         .catch((err) => console.error(err));
     }
@@ -53,7 +58,6 @@ export class RequestsModal extends Component {
         )
         .then(async (resp) => {
             this.setState({ requests: resp.data });
-            this.props.setUser(await authService.retrieveUser());
         })
         .catch((err) => console.error(err));
     }
@@ -65,7 +69,7 @@ export class RequestsModal extends Component {
                 <h6>Pending Requests</h6>
                 <ListGroup>
                     {
-                        requests.pendingRequests.map((request, i) => {
+                        requests.received.map((request, i) => {
                             return <RequestLink
                                         key={i}
                                         accept={this.acceptRequest}
@@ -79,7 +83,7 @@ export class RequestsModal extends Component {
                 <h6>Pending Sent Requests</h6>
                 <ListGroup>
                     {
-                        requests.pendingSentRequests.map((request, i) => {
+                        requests.sent.map((request, i) => {
                             return <RequestLink key ={i} request={request}/>
                         })
                     }

@@ -81,14 +81,11 @@ namespace asp_mvc.Controllers
         [HttpGet("get-current-user-datass")]
         public async Task<ActionResult> GetUserDatas()
         {
-            var email = User.Claims.Where(x => x.Type == ClaimTypes.Email).FirstOrDefault()?.Value;
+            var email = User.FindFirstValue(ClaimTypes.Email);
             User user = await _userRepo.Retrieve(email);
 
             List<UserFriendship> friends = await _friendshipRepo.RetrieveFriends(user.Id);
-            var requests = await _friendshipRepo.RetrievePendingRequests(user.Id);
-
             UserDto userDto = user.CurrentUserToDto(friends);
-            userDto.RequestCount = requests.Count;
 
             return Ok(userDto);
         }

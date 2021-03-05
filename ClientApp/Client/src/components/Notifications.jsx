@@ -2,30 +2,24 @@ import React, { Fragment, useState, useEffect } from 'react';
 import { Nav, Badge } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-export const Notifications = ({currentUser, toggleModal}) => {
-    const [connection, setConnection] = useState(null);
-    const [requestCount, setRequestCount] = useState(0);
-    const requestsBadge = <Badge variant="primary">{requestCount}</Badge>;
-
-    useEffect(() => {
-        setRequestCount(currentUser.requestCount);
-        let connection = new signalR.HubConnectionBuilder()
-            .withUrl("/requestshub")
-            .withAutomaticReconnect()
-            .configureLogging(signalR.LogLevel.Information)
-            .build();
-            connection.start()
-        .catch((err)=>{
-            console.error(err);
-        });
-
-        setConnection(connection);
-    }, []);
+export const Notifications = ({currentUser, toggleModal, connection}) => {
+    const [requestCount, setRequestCount] = useState(null);
+    let requestsBadge = requestCount ? <Badge variant="primary">{requestCount}</Badge> : null;
 
     useEffect(() => {
         if (connection){
-            connection.on("ReceiveMessage", message => {
-                console.log(message)
+            connection.invoke("GetRequestCount", currentUser.id)
+                .then(count => {
+                    setRequestCount(count);
+                })
+                .catch((err) => console.error(err));
+        }
+    });
+
+    useEffect(() => {
+        if (connection){
+            connection.on("ReceiveRequestsList", (requests) => {
+                setRequestCount(requests.length);
             });
         }
     }, [connection]);
@@ -37,11 +31,11 @@ export const Notifications = ({currentUser, toggleModal}) => {
                     Requests {requestsBadge}
                 </Nav.Link>
             </Nav.Item>
-            <Nav.Item>
+            {/* <Nav.Item>
                 <Nav.Link as={Link} className="text-dark" to="#">
-                    Chat {requestsBadge}
+                    Chat {chatBadge}
                 </Nav.Link>
-            </Nav.Item>
+            </Nav.Item> */}
         </Fragment>
     )
 }

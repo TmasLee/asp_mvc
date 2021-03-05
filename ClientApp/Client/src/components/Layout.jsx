@@ -18,18 +18,20 @@ export class Layout extends Component {
     }
 
     render () {
-        const { handleLogout, setUser, currentUser } = this.props;
+        const { handleLogout, setUser, currentUser, connection } = this.props;
         return (
             <div>
                 <NavMenu
                     toggleModal={this.toggleModal}
                     logout={handleLogout}
                     currentUser={currentUser}
+                    connection={connection}
                 />
                 <ModalSwitch
                     {...this.state}
                     currentUser={currentUser}
                     setUser={setUser}
+                    connection={connection}
                     toggleModal={this.toggleModal}
                 />
                 <Container>

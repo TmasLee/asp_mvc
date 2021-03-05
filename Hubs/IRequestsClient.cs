@@ -11,6 +11,6 @@ namespace asp_mvc.Hubs
     public interface IRequestsClient
     {
         Task Test();
-        Task ReceiveMessage(string msg, List<UserFriendship> pendingRequests);
+        Task ReceiveRequestsList(Dictionary<string, List<UserFriendship>> requests);
     }
 }

@@ -55,12 +55,10 @@ namespace asp_mvc.Controllers
 
             await _friendshipRepo.Create(friendRequest);
 
-            string userEmail = User.FindFirstValue(ClaimTypes.Email);
+            User friend = await _userRepo.Retrieve(friendRequest.FriendId);
+            Dictionary<string, List<UserFriendship>> requests = await _friendshipMgr.GetPendingRequests(friend.Id);
 
-            User user = await _userRepo.Retrieve(userEmail);
-            List<UserFriendship> pendingRequests = await _friendshipRepo.RetrievePendingRequests(user.Id);
-
-            await _requestsHub.Clients.User(userEmail).ReceiveMessage("xd", pendingRequests);
+            await _requestsHub.Clients.User(friend.Email).ReceiveRequestsList(requests);
 
             return Ok();
         }

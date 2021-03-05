@@ -16,20 +16,45 @@ import '../../css/App.css';
 class App extends Component {
     state = {
         currentUser: null,
+        connection: null,
     }
 
     async componentDidMount(){
         let user = await authService.retrieveUser();
         this.setUser(user);
+
+        if (user){
+            let connection = new signalR.HubConnectionBuilder()
+                .withUrl("/requestshub")
+                .withAutomaticReconnect()
+                .configureLogging(signalR.LogLevel.Information)
+                .build();
+
+            await connection.start()
+                .then(() => {
+                    console.log("Connected");
+                })
+                .catch((err)=>{
+                    console.error(err);
+                });
+
+            this.setConnection(connection);
+        }
     }
 
     setUser = (user) => {
         this.setState({ currentUser: user });
     }
 
+    setConnection = (connection) => {
+        this.setState({ connection: connection});
+    }
+
     handleLogout = () => {
         authService.logout();
         this.setUser(null);
+        this.state.connection.hub.stop();
+        this.setConnection(null);
     }
 
     render(){
