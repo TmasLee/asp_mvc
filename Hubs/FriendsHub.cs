@@ -12,12 +12,12 @@ using asp_mvc.DAL.Managers;
 namespace asp_mvc.Hubs
 {
     [Authorize]
-    public class RequestsHub : Hub<IRequestsClient>
+    public class FriendsHub : Hub<IFriendsClient>
     {
         private readonly IFriendshipRepository _friendshipRepo;
         private readonly IFriendshipManager _friendshipMgr;
         private readonly IUserRepository _userRepo;
-        public RequestsHub(IFriendshipRepository friendshipRepo, IUserRepository userRepo, IFriendshipManager friendshipMgr)
+        public FriendsHub(IFriendshipRepository friendshipRepo, IUserRepository userRepo, IFriendshipManager friendshipMgr)
         {
             _friendshipRepo = friendshipRepo;
             _friendshipMgr = friendshipMgr;

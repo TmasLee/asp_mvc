@@ -1,7 +1,6 @@
 using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using System.Security.Claims;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -24,19 +23,19 @@ namespace asp_mvc.Controllers
         private readonly IUserManager _userMgr;
         private readonly IFriendshipRepository _friendshipRepo;
         private readonly IFriendshipManager _friendshipMgr;
-        private readonly IHubContext<RequestsHub, IRequestsClient> _requestsHub;
+        private readonly IHubContext<FriendsHub, IFriendsClient> _friendsHub;
         public FriendshipController(
             IUserRepository userRepo,
             IUserManager userMgr,
             IFriendshipRepository friendshipRepo,
             IFriendshipManager friendshipMgr,
-            IHubContext<RequestsHub, IRequestsClient> requestsHub)
+            IHubContext<FriendsHub, IFriendsClient> friendsHub)
         {
             _userRepo = userRepo;
             _userMgr = userMgr;
             _friendshipRepo = friendshipRepo;
             _friendshipMgr = friendshipMgr;
-            _requestsHub = requestsHub;
+            _friendsHub = friendsHub;
         }
 
         [Authorize]
@@ -58,10 +57,20 @@ namespace asp_mvc.Controllers
             User friend = await _userRepo.Retrieve(friendRequest.FriendId);
             Dictionary<string, List<UserFriendship>> requests = await _friendshipMgr.GetPendingRequests(friend.Id);
 
-            await _requestsHub.Clients.User(friend.Email).ReceiveRequestsList(requests);
+            await _friendsHub.Clients.User(friend.Email).ReceiveRequestsList(requests);
 
             return Ok();
         }
+
+        [Authorize]
+        [ServiceFilter(typeof(ApiAntiforgeryTokenAuthorizationFilter))]
+        [HttpGet("get-friends-list")]
+        public async Task<ActionResult> GetFriendsList([FromQuery(Name = "currentUserId")]int currentUserId)
+        {
+            List<UserFriendship> friends = await _friendshipRepo.RetrieveFriends(currentUserId);
+            return Ok(friends);
+        }
+
 
         [Authorize]
         [ServiceFilter(typeof(ApiAntiforgeryTokenAuthorizationFilter))]
@@ -75,7 +84,7 @@ namespace asp_mvc.Controllers
 
         [Authorize]
         [ServiceFilter(typeof(ApiAntiforgeryTokenAuthorizationFilter))]
-        [HttpGet("get-requests")]
+        [HttpGet("get-requests-list")]
         public async Task<ActionResult> GetRequests([FromQuery(Name = "currentUserId")]int currentUserId)
         {
             var requests = await _friendshipMgr.GetPendingRequests(currentUserId);

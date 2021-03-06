@@ -25,7 +25,7 @@ class App extends Component {
 
         if (user){
             let connection = new signalR.HubConnectionBuilder()
-                .withUrl("/requestshub")
+                .withUrl("/friendshub")
                 .withAutomaticReconnect()
                 .configureLogging(signalR.LogLevel.Information)
                 .build();
@@ -53,7 +53,7 @@ class App extends Component {
     handleLogout = () => {
         authService.logout();
         this.setUser(null);
-        this.state.connection.hub.stop();
+        this.state.connection.stop();
         this.setConnection(null);
     }
 

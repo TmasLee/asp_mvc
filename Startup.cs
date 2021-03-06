@@ -185,7 +185,7 @@ namespace asp_mvc
             {
                 endpoints.MapControllers();
                 endpoints.MapFallbackToController("Index", "Index");
-                endpoints.MapHub<RequestsHub>("/requestshub");
+                endpoints.MapHub<FriendsHub>("/friendshub");
             });
         }
     }

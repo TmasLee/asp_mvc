@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { ListGroup } from 'react-bootstrap';
+import { ListGroup, Button } from 'react-bootstrap';
 import axios from 'axios';
 
 import { GenericModal } from '../generics';
-import { RequestLink } from './RequestLink';
-import authService from '../../AuthenticationService';
+import UserListItem from './UserListItem';
 
 export class RequestsModal extends Component {
     state = {
@@ -15,9 +14,8 @@ export class RequestsModal extends Component {
     }
 
     async componentDidMount(){
-        this.props.setUser(await authService.retrieveUser());
         await axios.get(
-            '/friendship/get-requests', {
+            '/friendship/get-requests-list', {
             params: {
                 currentUserId: this.props.currentUser.id
             }
@@ -42,7 +40,7 @@ export class RequestsModal extends Component {
                 friendId: friendId
             }
         )
-        .then(async (resp) => {
+        .then((resp) => {
             this.setState({ requests: resp.data });
         })
         .catch((err) => console.error(err));
@@ -56,7 +54,7 @@ export class RequestsModal extends Component {
                 friendId: friendId
             }
         )
-        .then(async (resp) => {
+        .then((resp) => {
             this.setState({ requests: resp.data });
         })
         .catch((err) => console.error(err));
@@ -70,12 +68,32 @@ export class RequestsModal extends Component {
                 <ListGroup>
                     {
                         requests.received.map((request, i) => {
-                            return <RequestLink
-                                        key={i}
-                                        accept={this.acceptRequest}
-                                        decline={this.declineRequest}
-                                        request={request}
-                                    />
+                            let acceptBtn = (
+                                <Button
+                                    className="float-right"
+                                    onClick={(e)=> this.acceptRequest(request.userId, request.friendId)}
+                                >
+                                    Accept
+                                </Button>
+                            );
+                            let declineBtn = (
+                                <Button
+                                    className="float-right"
+                                    onClick={(e)=> this.declineRequest(request.userId, request.friendId)}
+                                >
+                                    Decline
+                                </Button>
+                            );
+                            return (
+                                <UserListItem
+                                    key={i}
+                                    userEmail={request.email}
+                                    userId={request.userId}
+                                >
+                                    {declineBtn}
+                                    {acceptBtn}
+                                </UserListItem>
+                            )
                         })
                     }
                 </ListGroup>
@@ -84,7 +102,12 @@ export class RequestsModal extends Component {
                 <ListGroup>
                     {
                         requests.sent.map((request, i) => {
-                            return <RequestLink key ={i} request={request}/>
+                            return (
+                                <UserListItem
+                                    key ={i}
+                                    userEmail={request.email}
+                                    userId={request.friendId}/>
+                            )
                         })
                     }
                 </ListGroup>

@@ -2,11 +2,29 @@ import React, { Component } from 'react';
 import axios from 'axios';
 
 import { ListModalWithSearch } from '../generics';
-import authService from '../../AuthenticationService';
 
 export class FriendListModal extends Component {
+    state = {
+        friends: []
+    }
+
     async componentDidMount(){
-        this.props.setUser(await authService.retrieveUser());
+        await axios.get(
+            '/friendship/get-friends-list', {
+            params: {
+                currentUserId: this.props.currentUser.id
+            }
+        })
+        .then((resp) => {
+            this.setState({ friends: resp.data })
+        })
+        .catch((err) => console.error(err));
+
+        if (this.props.connection){
+            this.props.connection.on("ReceiveFriendsList", (friends) => {
+                this.setState({ friends: friends});
+            });
+        }
     }
 
     deleteFriend = async (friendId) => {
@@ -17,14 +35,26 @@ export class FriendListModal extends Component {
                 'friendId': friendId
             },
         )
-        .then(async (resp) => {
-            this.props.setUser(await authService.retrieveUser());
+        .then((resp) => {
+            this.setState({ friends: resp.data });
         })
         .catch((err) => console.error(err));
     }
 
     render(){
-        const FriendsModal = ListModalWithSearch(this.props.currentUser.friends);
-        return (<FriendsModal userAction={this.deleteFriend} {...this.props}/>);
+        let userBtns = [
+            {
+                action: this.deleteFriend,
+                name: 'Delete',
+                variant: 'danger'
+            }
+        ];
+        const FriendsModal = ListModalWithSearch(this.state.friends);
+        return (
+            <FriendsModal
+                userBtns={userBtns}
+                {...this.props}
+            />
+        );
     }
 }

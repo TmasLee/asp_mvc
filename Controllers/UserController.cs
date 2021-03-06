@@ -83,10 +83,7 @@ namespace asp_mvc.Controllers
         {
             var email = User.FindFirstValue(ClaimTypes.Email);
             User user = await _userRepo.Retrieve(email);
-
-            List<UserFriendship> friends = await _friendshipRepo.RetrieveFriends(user.Id);
-            UserDto userDto = user.CurrentUserToDto(friends);
-
+            UserDto userDto = user.ToDto();
             return Ok(userDto);
         }
 

@@ -29,18 +29,6 @@ namespace asp_mvc.Models
                 LastName = LastName,
             };
         }
-
-        public UserDto CurrentUserToDto(List<UserFriendship> friends)
-        {
-            return new UserDto
-            {
-                Id = Id,
-                Email = Email,
-                FirstName = FirstName,
-                LastName = LastName,
-                Friends = friends
-            };
-        }
     }
 
     public class UserDto
@@ -49,6 +37,5 @@ namespace asp_mvc.Models
         public string Email { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public List<UserFriendship> Friends { get; set; }
     }
 }

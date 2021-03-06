@@ -1,32 +1,11 @@
 import React, { Component } from 'react';
-import { ListGroup, ListGroupItem, Button, InputGroup, FormControl, Form } from 'react-bootstrap';
+import { ListGroup, Button, InputGroup, FormControl, Form } from 'react-bootstrap';
 
 import { GenericModal, ModalMessage } from '../generics';
+import UserListItem from '../modals/UserListItem';
 
 export function ListModal(props){
-    const { title, currentUser, userAction, list } = props;
-    if (!currentUser){
-        return (
-            <GenericModal {...props}>
-                {props.children}
-                <br/>
-                <ListGroup>
-                    {
-                        list.map((item, i) => {
-                            return (
-                                <ListGroupItem key={i}>
-                                    <a href={`/user/${item.id}`} style={{textDecoration: 'none'}}>
-                                        {item.email}
-                                    </a>
-                                </ListGroupItem>
-                            )
-                        })
-                    }
-                </ListGroup>
-            </GenericModal>
-        )
-    }
-
+    const { userBtns = [], list } = props;
     return (
         <GenericModal {...props}>
             {props.children}
@@ -34,16 +13,25 @@ export function ListModal(props){
             <ListGroup>
                 {
                     list.map((item, i) => {
-                        let actionBtn = (title === 'Friends') ?
-                                        <Button className="float-right" variant='danger' onClick={(e)=>userAction(item.id)}>Delete</Button>
-                                        : <Button className="float-right" onClick={(e)=>userAction(item.id)}>Add</Button>
                         return (
-                            <ListGroupItem key={i}>
-                                <a href={`/user/${item.id}`} style={{textDecoration: 'none'}}>
-                                    {item.email}
-                                </a>
-                                {actionBtn}
-                            </ListGroupItem>
+                            <UserListItem
+                                key={i}
+                                userEmail={item.email}
+                                userId={item.id}
+                            >
+                                {
+                                    userBtns.map((btn) =>
+                                        <Button
+                                            key={item.id}
+                                            className="float-right"
+                                            variant={btn.variant ? btn.variant : 'primary'}
+                                            onClick={() => btn.action(item.id)}
+                                        >
+                                            {btn.name ? btn.name : 'Action'}
+                                        </Button>
+                                    )
+                                }
+                            </UserListItem>
                         )
                     })
                 }
