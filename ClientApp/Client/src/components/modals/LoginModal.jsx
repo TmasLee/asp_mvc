@@ -203,6 +203,7 @@ export default class LoginModal extends Component{
                         onChange={this.handleInputOnChange}
                         placeholder="Email"
                         error={errors.email}
+                        readOnly={loading ? true : false}
                     />
                     {
                         newUser ? (
@@ -215,6 +216,7 @@ export default class LoginModal extends Component{
                                     onChange={this.handleInputOnChange}
                                     placeholder="First Name"
                                     error={errors.firstName}
+                                    readOnly={loading ? true : false}
                                 />
                                 <FormControlWithError
                                     required={true}
@@ -224,6 +226,7 @@ export default class LoginModal extends Component{
                                     onChange={this.handleInputOnChange}
                                     placeholder="Last Name"
                                     error={errors.lastName}
+                                    readOnly={loading ? true : false}
                                 />
                             </div>
                         )
@@ -237,6 +240,7 @@ export default class LoginModal extends Component{
                         onChange={this.handleInputOnChange}
                         placeholder="Password"
                         error={errors.password}
+                        readOnly={loading ? true : false}
                     />
                     {
                         newUser ? (
@@ -248,6 +252,7 @@ export default class LoginModal extends Component{
                                 onChange={this.handleInputOnChange}
                                 placeholder="Re-enter Password"
                                 error={errors.reenteredPassword}
+                                readOnly={loading ? true : false}
                             />
                         )
                         : userOptions
