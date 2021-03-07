@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import { ListGroup, Button } from 'react-bootstrap';
 import axios from 'axios';
 
-import { GenericModal } from '../generics';
-import UserListItem from './UserListItem';
+import { GenericModal, UserListItem } from '../generics';
 
-export class RequestsModal extends Component {
+export default class RequestsModal extends Component {
     state = {
         requests: {
             received: [],

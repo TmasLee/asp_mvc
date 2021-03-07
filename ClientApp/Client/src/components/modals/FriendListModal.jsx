@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { Button } from 'react-bootstrap';
 
-import { ListModalWithSearch } from '../generics';
+import { ListModalWithSearch, UserListItem } from '../generics';
 
-export class FriendListModal extends Component {
+export default class FriendListModal extends Component {
     state = {
         friends: []
     }
@@ -42,19 +43,30 @@ export class FriendListModal extends Component {
     }
 
     render(){
-        let userBtns = [
-            {
-                action: this.deleteFriend,
-                name: 'Delete',
-                variant: 'danger'
-            }
-        ];
-        const FriendsModal = ListModalWithSearch(this.state.friends);
+        let friendList = this.state.friends.map((user, i) => {
+            let removeBtn = (
+                <Button
+                    className="float-right"
+                    variant='danger'
+                    onClick={() => this.deleteFriend(user.id)}
+                >
+                    Delete
+                </Button>
+            )
+            return (
+                <UserListItem
+                    key={i}
+                    userEmail={user.email}
+                    userId={user.id}
+                >
+                    {removeBtn}
+                </UserListItem>
+            )
+        })
+
+        const FriendsModal = ListModalWithSearch(friendList);
         return (
-            <FriendsModal
-                userBtns={userBtns}
-                {...this.props}
-            />
+            <FriendsModal {...this.props}/>
         );
     }
 }

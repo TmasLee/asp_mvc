@@ -2,38 +2,16 @@ import React, { Component } from 'react';
 import { ListGroup, Button, InputGroup, FormControl, Form } from 'react-bootstrap';
 
 import { GenericModal, ModalMessage } from '../generics';
-import UserListItem from '../modals/UserListItem';
 
 export function ListModal(props){
-    const { userBtns = [], list } = props;
+    const { list } = props;
     return (
         <GenericModal {...props}>
             {props.children}
             <br/>
             <ListGroup>
                 {
-                    list.map((item, i) => {
-                        return (
-                            <UserListItem
-                                key={i}
-                                userEmail={item.email}
-                                userId={item.id}
-                            >
-                                {
-                                    userBtns.map((btn) =>
-                                        <Button
-                                            key={item.id}
-                                            className="float-right"
-                                            variant={btn.variant ? btn.variant : 'primary'}
-                                            onClick={() => btn.action(item.id)}
-                                        >
-                                            {btn.name ? btn.name : 'Action'}
-                                        </Button>
-                                    )
-                                }
-                            </UserListItem>
-                        )
-                    })
+                    list.map((item) => item)
                 }
             </ListGroup>
         </GenericModal>
@@ -55,19 +33,21 @@ export function ListModalWithSearch(list){
 
         // Shitty search lol
         searchUsers = () => {
-            if (this.state.searchField === ''){
+            const { searchField } = this.state;
+            if (searchField === ''){
                 this.setState({ queriedList: list });
             } else {
-                let newQueriedList = list.filter(item => item.email.includes(this.state.searchField));
+                let newQueriedList = list.filter(
+                    item => item.props.userEmail.toLowerCase().includes(searchField.toLowerCase()));
                 this.setState({ queriedList: newQueriedList });
             }
         }
 
         render() {
-            const { error = '' } = this.props;
+            const { error = '', response = '' } = this.props;
             return (
                 <ListModal list={this.state.queriedList} {...this.props}>
-                    <ModalMessage error={error}/>
+                    <ModalMessage error={error} response={response}/>
                     <Form onSubmit={(e)=>{e.preventDefault(); this.searchUsers()}}>
                         <InputGroup>
                             <FormControl

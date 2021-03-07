@@ -5,6 +5,7 @@ import { LoadingButton } from './LoadingButton';
 import { GenericModal } from './GenericModal';
 import { ListModal, ListModalWithSearch } from './ListModal';
 import { ModalMessage } from './ModalMessage';
+import { UserListItem, UserListItemWithMessageField } from './UserListItem';
 
 export {
     GenericModal,
@@ -15,4 +16,6 @@ export {
     FormControlWithError,
     Loading,
     LoadingButton,
+    UserListItem,
+    UserListItemWithMessageField,
 }

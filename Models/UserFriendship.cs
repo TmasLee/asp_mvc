@@ -2,6 +2,9 @@
 
 namespace asp_mvc.Models
 {
+    /*
+    Keyless entity to map rows returned by joining User and Frienships
+    */
     public class UserFriendship
     {
         public int UserId { get; set; }

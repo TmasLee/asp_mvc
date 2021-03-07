@@ -1,11 +1,13 @@
 import React from 'react';
 
-import LoginModal from './LoginModal';
-import { UsersListModal } from './UsersListModal';
-import { RequestsModal } from './RequestsModal';
-import { FriendListModal } from './FriendListModal';
+import {
+    LoginModal,
+    FriendListModal,
+    UsersListModal,
+    RequestsModal
+} from './';
 
-export function ModalSwitch(props){
+export default function ModalSwitch(props){
     switch (props.modalType) {
         case 'login':
             return (<LoginModal {...props}/>)

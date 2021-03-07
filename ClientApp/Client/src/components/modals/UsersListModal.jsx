@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
-import { ListModalWithSearch } from '../generics';
+import { ListModalWithSearch, UserListItem, UserListItemWithMessageField } from '../generics';
 
-export class UsersListModal extends Component {
+export default class UsersListModal extends Component {
     state = {
         users: [],
         friends: [],
+        response: '',
         error: ''
     }
 
@@ -38,48 +39,70 @@ export class UsersListModal extends Component {
         });
     }
 
-    resetError = () => this.setState({ error: '' })
-
-    addFriend = async (userId) => {
+    addFriend = async (userId, message) => {
         await axios.post(
             '/friendship/add-friend',
             {
                 'userId': this.props.currentUser.id,
-                'friendId': userId
+                'friendId': userId,
+                'message': message
             },
         )
-        .then((resp) => this.resetError())
+        .then((resp) => {
+            this.setState({
+                response: 'Sent!',
+                error: ''
+            })
+        })
         .catch((err) => this.setState({ error: err.response.data }));
     }
 
     filterFriendsAndSelf = () => {
+        const { users, friends } = this.state;
         let friendsAndSelfEmails = [this.props.currentUser.email];
-        this.state.friends.forEach((friend) => friendsAndSelfEmails.push(friend.email));
-        return this.state.users.filter((user) => !friendsAndSelfEmails.includes(user.email));
+        friends.forEach((friend) => friendsAndSelfEmails.push(friend.email));
+
+        let userList = users.reduce((result, user, i) => {
+            if (!friendsAndSelfEmails.includes(user.email)){
+                let UserItem = UserListItemWithMessageField(this.addFriend)
+                result.push(
+                    <UserItem
+                        key={i}
+                        userEmail={user.email}
+                        userId={user.id}
+                    />
+                );
+            }
+            return result;
+        }, []);
+
+        return userList;
     }
 
     render(){
         let userList = this.state.users;
-        let userBtns = [];
-
-        if (!this.state.users.length){
+        if (!userList.length){
             return null;
         }
 
         if (this.props.currentUser){
             userList = this.filterFriendsAndSelf();
-            userBtns = [
-                {
-                    action: this.addFriend,
-                    name: 'Add'
-                }
-            ];
+        } else {
+            userList = userList.map((user, i) => {
+                return (
+                    <UserListItem
+                        key={i}
+                        userEmail={user.email}
+                        userId={user.id}
+                    />
+                )
+            })
         }
 
         let UsersModal = ListModalWithSearch(userList);
         return (
             <UsersModal
-                userBtns={userBtns}
+                response={this.state.response}
                 error={this.state.error}
                 {...this.props}
             />
