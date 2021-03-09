@@ -18,6 +18,8 @@ namespace asp_mvc.Models
         [Required]
         public string Password { get; set; }
         public List<Friendship> Friends { get; set; }
+        public ICollection<UserConversation> UserConversations { get; set; }
+        public ICollection<Message> Messages { get; set; }
 
         public UserDto ToDto()
         {

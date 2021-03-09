@@ -18,6 +18,7 @@ namespace asp_mvc.DAL.Repositories
         // Generic insert possible?
         public abstract Task Create(T model);
 
+        // SQL INJECTION DANGER
         public async Task<T> Retrieve(int id)
         {
             string q = $@"
@@ -31,6 +32,7 @@ namespace asp_mvc.DAL.Repositories
             return await model.FromSqlRaw(q).FirstOrDefaultAsync<T>();
         }
 
+        // SQL INJECTION DANGER
         public async Task<List<T>> RetrieveAll()
         {
             string q = $@"
@@ -45,6 +47,7 @@ namespace asp_mvc.DAL.Repositories
         // Generic update possible?
         public abstract Task Update(T model);
 
+        // SQL INJECTION DANGER
         public virtual async Task Delete(int id)
         {
             string q = $@"

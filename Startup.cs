@@ -136,6 +136,9 @@ namespace asp_mvc
             services.AddScoped<IFriendshipRepository, FriendshipRepository>();
             services.AddScoped<IUserManager, UserManager>();
             services.AddScoped<IFriendshipManager, FriendshipManager>();
+            services.AddScoped<IMessageRepository, MessageRepository>();
+            services.AddScoped<IConversationRepository, ConversationRepository>();
+            services.AddScoped<IConversationManager, ConversationManager>();
             services.AddScoped<SecretsManager>();
             services.AddTransient<StupidLoader>();
             services.AddSingleton<IUserIdProvider, EmailBasedUserIdProvider>();
