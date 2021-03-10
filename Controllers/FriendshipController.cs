@@ -20,28 +20,29 @@ namespace asp_mvc.Controllers
     public class FriendshipController : ControllerBase
     {
         private readonly IUserRepository _userRepo;
-        private readonly IUserManager _userMgr;
         private readonly IFriendshipRepository _friendshipRepo;
         private readonly IFriendshipManager _friendshipMgr;
+        private readonly IConversationManager _conversationMgr;
         private readonly IHubContext<FriendsHub, IFriendsClient> _friendsHub;
         public FriendshipController(
             IUserRepository userRepo,
-            IUserManager userMgr,
             IFriendshipRepository friendshipRepo,
             IFriendshipManager friendshipMgr,
+            IConversationRepository conversationRepo,
+            IConversationManager conversationMgr,
             IHubContext<FriendsHub, IFriendsClient> friendsHub)
         {
             _userRepo = userRepo;
-            _userMgr = userMgr;
             _friendshipRepo = friendshipRepo;
             _friendshipMgr = friendshipMgr;
+            _conversationMgr = conversationMgr;
             _friendsHub = friendsHub;
         }
 
         [Authorize]
         [ServiceFilter(typeof(ApiAntiforgeryTokenAuthorizationFilter))]
         [HttpPost("add-friend")]
-        public async Task<ActionResult> AddFriendRequest([FromBody]Friendship friendRequest)
+        public async Task<ActionResult> AddFriendRequest([FromBody]FriendRequest friendRequest)
         {
             try
             {
@@ -52,12 +53,31 @@ namespace asp_mvc.Controllers
                 return BadRequest(e.Message);
             }
 
-            await _friendshipRepo.Create(friendRequest);
-
             User friend = await _userRepo.Retrieve(friendRequest.FriendId);
-            Dictionary<string, List<UserFriendship>> requests = await _friendshipMgr.GetPendingRequests(friend.Id);
+            User sender = await _userRepo.Retrieve(friendRequest.UserId);
+
+            Message newMessage = new Message
+                {
+                    Sender = sender,
+                    Text = friendRequest.Text,
+                    SentTime = DateTime.UtcNow
+                };
+
+            // Make new FriendshipManager method?
+            Friendship newFriendship = new Friendship
+            {
+                UserId = friendRequest.UserId,
+                FriendId = friendRequest.FriendId,
+                SentTime = newMessage.SentTime
+            };
+            await _conversationMgr.CreateConversation(sender, friend, newMessage);
+            await _friendshipRepo.Create(newFriendship);
+
+            Dictionary<string, List<FriendRequest>> requests = await _friendshipMgr.GetPendingRequests(friend.Id);
 
             await _friendsHub.Clients.User(friend.Email).ReceiveRequestsList(requests);
+            friendRequest.Email = sender.Email;
+            await _friendsHub.Clients.User(friend.Email).ReceiveNewrequest(friendRequest);
 
             return Ok();
         }
@@ -70,7 +90,6 @@ namespace asp_mvc.Controllers
             List<UserFriendship> friends = await _friendshipRepo.RetrieveFriends(currentUserId);
             return Ok(friends);
         }
-
 
         [Authorize]
         [ServiceFilter(typeof(ApiAntiforgeryTokenAuthorizationFilter))]

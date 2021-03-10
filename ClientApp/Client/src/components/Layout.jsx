@@ -3,6 +3,7 @@ import { Container } from 'react-bootstrap';
 
 import { NavMenu } from './NavMenu';
 import { ModalSwitch } from './modals';
+import Toaster from './Toaster';
 
 export class Layout extends Component {
     state = {
@@ -34,6 +35,7 @@ export class Layout extends Component {
                     connection={connection}
                     toggleModal={this.toggleModal}
                 />
+                <Toaster connection={connection}/>
                 <Container>
                     {this.props.children}
                 </Container>

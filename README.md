@@ -3,8 +3,9 @@
 A small web app project built using C#, ASP.NET Core, and JS/React.
 
 ### **To-Do**:
-* Socket for live updates
-    - Notification toast - List of toasts as new requests come in
+* Button to test incoming requests - Events/Delegates
+* Optimize messaging/conversation queries
+    - Review Friendship/Message/UserFriendship/FriendRequest models - should they be views?
 * Test xss / sql injection
 
 ### **Improvements/Features To-Do**

@@ -25,10 +25,10 @@ namespace asp_mvc.DAL.Repositories
             {
                 FormattableString q = $@"
                 INSERT INTO 
-                    ""Friendship"" (UserId, FriendId) OUTPUT INSERTED.*
+                    ""Friendship"" (UserId, FriendId, SentTime) OUTPUT INSERTED.*
                 VALUES
                     (
-                        {newFriendship.UserId}, {newFriendship.FriendId}
+                        {newFriendship.UserId}, {newFriendship.FriendId}, {newFriendship.SentTime}
                     )
                 ";
                 await context.Friendship.FromSqlInterpolated(q).ToListAsync();
@@ -41,17 +41,15 @@ namespace asp_mvc.DAL.Repositories
 
         // Can use this to get all pending requests but requires front end parsing.
         // Or maybe handling parsing in FriendshipManager? 🤔
-        public async Task<List<UserFriendship>> RetrieveAllPendingRequests(int currentUserId)
+        public async Task<List<FriendRequest>> RetrieveAllPendingRequests(int currentUserId)
         {
-            return await context.UserFriendship.FromSqlInterpolated($@"
+            return await context.FriendRequest.FromSqlInterpolated($@"
             SELECT
                 UserId,
                 FriendId,
-                Id,
                 Email,
-                FirstName,
-                LastName,
-                Status
+                Status,
+                Text
             FROM
                 ""Friendship""
                 INNER JOIN
@@ -70,64 +68,67 @@ namespace asp_mvc.DAL.Repositories
             ").ToListAsync();
         }
 
-        public async Task<List<UserFriendship>> RetrievePendingRequests(int userId)
+        public async Task<List<FriendRequest>> RetrievePendingRequests(int userId)
         {
-            return await context.UserFriendship.FromSqlInterpolated($@"
+            return await context.FriendRequest.FromSqlInterpolated($@"
             SELECT
                 UserId,
                 FriendId,
-                Id,
                 Email,
-                FirstName,
-                LastName,
-                Status
+                Status,
+                Text
             FROM
                 ""Friendship""
                 INNER JOIN
                     ""User""
                     ON ""User"".Id = ""Friendship"".UserId
+                INNER JOIN
+                    ""Message""
+                    ON ""Message"".SenderId = ""Friendship"".UserId AND ""Message"".SentTime = ""Friendship"".SentTime
             WHERE FriendId = {userId}
                 AND Status = 0
             ").ToListAsync();
         }
 
-        public async Task<List<UserFriendship>> RetrievePendingSentRequests(int userId)
+        public async Task<List<FriendRequest>> RetrievePendingSentRequests(int userId)
         {
-            return await context.UserFriendship.FromSqlInterpolated($@"
+            return await context.FriendRequest.FromSqlInterpolated($@"
             SELECT
                 UserId,
                 FriendId,
-                Id,
                 Email,
-                FirstName,
-                LastName,
-                Status
+                Status,
+                Text
             FROM
                 ""Friendship""
                 INNER JOIN
                     ""User""
                     ON ""User"".Id = ""Friendship"".FriendId
+                INNER JOIN
+                    ""Message""
+                    ON ""Message"".SenderId = ""Friendship"".UserId AND ""Message"".SentTime = ""Friendship"".SentTime
             WHERE UserId = {userId}
                 AND Status = 0
             ").ToListAsync();
         }
 
-        public async Task<List<UserFriendship>> RetrievePendingRequest(Friendship friendRequest)
+        public async Task<List<FriendRequest>> RetrievePendingRequest(FriendRequest friendRequest)
         {
-            return await context.UserFriendship.FromSqlInterpolated($@"
+            return await context.FriendRequest.FromSqlInterpolated($@"
             SELECT
                 UserId,
                 FriendId,
-                Id,
                 Email,
-                FirstName,
-                LastName,
-                Status
+                Status,
+                Text
             FROM
                 ""Friendship""
                 INNER JOIN
                     ""User""
                     ON ""User"".Id = ""Friendship"".UserId
+                INNER JOIN
+                    ""Message""
+                    ON ""Message"".SenderId = ""Friendship"".UserId AND ""Message"".SentTime = ""Friendship"".SentTime
             WHERE
                 (
                     UserId = {friendRequest.UserId}

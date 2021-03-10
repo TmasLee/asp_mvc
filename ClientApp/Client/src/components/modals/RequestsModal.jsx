@@ -64,56 +64,65 @@ export default class RequestsModal extends Component {
         return (
             <GenericModal {...this.props}>
                 <h6>Pending Requests</h6>
-                <ListGroup>
-                    {
-                        requests.received.map((request, i) => {
-                            let acceptBtn = (
-                                <Button
-                                    className="float-right"
-                                    onClick={(e)=> this.acceptRequest(request.userId, request.friendId)}
-                                >
-                                    Accept
-                                </Button>
-                            );
-                            let declineBtn = (
-                                <Button
-                                    className="float-right"
-                                    onClick={(e)=> this.declineRequest(request.userId, request.friendId)}
-                                >
-                                    Decline
-                                </Button>
-                            );
-                            return (
-                                <UserListItem
-                                    key={i}
-                                    userEmail={request.email}
-                                    userId={request.userId}
-                                >
-                                    {declineBtn}
-                                    {acceptBtn}
-                                    {
-                                        request ? `  says: ${request.text}`
-                                        : null
-                                    }
-                                </UserListItem>
-                            )
-                        })
-                    }
-                </ListGroup>
-                <br/>
+                {
+                    requests.received.length ? (
+                        <ListGroup>
+                            {
+                                requests.received.map((request, i) => {
+                                    let acceptBtn = (
+                                        <Button
+                                            className="float-right"
+                                            onClick={(e)=> this.acceptRequest(request.userId, request.friendId)}
+                                        >
+                                            Accept
+                                        </Button>
+                                    );
+                                    let declineBtn = (
+                                        <Button
+                                            className="float-right"
+                                            onClick={(e)=> this.declineRequest(request.userId, request.friendId)}
+                                        >
+                                            Decline
+                                        </Button>
+                                    );
+                                    return (
+                                        <UserListItem
+                                            key={i}
+                                            userEmail={request.email}
+                                            userId={request.userId}
+                                        >
+                                            {declineBtn}
+                                            {acceptBtn}
+                                            {
+                                                request ? `  says: ${request.text}`
+                                                : null
+                                            }
+                                        </UserListItem>
+                                    )
+                                })
+                            }
+                        </ListGroup>
+                    ) : <div>Nobody added you :(</div>
+                }
+                <br/><br/>
                 <h6>Pending Sent Requests</h6>
-                <ListGroup>
-                    {
-                        requests.sent.map((request, i) => {
-                            return (
-                                <UserListItem
-                                    key ={i}
-                                    userEmail={request.email}
-                                    userId={request.friendId}/>
-                            )
-                        })
-                    }
-                </ListGroup>
+                {
+                    requests.sent.length ? (
+                        <ListGroup>
+                            {
+                                requests.sent.map((request, i) => {
+                                    return (
+                                        <UserListItem
+                                            key ={i}
+                                            userEmail={request.email}
+                                            userId={request.friendId}/>
+                                    )
+                                })
+                            }
+                        </ListGroup>
+                    ) : <div>Go add some people!</div>
+                }
+
             </GenericModal>
         );
     }
