@@ -19,27 +19,33 @@ class App extends Component {
         connection: null,
     }
 
+    async componentDidUpdate(prevProps, prevState){
+        if ((prevState.currentUser !== this.state.currentUser) && this.state.currentUser){
+            await this.connect();
+        }
+    }
+
     async componentDidMount(){
         let user = await authService.retrieveUser();
         this.setUser(user);
+    }
 
-        if (user){
-            let connection = new signalR.HubConnectionBuilder()
-                .withUrl("/friendshub")
-                .withAutomaticReconnect()
-                .configureLogging(signalR.LogLevel.Information)
-                .build();
+    async connect(){
+        let connection = new signalR.HubConnectionBuilder()
+            .withUrl("/friendshub")
+            .withAutomaticReconnect()
+            .configureLogging(signalR.LogLevel.Information)
+            .build();
 
-            await connection.start()
-                .then(() => {
-                    console.log("Connected");
-                })
-                .catch((err)=>{
-                    console.error(err);
-                });
+        await connection.start()
+            .then(() => {
+                console.log("Connected");
+            })
+            .catch((err)=>{
+                console.error(err);
+            });
 
-            this.setConnection(connection);
-        }
+        this.setConnection(connection);
     }
 
     setUser = (user) => {

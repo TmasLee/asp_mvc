@@ -45,7 +45,7 @@ export default class UsersListModal extends Component {
             {
                 'userId': this.props.currentUser.id,
                 'friendId': userId,
-                'message': message
+                'text': message
             },
         )
         .then((resp) => {

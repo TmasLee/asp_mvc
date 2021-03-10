@@ -25,12 +25,12 @@ namespace asp_mvc.DAL.Managers
             _friendshipRepo = friendshipRepo;
         }
 
-        public async Task<Dictionary<string, List<UserFriendship>>> GetPendingRequests(int userId)
+        public async Task<Dictionary<string, List<FriendRequest>>> GetPendingRequests(int userId)
         {
-            List<UserFriendship> receivedRequests = await _friendshipRepo.RetrievePendingRequests(userId);
-            List<UserFriendship> sentRequests = await _friendshipRepo.RetrievePendingSentRequests(userId);
-            Dictionary<string, List<UserFriendship>> requests = 
-                new Dictionary<string, List<UserFriendship>>()
+            List<FriendRequest> receivedRequests = await _friendshipRepo.RetrievePendingRequests(userId);
+            List<FriendRequest> sentRequests = await _friendshipRepo.RetrievePendingSentRequests(userId);
+            Dictionary<string, List<FriendRequest>> requests = 
+                new Dictionary<string, List<FriendRequest>>()
                 {
                     { "received", receivedRequests },
                     { "sent", sentRequests }
@@ -38,9 +38,9 @@ namespace asp_mvc.DAL.Managers
             return requests;
         }
 
-        public async Task CheckForPendingRequest(Friendship friendRequest)
+        public async Task CheckForPendingRequest(FriendRequest friendRequest)
         {
-            List<UserFriendship> pendingRequest = await _friendshipRepo.RetrievePendingRequest(friendRequest);
+            List<FriendRequest> pendingRequest = await _friendshipRepo.RetrievePendingRequest(friendRequest);
             if (pendingRequest.Any())
             {
                 throw new FriendshipException("Pending request exists!");

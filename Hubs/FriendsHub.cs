@@ -1,7 +1,6 @@
 using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using System.Security.Claims;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.Authorization;
 
@@ -26,7 +25,7 @@ namespace asp_mvc.Hubs
 
         public async Task<int> GetRequestCount(int userId)
         {
-            List<UserFriendship> requests = await _friendshipRepo.RetrievePendingRequests(userId);
+            List<FriendRequest> requests = await _friendshipRepo.RetrievePendingRequests(userId);
             return requests.Count;
         }
     }

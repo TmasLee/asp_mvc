@@ -91,6 +91,10 @@ export default class RequestsModal extends Component {
                                 >
                                     {declineBtn}
                                     {acceptBtn}
+                                    {
+                                        request ? `  says: ${request.text}`
+                                        : null
+                                    }
                                 </UserListItem>
                             )
                         })

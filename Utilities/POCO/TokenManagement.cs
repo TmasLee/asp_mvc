@@ -15,7 +15,7 @@ namespace asp_mvc.Utilities.POCO
         public string Audience { get; set; }
         
         [JsonProperty("accessExpiration")]
-        public int AccessExpiration { get; set; } = 120;
+        public int AccessExpiration { get; set; } = 480;
         
         [JsonProperty("refreshExpiration")]
         public int RefreshExpiration { get; set; } = 60;

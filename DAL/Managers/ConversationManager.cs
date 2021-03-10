@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 
 using asp_mvc.Models;
-using asp_mvc.Utilities.POCO;
 using asp_mvc.DAL.Repositories;
 
 namespace asp_mvc.DAL.Managers

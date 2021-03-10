@@ -8,7 +8,7 @@ namespace asp_mvc.Hubs
 {
     public interface IFriendsClient
     {
-        Task Test();
-        Task ReceiveRequestsList(Dictionary<string, List<UserFriendship>> requests);
+        Task ReceiveRequestsList(Dictionary<string, List<FriendRequest>> requests);
+        Task ReceiveNewrequest(FriendRequest friendRequest);
     }
 }
