@@ -25,14 +25,12 @@ namespace asp_mvc.DAL.Managers
 
         public async Task CreateConversation(User sender, User recipient, Message newMessage)
         {
-            UserConversation userConvo = await _conversationRepo.RetrieveUserConversation(
-                new List<int>(){sender.Id, recipient.Id});
+            UserConversation userConvo = await _conversationRepo.RetrieveUserConversation(sender.Id, recipient.Id);
 
             if (userConvo != null)
             {
                 Conversation convo = await _conversationRepo.Retrieve(userConvo.ConversationsId);
                 newMessage.Conversation = convo;
-                // convo.Messages = new List<Message>{newMessage};
                 await _messageRepo.Create(newMessage);
                 return;
             }

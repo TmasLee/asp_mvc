@@ -4,8 +4,7 @@ A small web app project built using C#, ASP.NET Core, and JS/React.
 
 ### **To-Do**:
 * Button to test incoming requests - Events/Delegates
-* Optimize messaging/conversation queries
-    - Review Friendship/Message/UserFriendship/FriendRequest models - should they be views?
+* Review Friendship/Message/UserFriendship/FriendRequest models - should they be views?
 * Test xss / sql injection
 
 ### **Improvements/Features To-Do**
@@ -20,6 +19,7 @@ A small web app project built using C#, ASP.NET Core, and JS/React.
 * Simple messaging
 * On initial site request, return signed in view instead of separate login request
 * Logout redirect / Log out + Unauthorized message
-* Reuse endpoints/queries? Reduce # of trips to DB?
+* Optimize queries (messaging/conversation in particular)
+    - Reduce # of trips to DB?
 * Generic repository - Dynamic queries without LINQ possible?
 * See other user friends list

@@ -1,12 +1,10 @@
 using System;
 using System.Threading.Tasks;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 using asp_mvc.Models;
 using asp_mvc.Data;
-using asp_mvc.Utilities.POCO;
 
 namespace asp_mvc.DAL.Repositories
 {
@@ -26,7 +24,8 @@ namespace asp_mvc.DAL.Repositories
         }
 
         public async override Task Update(Message message)
-        {}
-
+        {
+            await context.Message.FromSqlInterpolated($@"").FirstOrDefaultAsync<Message>();
+        }
     }
 }
