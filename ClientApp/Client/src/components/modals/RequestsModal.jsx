@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { ListGroup, Button } from 'react-bootstrap';
 import axios from 'axios';
+import sad_cat from '../../../../assets/sad_cat.jpg';
 
 import { GenericModal, UserListItem } from '../generics';
 
@@ -63,7 +64,7 @@ export default class RequestsModal extends Component {
         const { requests } = this.state;
         return (
             <GenericModal {...this.props}>
-                <h6>Pending Requests</h6>
+                <h5>Pending Requests</h5>
                 {
                     requests.received.length ? (
                         <ListGroup>
@@ -102,10 +103,17 @@ export default class RequestsModal extends Component {
                                 })
                             }
                         </ListGroup>
-                    ) : <div>Nobody added you :(</div>
+                    ) : (
+                        <div>
+                            <div>
+                                Nobody added you :(
+                            </div>
+                            <img src={sad_cat} alt="Sad Cat :(" width={200}/>
+                        </div>
+                    )
                 }
-                <br/><br/>
-                <h6>Pending Sent Requests</h6>
+                <br/>
+                <h5>Pending Sent Requests</h5>
                 {
                     requests.sent.length ? (
                         <ListGroup>
