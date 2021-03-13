@@ -165,11 +165,13 @@ export default class LoginModal extends Component{
         let title = "Login";
         let actionButtonMsg = "Login";
         let action = this.validateAndLogin;
+        let usernamePlaceholder = "Register With A Fake Email And Log In!";
 
         if (newUser){
             title = "Sign Up";
             actionButtonMsg = "Register"
             action = this.validateAndSignUp;
+            usernamePlaceholder = "Register With A Fake Email"
         }
 
         let buttons = (
@@ -201,7 +203,7 @@ export default class LoginModal extends Component{
                         name="email"
                         value={email}
                         onChange={this.handleInputOnChange}
-                        placeholder="Email"
+                        placeholder={usernamePlaceholder}
                         error={errors.email}
                         readOnly={loading ? true : false}
                     />

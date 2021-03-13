@@ -23,49 +23,19 @@ namespace asp_mvc.DAL.Repositories
         {
             try
             {
-                FormattableString q = $@"
+                await context.Friendship.FromSqlInterpolated($@"
                 INSERT INTO 
                     ""Friendship"" (UserId, FriendId, SentTime) OUTPUT INSERTED.*
                 VALUES
                     (
                         {newFriendship.UserId}, {newFriendship.FriendId}, {newFriendship.SentTime}
                     )
-                ";
-                await context.Friendship.FromSqlInterpolated(q).ToListAsync();
+                ").ToListAsync();
             }
             catch (SqlException e)
             {
                 Console.WriteLine(e.ToString());
             }
-        }
-
-        // Can use this to get all pending requests but requires front end parsing.
-        // Or maybe handling parsing in FriendshipManager? 🤔
-        public async Task<List<FriendRequest>> RetrieveAllPendingRequests(int currentUserId)
-        {
-            return await context.FriendRequest.FromSqlInterpolated($@"
-            SELECT
-                UserId,
-                FriendId,
-                Email,
-                Status,
-                Text
-            FROM
-                ""Friendship""
-                INNER JOIN
-                    ""User""
-                    ON ""User"".Id = ""Friendship"".UserId
-            WHERE
-                (
-                    FriendId = {currentUserId}
-                    AND Status = 0
-                )
-                OR
-                (
-                    UserId = {currentUserId}
-                    AND Status = 0
-                )
-            ").ToListAsync();
         }
 
         public async Task<List<FriendRequest>> RetrievePendingRequests(int userId)

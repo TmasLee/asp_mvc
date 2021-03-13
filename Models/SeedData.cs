@@ -3,7 +3,9 @@ using System.Linq;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+
 using asp_mvc.Data;
+using asp_mvc.Utilities;
 
 namespace asp_mvc.Models
 {
@@ -24,6 +26,7 @@ namespace asp_mvc.Models
                 {
                     context.User.AddRange(user);
                 }
+                Console.WriteLine("DB seeded.");
                 context.SaveChanges();
             }
         }
@@ -35,69 +38,7 @@ namespace asp_mvc.Models
 
         public static List<User> GenerateUsers()
         {
-            List<string> names = new List<string>{
-                "Kristofer Gidley",
-                "Shaunna Raco",
-                "Jayna Ginter",
-                "Rashida Walkes",
-                "Marvin Brathwaite",
-                "Reyna Iles",
-                "Norma Walker",
-                "Soraya Edmondson",
-                "Valene Staff",
-                "Rivka Clayton",
-                "Fermin Dches",
-                "Jake Paul",
-                "Simple Jack",
-                "Artie Bidwell",
-                "Macie Couvillion",
-                "Willene Lenton",
-                "Sherika Coache",
-                "Billye Sherburne",
-                "Julia Stadler",
-                "Arthur Chan",
-                "Kevin Hoppel",
-                "Liam Mulvany",
-                "Wallace Kong",
-                "Wally Kong",
-                "Brooks Campoverde",
-                "Alejandra Scroggins",
-                "Val Bird",
-                "Elease Wolak",
-                "Bobbye Green",
-                "Mireya Southworth",
-                "Lajuana Lawyer",
-                "Lorina Dykstra",
-                "Kotney Rendon",
-                "Gema Alpaugh",
-                "Ashli Carboni",
-                "Darci Fujita",
-                "Jae Rahman",
-                "Vannessa Busby",
-                "Jena Shimp",
-                "Christene Wall",
-                "Violet Reiss",
-                "Dorathy Caro",
-                "Suzann Mcpartland",
-                "Benedit Guadalupe",
-                "Sylvie China",
-                "Altagracia Cottle",
-                "Victor Lemke",
-                "Galen Mcquire",
-                "Antonio Lee",
-                "Chris Treibs",
-                "Dan Duman",
-                "Lil Wayne",
-                "Fitty sent",
-                "Naruto Uzumaki",
-                "Clyde Frog",
-                "Luigi Dog",
-                "Guy One",
-                "Guy Two",
-                "James Lee",
-                "Jesus Christ",
-                "Mike Tyson"
-            };
+            var names = StupidStuff.users;
             List<User> users = new List<User>(names.Count());
 
             for (int i = 0; i < names.Count(); i++)

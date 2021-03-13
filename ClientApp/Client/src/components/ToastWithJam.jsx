@@ -35,12 +35,14 @@ export default class ToastWithJam extends Component {
                 }}
                 show={showToast}
                 onClose={(e)=>this.toggleToast()}
+                delay={20000}
+                autohide
             >
                 <Toast.Header>
                     <strong className="mr-auto">{email}</strong>
                     <small>{minsAgo ? `${minsAgo} mins ago` : 'just now'}</small>
                 </Toast.Header>
-                <Toast.Body>{text}</Toast.Body>
+                <Toast.Body>{text ? text : "wants to be your friend!"}</Toast.Body>
             </Toast>
         )
     }

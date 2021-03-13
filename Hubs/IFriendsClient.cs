@@ -10,5 +10,6 @@ namespace asp_mvc.Hubs
     {
         Task ReceiveRequestsList(Dictionary<string, List<FriendRequest>> requests);
         Task ReceiveNewrequest(FriendRequest friendRequest);
+        Task CongratulateUser();
     }
 }

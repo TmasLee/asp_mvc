@@ -8,7 +8,6 @@ namespace asp_mvc.DAL.Repositories
 {
     public interface IFriendshipRepository : IBaseRepository<Friendship>
     {
-        Task<List<FriendRequest>> RetrieveAllPendingRequests(int currentUserId);
         Task<List<FriendRequest>> RetrievePendingRequests(int currentUserId);
         Task<List<FriendRequest>> RetrievePendingSentRequests(int currentUserId);
         Task<List<FriendRequest>> RetrievePendingRequest(FriendRequest friendRequest);

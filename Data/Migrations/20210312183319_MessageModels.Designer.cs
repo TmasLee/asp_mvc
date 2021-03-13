@@ -10,7 +10,7 @@ using asp_mvc.Data;
 namespace asp_mvc.Migrations
 {
     [DbContext(typeof(MSAContext))]
-    [Migration("20210309132501_MessageModels")]
+    [Migration("20210312183319_MessageModels")]
     partial class MessageModels
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
