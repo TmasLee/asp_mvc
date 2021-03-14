@@ -12,6 +12,8 @@ namespace asp_mvc.Data
         public DbSet<Message> Message { get; set; }
         public DbSet<Conversation> Conversation { get; set; }
         public DbSet<UserConversation> UserConversation { get; set; }
+        public DbSet<Comment> Comment { get; set; }
+        public DbSet<UserComment> UserComment { get; set; }
         public MSAContext(DbContextOptions<MSAContext> options) : base(options)
         {
         }
@@ -36,6 +38,8 @@ namespace asp_mvc.Data
             modelBuilder.Entity<UserFriendship>()
                         .HasNoKey();
             modelBuilder.Entity<FriendRequest>()
+                        .HasNoKey();
+            modelBuilder.Entity<UserComment>()
                         .HasNoKey();
 
             // Many-to-many relation between User and Conversation
@@ -74,6 +78,11 @@ namespace asp_mvc.Data
                         .HasOne(Message => Message.Friendship)
                         .WithOne(Friendship => Friendship.Message)
                         .HasForeignKey<Friendship>(Friendship => new {Friendship.UserId, Friendship.SentTime});
+            // One-to-many relation between User and Comment
+            modelBuilder.Entity<Comment>()
+                        .HasOne(Comment => Comment.User)
+                        .WithMany(User => User.Comments)
+                        .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

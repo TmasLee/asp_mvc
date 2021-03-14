@@ -9,7 +9,8 @@ import { Layout } from './components/Layout';
 import {
     Home,
     AboutMe,
-    User
+    User,
+    Comments
 } from './components/pages';
 import '../../css/App.css';
 
@@ -68,8 +69,15 @@ class App extends Component {
             <Layout setUser={this.setUser}
                     handleLogout={this.handleLogout}
                     {...this.state}>
-                <Route exact path='/' component={Home} />
+                <Route exact path='/' render={(props) => (
+                        <Home currentUser={this.state.currentUser}/>
+                    )}
+                />
                 <Route path='/aboutme' component={AboutMe} />
+                <Route path='/comments' render={(props) => (
+                        <Comments currentUser={this.state.currentUser}/>
+                    )}
+                />
                 <Route path='/user/:id' component={User} />
             </Layout>
         );

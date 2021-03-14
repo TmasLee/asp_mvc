@@ -20,6 +20,7 @@ namespace asp_mvc.Models
         public List<Friendship> Friends { get; set; }
         public ICollection<UserConversation> UserConversations { get; set; }
         public ICollection<Message> Messages { get; set; }
+        public ICollection<Comment> Comments { get; set; }
 
         public UserDto ToDto()
         {
