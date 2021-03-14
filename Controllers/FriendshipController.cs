@@ -71,31 +71,7 @@ namespace asp_mvc.Controllers
                 return BadRequest(e.Message);
             }
 
-            User friend = await _userRepo.Retrieve(friendRequest.FriendId);
-            User sender = await _userRepo.Retrieve(friendRequest.UserId);
-
-            Message newMessage = new Message
-                {
-                    Sender = sender,
-                    Text = friendRequest.Text,
-                    SentTime = DateTime.UtcNow
-                };
-
-            // Make new FriendshipManager method?
-            Friendship newFriendship = new Friendship
-            {
-                UserId = friendRequest.UserId,
-                FriendId = friendRequest.FriendId,
-                SentTime = newMessage.SentTime
-            };
-            await _conversationMgr.CreateConversation(sender, friend, newMessage);
-            await _friendshipRepo.Create(newFriendship);
-
-            Dictionary<string, List<FriendRequest>> requests = await _friendshipMgr.GetPendingRequests(friend.Id);
-
-            await _friendsHub.Clients.User(friend.Email).ReceiveRequestsList(requests);
-            friendRequest.Email = sender.Email;
-            await _friendsHub.Clients.User(friend.Email).ReceiveNewrequest(friendRequest);
+            await _friendshipMgr.AddFriend(friendRequest);
 
             return Ok();
         }
@@ -174,6 +150,7 @@ namespace asp_mvc.Controllers
 
             foreach (string email in generatedFriends)
             {
+                await _stupidloader.LoadTime(2);
                 var user = await _userRepo.Retrieve(email);
 
                 FriendRequest newRequest = new FriendRequest
@@ -184,8 +161,7 @@ namespace asp_mvc.Controllers
                     Text = generatedMessages[rand.Next(4)]
                 };
 
-                await AddFriendRequest(newRequest);
-                await _stupidloader.LoadTime(3);
+                await _friendshipMgr.AddFriend(newRequest);
             }
 
             return Ok();

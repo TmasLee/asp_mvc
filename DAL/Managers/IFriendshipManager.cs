@@ -9,5 +9,6 @@ namespace asp_mvc.DAL.Managers
     {
         Task<Dictionary<string, List<FriendRequest>>> GetPendingRequests(int userId);
         Task CheckForPendingRequest(FriendRequest friendRequest);
+        Task AddFriend(FriendRequest friendRequest);
     }
 }

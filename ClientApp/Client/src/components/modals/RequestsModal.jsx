@@ -116,7 +116,7 @@ export default class RequestsModal extends Component {
                                             {declineBtn}
                                             {acceptBtn}
                                             {
-                                                request ? `  says: ${request.text}`
+                                                request.text ? `  says: ${request.text}`
                                                 : null
                                             }
                                         </UserListItem>
@@ -127,6 +127,7 @@ export default class RequestsModal extends Component {
                     ) : (
                         <div>
                             Nobody added you :(
+                            {' '}
                             <img src={sad_cat} alt="Sad Cat :(" width={75}/>
                         </div>
                     )

@@ -18,21 +18,11 @@ namespace asp_mvc.DAL.Repositories
         // Generic insert possible?
         public abstract Task Create(T model);
 
-        // SQL INJECTION DANGER
         public async Task<T> Retrieve(int id)
         {
-            string q = $@"
-            SELECT
-                *
-            FROM
-                ""{tableName}""
-            WHERE
-                Id = {id}
-            ";
-            return await model.FromSqlRaw(q).FirstOrDefaultAsync<T>();
+            return await model.FindAsync(id);
         }
 
-        // SQL INJECTION DANGER
         public async Task<List<T>> RetrieveAll()
         {
             string q = $@"

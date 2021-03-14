@@ -36,8 +36,9 @@ export function UserListItemWithMessageField(action){
             return (
                 <UserListItem {...this.props}>
                     {button}
+                    <br/>
                     <input
-                        className="float-right"
+                        className="float-left"
                         placeholder='Say hi!'
                         name='message'
                         onChange={this.handleInputOnChange}

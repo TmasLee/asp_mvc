@@ -41,7 +41,7 @@ namespace asp_mvc.DAL.Repositories
                         UsersId = {senderId}
                 )
                 AND UsersId = {recipientId}
-            ").FirstOrDefaultAsync<UserConversation>();
+            ").OrderBy(convo => convo.ConversationsId).FirstOrDefaultAsync<UserConversation>();
         }
 
         public async override Task Update(Conversation conversation)

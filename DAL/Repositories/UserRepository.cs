@@ -38,7 +38,7 @@ namespace asp_mvc.DAL.Repositories
                 ""User""
                 WHERE
                     email = {email}
-            ").FirstOrDefaultAsync<User>();
+            ").OrderBy(user => user.Email).FirstOrDefaultAsync<User>();
         }
 
         public async override Task Update(User user)

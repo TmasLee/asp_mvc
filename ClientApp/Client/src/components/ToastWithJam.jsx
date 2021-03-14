@@ -31,7 +31,7 @@ export default class ToastWithJam extends Component {
         return (
             <Toast
                 style={{
-                    minWidth: '250px'
+                    minWidth: '285px'
                 }}
                 show={showToast}
                 onClose={(e)=>this.toggleToast()}

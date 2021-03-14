@@ -165,13 +165,13 @@ export default class LoginModal extends Component{
         let title = "Login";
         let actionButtonMsg = "Login";
         let action = this.validateAndLogin;
-        let usernamePlaceholder = "Register With A Fake Email And Log In!";
+        let usernamePlaceholder = "Log In";
 
         if (newUser){
             title = "Sign Up";
             actionButtonMsg = "Register"
             action = this.validateAndSignUp;
-            usernamePlaceholder = "Register With A Fake Email"
+            usernamePlaceholder = "Email"
         }
 
         let buttons = (
@@ -260,6 +260,14 @@ export default class LoginModal extends Component{
                         : userOptions
                     }
                     {buttons}
+                    <br/>
+                    {
+                        !loading ? (
+                            <div style={{fontSize: '14px'}}>
+                                *Hint: You can sign up with any fake email address
+                            </div>
+                        ) : null
+                    }
                 </Form>
             </GenericModal>
         )
