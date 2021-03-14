@@ -63,7 +63,7 @@ export class Home extends Component {
                     You can check out the source code here: <a href="https://github.com/TmasLee/asp_mvc">https://github.com/TmasLee/asp_mvc</a>
                 </p>
                 <p>
-                    <i>**Note: This is still a WIP and there is some clean up to be done </i>😅.
+                    <i>**Note: This is still a WIP and there is some clean up that can be done </i>😅.
                 </p>
                 <br/><br/>
                 <Row className='row'>
