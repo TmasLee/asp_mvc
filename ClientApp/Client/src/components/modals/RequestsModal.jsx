@@ -10,8 +10,7 @@ export default class RequestsModal extends Component {
         requests: {
             received: [],
             sent: []
-        },
-        friends: []
+        }
     }
 
     async componentDidMount(){
@@ -23,17 +22,6 @@ export default class RequestsModal extends Component {
         })
         .then((resp) => {
             this.setState({ requests: resp.data })
-        })
-        .catch((err) => console.error(err));
-
-        await axios.get(
-            '/friendship/get-friends-list', {
-            params: {
-                currentUserId: this.props.currentUser.id
-            }
-        })
-        .then((resp) => {
-            this.setState({ friends: resp.data })
         })
         .catch((err) => console.error(err));
 
@@ -72,17 +60,8 @@ export default class RequestsModal extends Component {
         .catch((err) => console.error(err));
     }
 
-    makeFriends = () => {
-        axios.get('/friendship/give-friends', {
-            params: {
-                currentUserId: this.props.currentUser.id
-            }
-        })
-        .catch((err) => console.error(err));
-    }
-
     render(){
-        const { requests, friends } = this.state;
+        const { requests } = this.state;
         return (
             <GenericModal {...this.props}>
                 <h5>Pending Requests</h5>
@@ -149,15 +128,6 @@ export default class RequestsModal extends Component {
                             }
                         </ListGroup>
                     ) : <div>Go add some people!</div>
-                }
-                <br/><br/>
-                {
-                    (!requests.sent.length && !requests.received.length && !friends.length) ?
-                    (
-                        <Button onClick={(e)=>this.makeFriends()}>
-                            Make Friends!
-                        </Button>
-                    ) : null
                 }
             </GenericModal>
         );

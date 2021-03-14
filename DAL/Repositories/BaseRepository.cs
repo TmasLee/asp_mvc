@@ -15,8 +15,11 @@ namespace asp_mvc.DAL.Repositories
         public DbSet<T> model;
         public MSAContext context;
 
-        // Generic insert possible?
-        public abstract Task Create(T model);
+        public virtual async Task Create(T model)
+        {
+            await context.AddAsync<T>(model);
+            await context.SaveChangesAsync();
+        }
 
         public async Task<T> Retrieve(int id)
         {
@@ -34,7 +37,6 @@ namespace asp_mvc.DAL.Repositories
             return await model.FromSqlRaw(q).ToListAsync<T>();
         }
 
-        // Generic update possible?
         public abstract Task Update(T model);
 
         // SQL INJECTION DANGER

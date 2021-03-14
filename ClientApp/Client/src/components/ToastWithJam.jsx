@@ -4,21 +4,21 @@ import { Toast } from 'react-bootstrap';
 export default class ToastWithJam extends Component {
     state = {
         showToast: true,
-        minsAgo: 0
+        secondsAgo: 0
     }
 
     componentDidMount(){
         setInterval(() => this.setState(prevState => {
-            return { minsAgo: prevState.minsAgo + 1 }
-        }), 60000);
+            return { secondsAgo: prevState.secondsAgo + 10 }
+        }), 10000);
     }
 
     componentWillUnmount(){
         clearInterval(interval);
     }
 
-    setTime = (minsAgo) => {
-        this.setState({minsAgo: minsAgo});
+    setTime = (secondsAgo) => {
+        this.setState({secondsAgo: secondsAgo});
     }
 
     toggleToast = () => {
@@ -26,21 +26,21 @@ export default class ToastWithJam extends Component {
     }
 
     render(){
-        const { showToast, minsAgo } = this.state;
+        const { showToast, secondsAgo } = this.state;
         const { email, text } = this.props;
         return (
             <Toast
                 style={{
-                    minWidth: '285px'
+                    minWidth: '300px'
                 }}
                 show={showToast}
                 onClose={(e)=>this.toggleToast()}
-                delay={20000}
+                delay={21000}
                 autohide
             >
                 <Toast.Header>
                     <strong className="mr-auto">{email}</strong>
-                    <small>{minsAgo ? `${minsAgo} mins ago` : 'just now'}</small>
+                    <small>{secondsAgo ? `${secondsAgo} seconds ago` : 'just now'}</small>
                 </Toast.Header>
                 <Toast.Body>{text ? text : "wants to be your friend!"}</Toast.Body>
             </Toast>

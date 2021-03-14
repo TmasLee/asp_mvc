@@ -132,7 +132,8 @@ namespace asp_mvc.Controllers
         [HttpGet("give-friends")]
         public async Task<ActionResult> GiveFriends([FromQuery(Name = "currentUserId")]int currentUserId)
         {
-            //TODO: Can prob make a single DB query to return exactly what I need
+            // TODO: Can reduce # of DB queries
+            // TODO: Make less hacky 😅
             List<string> friendEmails = new List<string>();
 
             List<UserFriendship> friends = await _friendshipRepo.RetrieveFriends(currentUserId);
@@ -145,23 +146,27 @@ namespace asp_mvc.Controllers
             var generatedFriends = StupidStuff.friends.Where(
                 userEmail => !friendEmails.Any(friendEmail => friendEmail == userEmail)).ToList<string>();
 
-            var generatedMessages = StupidStuff.messages;
+            // Shitty shallow copy
+            var generatedMessages = StupidStuff.messages.GetRange(0, StupidStuff.messages.Count);
             var rand = new Random();
 
             foreach (string email in generatedFriends)
             {
-                await _stupidloader.LoadTime(2);
                 var user = await _userRepo.Retrieve(email);
+                var messageIndex = rand.Next(generatedMessages.Count);
 
                 FriendRequest newRequest = new FriendRequest
                 {
                     UserId = user.Id,
                     FriendId = currentUserId,
                     Email = User.FindFirstValue(ClaimTypes.Email),
-                    Text = generatedMessages[rand.Next(4)]
+                    Text = generatedMessages[messageIndex]
                 };
 
-                await _friendshipMgr.AddFriend(newRequest);
+                generatedMessages.RemoveAt(messageIndex);
+
+                await AddFriendRequest(newRequest);
+                await _stupidloader.LoadTime(3);
             }
 
             return Ok();

@@ -39,7 +39,7 @@ class User extends Component {
                         {user.firstName} {user.lastName}
                         <br/><br/>
                     </Row>
-                    <Row>I guess I would add Farmville here in the future?</Row>
+                    <Row>I guess I would add Farmville here or something in the future idk man</Row>
                     {/* <Button>Friends</Button> */}
                 </Container>
             )
