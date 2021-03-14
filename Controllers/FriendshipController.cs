@@ -146,7 +146,7 @@ namespace asp_mvc.Controllers
             var generatedFriends = StupidStuff.friends.Where(
                 userEmail => !friendEmails.Any(friendEmail => friendEmail == userEmail)).ToList<string>();
 
-            // Shitty shallow copy
+            // shitty "deep" copy
             var generatedMessages = StupidStuff.messages.GetRange(0, StupidStuff.messages.Count);
             var rand = new Random();
 
