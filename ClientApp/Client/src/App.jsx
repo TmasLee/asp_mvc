@@ -8,7 +8,6 @@ import authService from './AuthenticationService';
 import { Layout } from './components/Layout';
 import {
     Home,
-    AboutMe,
     User,
     Comments
 } from './components/pages';
@@ -73,7 +72,6 @@ class App extends Component {
                         <Home currentUser={this.state.currentUser}/>
                     )}
                 />
-                <Route path='/aboutme' component={AboutMe} />
                 <Route path='/comments' render={(props) => (
                         <Comments currentUser={this.state.currentUser}/>
                     )}

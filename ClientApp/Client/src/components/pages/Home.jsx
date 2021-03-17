@@ -39,31 +39,31 @@ export class Home extends Component {
                 <h1>Welcome to Astronaut Sloth</h1>
                 <br/>
                 <p>
-                    Welcome friend.
+                    Sup it's me, it's your boy Thomas.
                 </p>
                 <p>
-                    This is a small project I've been working on during my plentiful spare time to familiarize myself with C# and .NET. Nearly everything
-                    was hand built using React and a customized backend combining ASP.NET Core MVC and WebApi to serve this SPA.
+                    This is a small project I've been working on recently in my spare time to familiarize myself with .NET. This was built with React and
+                    ASP.NET Core MVC.
                 </p>
                 <p>
-                    While using .NET template projects and other .NET and JS libraries would've been practical, I figured I'd get a better learning
-                    experience trying my hand at "rebuilding the wheel(s)" from scratch. I also wanted to create this project without conforming to use
-                    all of Microsofts web development tools (like Razor and Blazor 🤮).
+                    While it would've been practical to use .NET template projects or other .NET and JS libraries, I figured I'd get a better learning
+                    experience making everything (mostly) from scratch. I also wanted to create this project without conforming to use all of Microsofts web
+                    development tools (like Razor and Blazor 🤮).
                 </p>
                 <p>
-                    When I began this project I wasn't sure what I wanted this site to be so I ended up implementing features as I went. I ended up trying to
-                    implement features that I either hadn't worked with before or hadn't directly implemented myself with a focus on learning .NET. These
-                    features include a user login system with basic security (JWTs and a CSRF cookie) as well as sending and processing real time requests via
-                    the WebSocket API. Another focus for this project was experimenting with how I'd go about implementing these sytems and managing the
-                    different application states on the front and back end.
+                    I wasn't sure what I wanted to make for this site so I implemented features as I went. I ended up implementing features that I either
+                    hadn't worked with before or hadn't directly implemented myself with a focus on learning C# and .NET. Some of these features include handling 
+                    real time requests using sockets (via SignalR and the WebSocket API) and a user login system with some web security (JWTs and CSRF cookies).
+                    Another focus for this project was experimenting with the implementation of some of these features and how the application states would be
+                    managed on both the front and back end.
                 </p>
                 {makeFriendsBtn}
                 <br/>
                 <p>
                     You can check out the source code here: <a href="https://github.com/TmasLee/asp_mvc">https://github.com/TmasLee/asp_mvc</a>
                 </p>
-                <p>
-                    <i>**Note: This is still a WIP and there is some clean up that can be done </i>😅.
+                <p style={{fontSize: '14px'}}>
+                    <i>**Note: There is some clean up that can be done.</i> 😅.
                 </p>
                 <br/><br/>
                 <Row className='row'>
