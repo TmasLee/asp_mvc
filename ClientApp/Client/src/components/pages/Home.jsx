@@ -42,8 +42,7 @@ export class Home extends Component {
                     Sup it's me, it's your boy Thomas.
                 </p>
                 <p>
-                    This is a small project I've been working on recently in my spare time to familiarize myself with .NET. This was built with React and
-                    ASP.NET Core MVC.
+                    This is a small project built with React and ASP.NET Core MVC that I've been working on in my spare time to learn .NET.
                 </p>
                 <p>
                     While it would've been practical to use .NET template projects or other .NET and JS libraries, I figured I'd get a better learning
@@ -51,11 +50,11 @@ export class Home extends Component {
                     development tools (like Razor and Blazor 🤮).
                 </p>
                 <p>
-                    I wasn't sure what I wanted to make for this site so I implemented features as I went. I ended up implementing features that I either
-                    hadn't worked with before or hadn't directly implemented myself with a focus on learning C# and .NET. Some of these features include handling 
-                    real time requests using sockets (via SignalR and the WebSocket API) and a user login system with some web security (JWTs and CSRF cookies).
-                    Another focus for this project was experimenting with the implementation of some of these features and how the application states would be
-                    managed on both the front and back end.
+                    I wasn't sure what I wanted to make for this site so I added features as I went. I ended up implementing features that I either hadn't worked
+                    with before or hadn't directly implemented myself with a focus on learning C# and .NET. Some of these features include handling real time
+                    requests using sockets (via SignalR and the WebSocket API) and a user login system with some web security (JWTs and CSRF cookies). Another
+                    focus for this project was experimenting with the implementation of some of these features and how different application states would be managed
+                    on both the front and back end.
                 </p>
                 {makeFriendsBtn}
                 <br/>
@@ -63,7 +62,7 @@ export class Home extends Component {
                     You can check out the source code here: <a href="https://github.com/TmasLee/asp_mvc">https://github.com/TmasLee/asp_mvc</a>
                 </p>
                 <p style={{fontSize: '14px'}}>
-                    <i>**Note: There is some clean up that can be done.</i> 😅.
+                    <i>**Note: This is still a WIP and there is some clean up/optimization that can be done.</i> 😅.
                 </p>
                 <br/><br/>
                 <Row className='row'>
