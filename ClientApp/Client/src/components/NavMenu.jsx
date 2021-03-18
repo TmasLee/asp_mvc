@@ -19,9 +19,9 @@ export function NavMenu(props){
                         <Nav.Item>
                             <Nav.Link as={Link} className="text-dark" to="/">Home</Nav.Link>
                         </Nav.Item>
-                        <Nav.Item>
+                        {/* <Nav.Item>
                             <Nav.Link as={Link} className="text-dark" to="/comments">Comments</Nav.Link>
-                        </Nav.Item>
+                        </Nav.Item> */}
                         <Nav.Item>
                             <Nav.Link as={Link} className="text-dark" to="#" onClick={(e)=>{toggleModal('users')}}>Users</Nav.Link>
                         </Nav.Item>

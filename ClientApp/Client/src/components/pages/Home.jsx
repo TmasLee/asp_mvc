@@ -50,21 +50,22 @@ export class Home extends Component {
                     development tools (like Razor and Blazor 🤮).
                 </p>
                 <p>
-                    I wasn't sure what I wanted to make for this site so I added features as I went. I ended up implementing features that I either hadn't worked
-                    with before or hadn't directly implemented myself with a focus on learning C# and .NET. Some of these features include handling real time
+                    I wasn't sure what I wanted to make for this site so I added features as I went. I ended up trying to implement features that I either hadn't worked
+                    with before or hadn't implemented myself with a focus on learning C# and .NET. Some of these features include handling real time
                     requests using sockets (via SignalR and the WebSocket API) and a user login system with some web security (JWTs and CSRF cookies). Another
                     focus for this project was experimenting with the implementation of some of these features and how different application states would be managed
                     on both the front and back end.
                 </p>
-                {makeFriendsBtn}
-                <br/>
                 <p>
                     You can check out the source code here: <a href="https://github.com/TmasLee/asp_mvc">https://github.com/TmasLee/asp_mvc</a>
                 </p>
-                <p style={{fontSize: '14px'}}>
-                    <i>**Note: This is still a WIP and there is some clean up/optimization that can be done.</i> 😅.
-                </p>
+                <br/>
+                {makeFriendsBtn}
                 <br/><br/>
+                <p style={{fontSize: '14px'}}>
+                    <i>**Note: The site isn't fully fleshed out and is a WIP. There is also some polishing and optimization to be done.</i> 😅.
+                </p>
+                <br/>
                 <Row className='row'>
                     <img src={sloth_astronaut} alt="Sloth Astronaut" width={300}/>
                 </Row>

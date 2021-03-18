@@ -7,6 +7,7 @@ import FriendListModal from '../modals/FriendListModal';
 import ListModal from '../generics';
 import '../../../../css/UserPage.css';
 import sloth from '../../../../assets/handsome_sloth.png';
+import patrick_wip from '../../../../assets/patrick_wip.gif';
 
 class User extends Component {
     state = {
@@ -39,7 +40,9 @@ class User extends Component {
                         {user.firstName} {user.lastName}
                         <br/><br/>
                     </Row>
-                    <Row>I guess I would add Farmville here or something in the future idk man</Row>
+                    <Row className='row'>
+                        <img src={patrick_wip} alt="WIP" width={400}/>
+                    </Row>
                     {/* <Button>Friends</Button> */}
                 </Container>
             )

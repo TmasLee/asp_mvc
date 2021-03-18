@@ -72,10 +72,10 @@ class App extends Component {
                         <Home currentUser={this.state.currentUser}/>
                     )}
                 />
-                <Route path='/comments' render={(props) => (
+                {/* <Route path='/comments' render={(props) => (
                         <Comments currentUser={this.state.currentUser}/>
                     )}
-                />
+                /> */}
                 <Route path='/user/:id' component={User} />
             </Layout>
         );

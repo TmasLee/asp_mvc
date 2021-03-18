@@ -81,9 +81,6 @@ export default class UsersListModal extends Component {
 
     render(){
         let userList = this.state.users;
-        if (!userList.length){
-            return null;
-        }
 
         if (this.props.currentUser){
             userList = this.filterFriendsAndSelf();
