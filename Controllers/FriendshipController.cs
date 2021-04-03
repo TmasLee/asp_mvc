@@ -15,25 +15,11 @@ using asp_mvc.Hubs;
 
 namespace asp_mvc.Controllers
 {
-    public class CongratulateUserEventArgs : EventArgs
-    {
-        public readonly int example;
-        public CongratulateUserEventArgs(int exampleArg)
-        {
-            example = exampleArg;
-        }
-    }
-
-    // Broadcaster (holds delgate type field)
     [ApiController]
     [Route("[controller]")]
     [Produces("application/json")]
     public class FriendshipController : ControllerBase
     {
-        // Event using generic Delegate definition
-        // Code inside FriendshipController has full access to event FriendsGiven
-        // Code outside FriendshipController can only subscribe (+=/-=) to FriendsGiven
-        public event EventHandler<CongratulateUserEventArgs> CongratulateUser;
         private readonly IUserRepository _userRepo;
         private readonly IFriendshipRepository _friendshipRepo;
         private readonly IFriendshipManager _friendshipMgr;
@@ -146,7 +132,6 @@ namespace asp_mvc.Controllers
             var generatedFriends = StupidStuff.friends.Where(
                 userEmail => !friendEmails.Any(friendEmail => friendEmail == userEmail)).ToList<string>();
 
-            // shitty "deep" copy
             var generatedMessages = StupidStuff.messages.GetRange(0, StupidStuff.messages.Count);
             var rand = new Random();
 
@@ -170,11 +155,6 @@ namespace asp_mvc.Controllers
             }
 
             return Ok();
-        }
-
-        protected virtual void onCongratulateUser()
-        {
-            // TODO
         }
     }
 }
