@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { UserMenu } from './UserMenu';
 import '../../../css/NavMenu.css';
 
-export function NavMenu(props){
+export default function NavMenu(props) {
     const { toggleModal } = props;
     return (
         <header>
@@ -20,10 +20,10 @@ export function NavMenu(props){
                             <Nav.Link as={Link} className="text-dark" to="/">Home</Nav.Link>
                         </Nav.Item>
                         {/* <Nav.Item>
-                            <Nav.Link as={Link} className="text-dark" to="/comments">Comments</Nav.Link>
+                            <Nav.Link as={Link} className="text-dark" to="/catalogue">Catalogue</Nav.Link>
                         </Nav.Item> */}
                         <Nav.Item>
-                            <Nav.Link as={Link} className="text-dark" to="#" onClick={(e)=>{toggleModal('users')}}>Users</Nav.Link>
+                            <Nav.Link as={Link} className="text-dark" to="#" onClick={() => { toggleModal('users'); }}>Users</Nav.Link>
                         </Nav.Item>
                         <UserMenu {...props}/>
                     </ul>

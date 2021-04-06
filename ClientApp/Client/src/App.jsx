@@ -9,7 +9,7 @@ import { Layout } from './components/Layout';
 import {
     Home,
     User,
-    Comments
+    Catalogue
 } from './components/pages';
 import '../../css/App.css';
 
@@ -72,10 +72,10 @@ class App extends Component {
                         <Home currentUser={this.state.currentUser}/>
                     )}
                 />
-                {/* <Route path='/comments' render={(props) => (
-                        <Comments currentUser={this.state.currentUser}/>
+                <Route path='/catalogue' render={(props) => (
+                        <Catalogue currentUser={this.state.currentUser}/>
                     )}
-                /> */}
+                />
                 <Route path='/user/:id' component={User} />
             </Layout>
         );

@@ -1,9 +1,9 @@
 import { Home } from './Home';
 import User from './User';
-import { Comments } from './Comments';
+import { Catalogue } from './Catalogue';
 
 export {
     Home,
     User,
-    Comments
+    Catalogue
 }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Container } from 'react-bootstrap';
 
-import { NavMenu } from './NavMenu';
+import NavMenu from './NavMenu';
 import { ModalSwitch } from './modals';
 import Toaster from './Toaster';
 
