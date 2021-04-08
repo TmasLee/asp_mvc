@@ -9,3 +9,8 @@ export function getCsrfToken() {
 
     return '';
 }
+
+export function removeUnderscore(str) {
+    let newStr = str.replaceAll('_', ' ');
+    return newStr.charAt(0).toUpperCase() + newStr.slice(1);
+}
