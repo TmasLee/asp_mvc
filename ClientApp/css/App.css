@@ -29,12 +29,12 @@ a.navbar-brand {
   }
   
   .Btn-Gray-BG {
-    background-color: rgb(150, 150, 150)  !important;
+    background-color: rgb(35, 95, 184)  !important;
     border-color: black !important;
   }
 
   .Btn-Gray-BG.active {
-    background-image: linear-gradient(rgb(102, 102, 102), rgb(104, 104, 104)) !important;
+    background-image: linear-gradient(rgb(12, 37, 175), rgb(17, 14, 138)) !important;
   }
 
   /* Sticky footer styles

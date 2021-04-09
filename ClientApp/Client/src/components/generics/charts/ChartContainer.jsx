@@ -1,5 +1,5 @@
 import React, { Component, useState, useEffect } from 'react';
-import { ToggleButton, ToggleButtonGroup, ButtonGroup, Button } from 'react-bootstrap';
+import { ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
 import { BarChart } from 'recharts';
 
 import { ChartWithAxes, ChartWithZoomBrush, ChartWithZoom } from './Charts';
@@ -13,6 +13,7 @@ let LineChartWithAxes = ChartWithAxes(CustomLineChart);
 let LineChartWithZoom = ChartWithZoom(LineChartWithAxes);
 
 // Chart OnClick data point - pass from parent SidePane component?
+// Update hardcoded - xAxis dataKey / series / tooltip
 export class ChartContainer extends Component {
     constructor(props) {
         super(props);
@@ -57,6 +58,7 @@ export class ChartContainer extends Component {
                     setSeriesToRender={this.setSeriesToRender}
                 />
                 <ChartTypeToggle
+                    currentType={chartType}
                     chartTypes={chartTypes}
                     setChartType={this.setChartType}
                 />
@@ -75,7 +77,11 @@ function SeriesToggle({ seriesKeys, setSeriesToRender }) {
     }, [series])
 
     return (
-        <ToggleButtonGroup type='checkbox' value={series} onChange={handleSeriesToggle}>
+        <ToggleButtonGroup
+            type='checkbox'
+            value={series}
+            onChange={handleSeriesToggle}
+        >
             {
                 seriesKeys.map((key, i) => (
                     <ToggleButton className='Btn-Gray-BG' key={i} value={key}>
@@ -87,19 +93,33 @@ function SeriesToggle({ seriesKeys, setSeriesToRender }) {
     )
 }
 
-function ChartTypeToggle({ chartTypes, setChartType }) {
+function ChartTypeToggle({ currentType, chartTypes, setChartType }) {
+    const [type, setType] = useState(currentType);
+    const handleChartTypeToggle = (val) => setType(val);
+
+    useEffect(() => {
+        setChartType(type);
+    }, type)
+
     return (
-        <ButtonGroup>
+        <ToggleButtonGroup
+            style={{margin: '0 5px 0 5px'}}
+            type='radio'
+            name='options'
+            value={type}
+            defaultValue={currentType}
+            onChange={handleChartTypeToggle}
+        >
             {
                 chartTypes.map((type, i) => (
-                    <Button key={i} value={type} onClick={() => setChartType(type)}>
+                    <ToggleButton className='Btn-Gray-BG' key={i} value={type}>
                         {
                             (type === 'bar' || type === 'stacked-bar') ? <i className="fa fa-bar-chart" aria-hidden="true"></i> :
                             (type === 'line') ? <i className="fa fa-line-chart" aria-hidden="true"></i> : null
                         }
-                    </Button>
+                    </ToggleButton>
                 ))
             }
-        </ButtonGroup>
+        </ToggleButtonGroup>
     )
 }
