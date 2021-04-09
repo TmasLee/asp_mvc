@@ -3,6 +3,10 @@ import { BarChart, Bar } from 'recharts';
 
 import { seriesColors } from './utils';
 
+export function CustomBarChart(props) {
+    
+}
+
 export function StackedBarChart(props) {
     const { data, series, seriesKeys, style } = props;
     let seriesBars = [];

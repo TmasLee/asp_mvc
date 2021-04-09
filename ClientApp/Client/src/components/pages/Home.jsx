@@ -9,7 +9,7 @@ import elon from '../../../../assets/elon.jpg';
 
 export class Home extends Component {
     state = {
-        loading: false,
+        loading: true,
         datasets: {
             launches_over_time: {
                 title: 'Launches vs Date',
@@ -28,12 +28,13 @@ export class Home extends Component {
             }
         })
         .then((resp) => {
-            let x = DatasetParser.parseReuseOverTimeDataset(resp.data);
+            let reuseDataset = DatasetParser.parseReuseOverTimeDataset(resp.data);
             this.setState({
-                data: x
+                data: reuseDataset,
+                loading: false
             });
             console.log(resp.data);
-            console.log(x);
+            console.log(reuseDataset);
         })
         .catch((err) => console.error(err));
     }
@@ -48,7 +49,7 @@ export class Home extends Component {
     }
 
     render (){
-        const { data } = this.state;
+        const { data, loading } = this.state;
         const { currentUser } = this.props;
 
         let makeFriendsBtn =  (
@@ -59,6 +60,18 @@ export class Home extends Component {
                 </Button>
             </div>
         )
+
+        let chart = loading ? null : (
+            <ChartContainer
+                title='Core and fairing reuse over time'
+                data={data}
+                seriesKeys={{
+                    core: ['core_reuse_count', 'core_non_reuse_count'],
+                    fairings: ['fairings_reuse_count', 'fairings_non_reuse_count']
+                }}
+                chartTypes={['stacked-bar', 'line']}
+            />
+        );
 
         return (
             <div className="margins" style={{height: '105vh'}}>
@@ -75,14 +88,7 @@ export class Home extends Component {
                     }
                 </p>
                 <br/>
-                <ChartContainer
-                    data={data}
-                    seriesKeys={{
-                        core: ['core_reuse_count', 'core_non_reuse_count'],
-                        fairings: ['fairings_reuse_count', 'fairings_non_reuse_count']
-                    }}
-                    title='Core and fairing reuse over time'
-                />
+                { chart }
                 <br/>
                 <Row className='row'>
                     <img src={sloth_astronaut} alt="Sloth Astronaut" width={300}/>

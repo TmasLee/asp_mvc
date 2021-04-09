@@ -1,14 +1,16 @@
 import React, { Component, useState, useEffect } from 'react';
-import { ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
-import { BarChart, LineChart } from 'recharts';
+import { ToggleButton, ToggleButtonGroup, ButtonGroup, Button } from 'react-bootstrap';
+import { BarChart } from 'recharts';
 
 import { ChartWithAxes, ChartWithZoomBrush, ChartWithZoom } from './Charts';
 import { StackedBarChart } from './BarCharts';
+import { CustomLineChart } from './LineCharts';
 
 let BarChartWithAxes = ChartWithAxes(BarChart);
 let StackedBarChartWithAxes = ChartWithAxes(StackedBarChart);
 let StackedBarChartWithZoom = ChartWithZoomBrush(StackedBarChartWithAxes);
-let LineChartWithZoom = ChartWithZoom(LineChart);
+let LineChartWithAxes = ChartWithAxes(CustomLineChart);
+let LineChartWithZoom = ChartWithZoom(LineChartWithAxes);
 
 // Chart OnClick data point - pass from parent SidePane component?
 export class ChartContainer extends Component {
@@ -16,7 +18,7 @@ export class ChartContainer extends Component {
         super(props);
         this.state = {
             series: [],
-            chartType: 'stacked-bar'
+            chartType: this.props.chartTypes[0]
         }
     }
 
@@ -24,11 +26,8 @@ export class ChartContainer extends Component {
     setChartType = (type) => this.setState({chartType: type});
 
     render() {
-        let {
-            data, seriesKeys, title = 'An Interesting Graph', chartTypes = []
-        } = this.props;
-
-        const { series, chartType } = this.state;
+        let { data, seriesKeys, chartTypes, title } = this.props;
+        let { series, chartType } = this.state;
 
         let chart = null;
 
@@ -40,13 +39,13 @@ export class ChartContainer extends Component {
                 chart = <StackedBarChartWithZoom data={data} series={series} seriesKeys={seriesKeys}/>;
                 break;
             case 'line':
-                // chart = <LineChartWithZoom />;
+                chart = <LineChartWithZoom data={data} series={series} seriesKeys={seriesKeys}/>;
+                // chart = <LineChartWithAxes data={data} series={series} seriesKeys={seriesKeys}/>;
                 break;
             case 'pie':
                 // chart = <CustomPieChart />;
                 break;
             default:
-                // Update to loading gif
                 break;
         }
 
@@ -57,7 +56,10 @@ export class ChartContainer extends Component {
                     seriesKeys={Object.keys(seriesKeys)}
                     setSeriesToRender={this.setSeriesToRender}
                 />
-                {/* <ChartTypeToggle chartTypes={chartTypes} setChartType={this.setChartType}/> */}
+                <ChartTypeToggle
+                    chartTypes={chartTypes}
+                    setChartType={this.setChartType}
+                />
                 { chart }
             </div>
         )
@@ -76,7 +78,7 @@ function SeriesToggle({ seriesKeys, setSeriesToRender }) {
         <ToggleButtonGroup type='checkbox' value={series} onChange={handleSeriesToggle}>
             {
                 seriesKeys.map((key, i) => (
-                    <ToggleButton key={i} value={key}>
+                    <ToggleButton className='Btn-Gray-BG' key={i} value={key}>
                         { key.charAt(0).toUpperCase() + key.slice(1) }
                     </ToggleButton>
                 ))
@@ -85,18 +87,19 @@ function SeriesToggle({ seriesKeys, setSeriesToRender }) {
     )
 }
 
-function ChartTypeToggle({ chartTypes }) {
-    const [type, setType] = useState();
-    const handleTypeToggle = (val) => setType(val);
+function ChartTypeToggle({ chartTypes, setChartType }) {
     return (
-        <ToggleButtonGroup type='checkbox' value={type} onChange={handleTypeToggle}>
+        <ButtonGroup>
             {
                 chartTypes.map((type, i) => (
-                    <ToggleButton key={i} value={type}>
-                        { type }
-                    </ToggleButton>
+                    <Button key={i} value={type} onClick={() => setChartType(type)}>
+                        {
+                            (type === 'bar' || type === 'stacked-bar') ? <i className="fa fa-bar-chart" aria-hidden="true"></i> :
+                            (type === 'line') ? <i className="fa fa-line-chart" aria-hidden="true"></i> : null
+                        }
+                    </Button>
                 ))
             }
-        </ToggleButtonGroup>
+        </ButtonGroup>
     )
 }

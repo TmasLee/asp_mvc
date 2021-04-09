@@ -25,9 +25,18 @@ a.navbar-brand {
   }
 
   div.margins {
-      margin: 0 15% 10% 15%
+      margin: 0 5% 10% 5%
   }
   
+  .Btn-Gray-BG {
+    background-color: rgb(150, 150, 150)  !important;
+    border-color: black !important;
+  }
+
+  .Btn-Gray-BG.active {
+    background-image: linear-gradient(rgb(102, 102, 102), rgb(104, 104, 104)) !important;
+  }
+
   /* Sticky footer styles
   -------------------------------------------------- */
   html {
