@@ -12,8 +12,7 @@ let StackedBarChartWithZoom = ChartWithZoomBrush(StackedBarChartWithAxes);
 let LineChartWithAxes = ChartWithAxes(CustomLineChart);
 let LineChartWithZoom = ChartWithZoom(LineChartWithAxes);
 
-// Chart OnClick data point - pass from parent SidePane component?
-// Update hardcoded - xAxis dataKey / series / tooltip
+// Update so each series data point doesn't repeat data
 export class ChartContainer extends Component {
     constructor(props) {
         super(props);
@@ -27,21 +26,30 @@ export class ChartContainer extends Component {
     setChartType = (type) => this.setState({chartType: type});
 
     render() {
-        let { data, seriesKeys, chartTypes, title } = this.props;
+        let { data, seriesKeys, chartTypes, title, getDataPoint } = this.props;
         let { series, chartType } = this.state;
 
         let chart = null;
 
         switch (chartType) {
-            case 'bar':
-                // chart = <BarChartWithAxes />;
+            case 'bar-no-zoom':
+                chart = <BarChartWithAxes />;
                 break;
             case 'stacked-bar':
-                chart = <StackedBarChartWithZoom data={data} series={series} seriesKeys={seriesKeys}/>;
+                chart = <StackedBarChartWithZoom
+                            data={data}
+                            series={series}
+                            seriesKeys={seriesKeys}
+                            getDataPoint={getDataPoint}
+                        />;
                 break;
             case 'line':
-                chart = <LineChartWithZoom data={data} series={series} seriesKeys={seriesKeys}/>;
-                // chart = <LineChartWithAxes data={data} series={series} seriesKeys={seriesKeys}/>;
+                chart = <LineChartWithZoom
+                            data={data}
+                            series={series}
+                            seriesKeys={seriesKeys}
+                            getDataPoint={getDataPoint}
+                        />;
                 break;
             case 'pie':
                 // chart = <CustomPieChart />;
@@ -84,7 +92,7 @@ function SeriesToggle({ seriesKeys, setSeriesToRender }) {
         >
             {
                 seriesKeys.map((key, i) => (
-                    <ToggleButton className='Btn-Gray-BG' key={i} value={key}>
+                    <ToggleButton className='btn-toggle' key={i} value={key}>
                         { key.charAt(0).toUpperCase() + key.slice(1) }
                     </ToggleButton>
                 ))
@@ -112,7 +120,7 @@ function ChartTypeToggle({ currentType, chartTypes, setChartType }) {
         >
             {
                 chartTypes.map((type, i) => (
-                    <ToggleButton className='Btn-Gray-BG' key={i} value={type}>
+                    <ToggleButton className='btn-toggle' key={i} value={type}>
                         {
                             (type === 'bar' || type === 'stacked-bar') ? <i className="fa fa-bar-chart" aria-hidden="true"></i> :
                             (type === 'line') ? <i className="fa fa-line-chart" aria-hidden="true"></i> : null

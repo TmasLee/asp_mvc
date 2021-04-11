@@ -1,14 +1,13 @@
 import React, { Component, Fragment } from 'react';
 import { XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, ReferenceArea, Label, Brush } from 'recharts';
 
-import { removeUnderscore } from '../../../utilities/utils';
-import { formatXAxis } from './utils';
+import { removeUnderscore, formatTimestamp } from '../../../utilities/utils';
 
 export function ChartWithAxes(ChartComponent) {
     return function(props) {
         let style = {
             userSelect: 'none',
-            width: 1000,
+            width: 850,
             height: 400,
             margin: {
                 top: 25,
@@ -20,12 +19,20 @@ export function ChartWithAxes(ChartComponent) {
                 <ChartComponent
                     {...props}
                     style={style}
+                    onClick={(e) => { if (e) props.getDataPoint(e.activePayload)}}
                 >
                     {props.children}
-                    <XAxis dataKey='date' tick={{fontSize: 12}} tickFormatter={formatXAxis} height={60}>
-                        <Label value='Launch Date' position='insideBottom' offset={20} style={{ textAnchor: "middle" }}/>
-                    </XAxis>
-                    <YAxis tick={{fontSize: 12}} label={{value: 'Count', offset: 7, angle: -90, position: 'insideLeft'}}/>
+                    <XAxis
+                        dataKey='date'
+                        tick={{fontSize: 12}}
+                        tickFormatter={formatTimestamp}
+                        height={60}
+                        label={{value:'Launch Date', position:'insideBottom', offset: 20 }}
+                    />
+                    <YAxis
+                        tick={{fontSize: 12}}
+                        label={{value: 'Count', offset: 20, angle: -90, position: 'insideLeft'}}
+                    />
                     <Legend verticalAlign="top"/>
                     <Tooltip content={<ReuseChartTooltip/>}/>
                 </ChartComponent>
@@ -43,17 +50,14 @@ export function ChartWithZoomBrush(ChartComponent) {
                     dataKey="date"
                     height={30}
                     stroke="#8884d8"
-                    tickFormatter={formatXAxis}
+                    tickFormatter={formatTimestamp}
                 />
             </ChartComponent>
         )
     }
 }
 
-/**
- * Only works for Line atm, can't get zoom to work with Recharts' BarCharts
- * Need to redefine X and Y axes here to include domain - should be completely separate chart component - ChartWithAxesAndZoom?
- */
+// Only works for Line atm, can't get zoom to work with BarCharts
 export function ChartWithZoom(ChartComponent) {
     return class extends Component {
         state = {
@@ -145,12 +149,14 @@ export function ChartWithZoom(ChartComponent) {
                             type='number'
                             domain={[left, right]}
                             tick={{fontSize: 12}}
-                            height={10}
-                            tickFormatter={formatXAxis}
-                        >
-                            <Label value='Date' position='bottom' style={{ textAnchor: "middle" }}/>
-                        </XAxis>
-                        <YAxis tick={{fontSize: 12}} domain={[bottom, top]} label={{value: 'Count', offset: 7, angle: -90, position: 'insideLeft'}}/>
+                            height={40}
+                            tickFormatter={formatTimestamp}
+                            label={{value:'Launch Date', position:'insideBottom'}}
+                        />
+                        <YAxis
+                            domain={[bottom, top]}
+                            label={{value: 'Count', offset: 20, angle: -90, position: 'insideLeft'}}
+                        />
                         {refAreaLeft && refAreaRight ? (
                         <ReferenceArea x1={refAreaLeft} x2={refAreaRight} strokeOpacity={0.3} />
                         ) : null}
@@ -165,7 +171,7 @@ export default function ReuseChartTooltip({payload, label, active}) {
     if (active) {
         return (
             <div style={{backgroundColor: 'white', padding: '5px 5px', outline: '1px solid black'}}>
-                <p>{`Flight #${payload[0].payload.flight_number} (${formatXAxis(label)})`}</p>
+                <p>{`Flight #${payload[0].payload.flight_number} (${formatTimestamp(label)})`}</p>
                 {
                     payload.map((data, i) => (
                         <p key={i}>

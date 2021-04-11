@@ -25,15 +25,19 @@ a.navbar-brand {
   }
 
   div.margins {
-      margin: 0 5% 10% 5%
+      margin: 0 8% 10% 8%
   }
   
-  .Btn-Gray-BG {
-    background-color: rgb(35, 95, 184)  !important;
+  .btn-toggle {
+    background-color: rgb(35, 95, 184) !important;
     border-color: black !important;
   }
 
-  .Btn-Gray-BG.active {
+  .btn-toggle:focus {
+      outline: none;
+  }
+
+  .btn-toggle.active {
     background-image: linear-gradient(rgb(12, 37, 175), rgb(17, 14, 138)) !important;
   }
 
@@ -54,7 +58,9 @@ a.navbar-brand {
   .border-bottom {
     border-bottom: 1px solid #e5e5e5;
   }
-  
+  .border-left {
+    border-left: 1.5px solid #e5e5e5;
+  }
   .box-shadow {
     box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
   }
@@ -83,3 +89,42 @@ a.navbar-brand {
     line-height: 60px; /* Vertically center the text there */
   }
   
+  .side-panel {
+    overflow-y: auto;
+    position: fixed;
+    display: block;
+    right: 0;
+    width: 0;
+    z-index: 1;
+    height: 90vh;
+    background-color: white;
+    padding: 10px 0 10px 0;
+    transition: width .2s ease;
+  }
+
+  .side-panel.show {
+    width: 27vw;
+  }
+
+  .side-panel div {
+    padding: 0px 10px 0 10px;
+  }
+
+  .close-btn.show {
+    right: 10px;
+    position: absolute;
+    display: block;
+    background: transparent;
+    background-color: transparent;
+    border: none;
+  }
+
+  .close-btn.hide {
+      visibility: hidden;
+  }
+
+  .close-btn:hover {
+    background-color: transparent;
+    border: none;
+    outline: none;
+  }

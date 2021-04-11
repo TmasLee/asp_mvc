@@ -11,7 +11,10 @@ import {
     User,
     Catalogue
 } from './components/pages';
+import { PageWithSidePanel, LaunchDataSidePanel } from './components/SidePanel';
 import '../../css/App.css';
+
+let HomePageWithSidePanel = PageWithSidePanel(Home);
 
 class App extends Component {
     state = {
@@ -68,8 +71,12 @@ class App extends Component {
             <Layout setUser={this.setUser}
                     handleLogout={this.handleLogout}
                     {...this.state}>
-                <Route exact path='/' render={(props) => (
-                        <Home currentUser={this.state.currentUser}/>
+                <Route
+                    exact path='/'
+                    render={(props) => (
+                        <HomePageWithSidePanel currentUser={this.state.currentUser}>
+                            <LaunchDataSidePanel />
+                        </HomePageWithSidePanel>
                     )}
                 />
                 <Route path='/catalogue' render={(props) => (
