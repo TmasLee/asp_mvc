@@ -15,6 +15,7 @@ export default function NavMenu(props) {
             >
                 <Container>
                     <Navbar.Brand as={Link} to="/">Astronaut Sloth</Navbar.Brand>
+                    <a href='https://github.com/TmasLee/asp_mvc'>https://github.com/TmasLee/asp_mvc</a>
                     <ul className="navbar-nav flex-grow">
                         <Nav.Item>
                             <Nav.Link as={Link} className="text-dark" to="/">Home</Nav.Link>
