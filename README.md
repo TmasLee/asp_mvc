@@ -9,6 +9,11 @@ A small web app project built using C#, ASP.NET Core, and JS/React.
 * Fix panel text style on collapse
 * Handle case where data fetch fails - just load axes?
 
+* Improve component composition
+    - Redefined axes for ChartWithZoom
+    - Passing getDataPoint function to Home page is bad? - maybe need some HOC like WithDataFetcher
+    - Hardcoded tooltip - ReuseChartTooltip
+
 ### **Tech Debt/Other Features To-Do**
 * Test xss / sql injection
 * Streamline modals / components

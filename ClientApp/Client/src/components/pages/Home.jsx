@@ -4,19 +4,27 @@ import axios from 'axios';
 
 import DatasetParser from '../../utilities/dataset-parser';
 import { ChartContainer } from '../generics/charts/ChartContainer';
+import { Loading } from '../../components/generics/Loading';
 import sloth_astronaut from '../../../../assets/sloth_astronaut.jpg';
 import elon from '../../../../assets/elon.jpg';
 
 export class Home extends Component {
     state = {
         loading: true,
-        datasets: {
-            launches_over_time: {
-                title: 'Launches vs Date',
-                data: {}
+        reuseData: {
+            data: [],
+            xAxis: {
+                key: 'date',
+                label: 'Launch Date'
+            },
+            yAxis: {
+                seriesKeys: {
+                    core: ['core_reuse_count', 'core_non_reuse_count'],
+                    fairings: ['fairings_reuse_count', 'fairings_non_reuse_count']
+                },
+                label: 'Count'
             }
         },
-        data: []
     }
 
     componentDidMount() {
@@ -27,9 +35,11 @@ export class Home extends Component {
             }
         })
         .then((resp) => {
-            let reuseDataset = DatasetParser.parseReuseOverTimeDataset(resp.data);
+            let reuseDataset = this.state.reuseData;
+            reuseDataset.data = DatasetParser.parseReuseOverTimeDataset(resp.data);
+
             this.setState({
-                data: reuseDataset,
+                reuseData: reuseDataset,
                 loading: false
             });
         })
@@ -46,7 +56,7 @@ export class Home extends Component {
     }
 
     render (){
-        const { data, loading } = this.state;
+        const { reuseData, loading } = this.state;
         const { currentUser, getDataPoint = null } = this.props;
 
         let makeFriendsBtn =  (
@@ -58,14 +68,10 @@ export class Home extends Component {
             </div>
         )
 
-        let chart = loading ? <div style={{textAlign: 'center'}}>Loading...</div> : (
+        let reuseChart = loading ? <Loading/> : (
             <ChartContainer
                 title='Core and fairing reuse over time'
-                data={data}
-                seriesKeys={{
-                    core: ['core_reuse_count', 'core_non_reuse_count'],
-                    fairings: ['fairings_reuse_count', 'fairings_non_reuse_count']
-                }}
+                data={reuseData}
                 chartTypes={['stacked-bar', 'line']}
                 getDataPoint={getDataPoint}
             />
@@ -79,7 +85,7 @@ export class Home extends Component {
                     This is a small project built with React and ASP.NET Core (MVC and WebApi) with a focus on writing modular and extendable software.
                 </p>
                 <p>
-                    Some SpaceX data is visualized below from composed and reusable components. The data is from the open-source api found
+                    SpaceX launch data is visualized below using reusable components. The data is from the open-source api found
                     here: <a href='https://github.com/r-spacex/SpaceX-API'>https://github.com/r-spacex/SpaceX-API</a> 🚀.
                 </p>
                 <br/>
@@ -89,7 +95,7 @@ export class Home extends Component {
                     }
                 </p>
                 <br/>
-                { chart }
+                { reuseChart }
                 <br/><br/>
                 <Row className='row'>
                     <img src={sloth_astronaut} alt="Sloth Astronaut" width={300}/>

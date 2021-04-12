@@ -26,9 +26,9 @@ export class ChartContainer extends Component {
     setChartType = (type) => this.setState({chartType: type});
 
     render() {
-        let { data, seriesKeys, chartTypes, title, getDataPoint } = this.props;
+        let { data, chartTypes, title, getDataPoint } = this.props;
         let { series, chartType } = this.state;
-
+        let seriesKeys = data.yAxis.seriesKeys;
         let chart = null;
 
         switch (chartType) {
@@ -37,17 +37,21 @@ export class ChartContainer extends Component {
                 break;
             case 'stacked-bar':
                 chart = <StackedBarChartWithZoom
-                            data={data}
+                            data={data.data}
                             series={series}
                             seriesKeys={seriesKeys}
+                            dataKey={data.xAxis.key}
+                            labels={[data.xAxis.label, data.yAxis.label]}
                             getDataPoint={getDataPoint}
                         />;
                 break;
             case 'line':
                 chart = <LineChartWithZoom
-                            data={data}
+                            data={data.data}
                             series={series}
                             seriesKeys={seriesKeys}
+                            dataKey={data.xAxis.key}
+                            labels={[data.xAxis.label, data.yAxis.label]}
                             getDataPoint={getDataPoint}
                         />;
                 break;

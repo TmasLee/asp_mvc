@@ -23,15 +23,15 @@ export function ChartWithAxes(ChartComponent) {
                 >
                     {props.children}
                     <XAxis
-                        dataKey='date'
+                        dataKey={props.dataKey}
                         tick={{fontSize: 12}}
                         tickFormatter={formatTimestamp}
                         height={60}
-                        label={{value:'Launch Date', position:'insideBottom', offset: 20 }}
+                        label={{value: props.labels[0], position: 'insideBottom', offset: 20 }}
                     />
                     <YAxis
                         tick={{fontSize: 12}}
-                        label={{value: 'Count', offset: 20, angle: -90, position: 'insideLeft'}}
+                        label={{value: props.labels[1], offset: 20, angle: -90, position: 'insideLeft'}}
                     />
                     <Legend verticalAlign="top"/>
                     <Tooltip content={<ReuseChartTooltip/>}/>
@@ -145,17 +145,17 @@ export function ChartWithZoom(ChartComponent) {
                         {this.props.children}
                         <XAxis
                             allowDataOverflow
-                            dataKey='date'
+                            dataKey={this.props.dataKey}
                             type='number'
                             domain={[left, right]}
                             tick={{fontSize: 12}}
                             height={40}
                             tickFormatter={formatTimestamp}
-                            label={{value:'Launch Date', position:'insideBottom'}}
+                            label={{value: this.props.labels[0], position: 'insideBottom'}}
                         />
                         <YAxis
                             domain={[bottom, top]}
-                            label={{value: 'Count', offset: 20, angle: -90, position: 'insideLeft'}}
+                            label={{value: this.props.labels[1], offset: 20, angle: -90, position: 'insideLeft'}}
                         />
                         {refAreaLeft && refAreaRight ? (
                         <ReferenceArea x1={refAreaLeft} x2={refAreaRight} strokeOpacity={0.3} />
