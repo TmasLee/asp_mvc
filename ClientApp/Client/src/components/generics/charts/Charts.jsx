@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
-import { XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, ReferenceArea, Label, Brush } from 'recharts';
+import { XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, ReferenceArea, Brush } from 'recharts';
 
-import { removeUnderscore, formatTimestamp } from '../../../utilities/utils';
+import { formatTimestamp } from '../../../utilities/utils';
 
 export function ChartWithAxes(ChartComponent) {
     return function(props) {
@@ -34,13 +34,14 @@ export function ChartWithAxes(ChartComponent) {
                         label={{value: props.labels[1], offset: 20, angle: -90, position: 'insideLeft'}}
                     />
                     <Legend verticalAlign="top"/>
-                    <Tooltip content={<ReuseChartTooltip/>}/>
+                    { props.tooltip ? <Tooltip content={props.tooltip}/> : <Tooltip  /> }
                 </ChartComponent>
             </ResponsiveContainer>
         )
     }
 }
 
+// Probably unnecessary HOC
 export function ChartWithZoomBrush(ChartComponent) {
     return function(props) {
         return (
@@ -58,6 +59,7 @@ export function ChartWithZoomBrush(ChartComponent) {
 }
 
 // Only works for Line atm, can't get zoom to work with BarCharts
+// This zoom function only works for axes with type 'number' which doesn't seem to work fully w/ BarCharts
 export function ChartWithZoom(ChartComponent) {
     return class extends Component {
         state = {
@@ -65,19 +67,34 @@ export function ChartWithZoom(ChartComponent) {
             right: 'dataMax',
             refAreaLeft: '',
             refAreaRight: '',
-            top: 'dataMax+1',
-            bottom: 'dataMin-1',
+            top: 'dataMax+5',
+            bottom: 'dataMin',
             animation: true,
         }
 
         baseState = this.state;
 
-        getAxisYDomain = (from, to, ref) => {
-            let { data } = this.props;
+        getAxisYDomain = (from, to) => {
+            let { data, series, seriesKeys } = this.props;
             let fromIndex = data.map(e => e.date).indexOf(from);
             let toIndex = data.map(e => e.date).indexOf(to);
 
-            const refData = data.slice(fromIndex - 1, toIndex);
+            const refData = data.slice(fromIndex - 1, toIndex + 1);
+
+            let ref;
+
+            // Find data series key for local dataMax in refData
+            series.forEach(series => {
+                let maxValue = 0;
+                ref = seriesKeys[series][0];
+                for (let i = 0; i < seriesKeys[series].length; i++) {
+                    let value = Math.max(...refData.map(dp => dp[seriesKeys[series][i]]), 0)
+                    if (value > maxValue) {
+                        maxValue = value;
+                        ref = seriesKeys[series][i];
+                    }
+                }
+            })
             let [bottom, top] = [refData[0][ref], refData[0][ref]];
 
             refData.forEach((d) => {
@@ -105,15 +122,15 @@ export function ChartWithZoom(ChartComponent) {
             }
 
             // yAxis domain
-            const [bottom, top] = this.getAxisYDomain(refAreaLeft, refAreaRight, 'core_non_reuse_count');
+            const [bottom, top] = this.getAxisYDomain(refAreaLeft, refAreaRight);
 
             this.setState(() => ({
                 refAreaLeft: '',
                 refAreaRight: '',
                 left: refAreaLeft,
                 right: refAreaRight,
-                bottom,
-                top
+                bottom: bottom,
+                top: top,
             }));
         };
 
@@ -154,7 +171,10 @@ export function ChartWithZoom(ChartComponent) {
                             label={{value: this.props.labels[0], position: 'insideBottom'}}
                         />
                         <YAxis
-                            domain={[bottom, top]}
+                            allowDataOverflow
+                            domain={['auto', top]}
+                            type='number'
+                            tick={{fontSize: 12}}
                             label={{value: this.props.labels[1], offset: 20, angle: -90, position: 'insideLeft'}}
                         />
                         {refAreaLeft && refAreaRight ? (
@@ -165,23 +185,4 @@ export function ChartWithZoom(ChartComponent) {
             )
         }
     }
-}
-
-export default function ReuseChartTooltip({payload, label, active}) {
-    if (active) {
-        return (
-            <div style={{backgroundColor: 'white', padding: '5px 5px', outline: '1px solid black'}}>
-                <p>{`Flight #${payload[0].payload.flight_number} (${formatTimestamp(label)})`}</p>
-                {
-                    payload.map((data, i) => (
-                        <p key={i}>
-                            {`${removeUnderscore(data.dataKey)}: ${data.value}`}
-                        </p>
-                    ))
-                }
-            </div>
-        );
-    }
-
-      return null;
 }
