@@ -13,10 +13,12 @@ export function PageWithSidePanel(Page) {
 
         // Probably passing this method down to Page components is bad
         getDataPoint = (deets) => {
-            this.setState({
-                data: deets[0],
-                hidden: false
-            });
+            if (deets){
+                this.setState({
+                    data: deets[0],
+                    hidden: false
+                });
+            }
         }
 
         render() {

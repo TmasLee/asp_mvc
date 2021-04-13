@@ -26,7 +26,7 @@ export class ChartContainer extends Component {
     setChartType = (type) => this.setState({chartType: type});
 
     render() {
-        let { data, chartTypes, title, getDataPoint } = this.props;
+        let { data, chartTypes, title, getDataPoint, tooltip } = this.props;
         let { series, chartType } = this.state;
         let seriesKeys = data.yAxis.seriesKeys;
         let chart = null;
@@ -43,6 +43,7 @@ export class ChartContainer extends Component {
                             dataKey={data.xAxis.key}
                             labels={[data.xAxis.label, data.yAxis.label]}
                             getDataPoint={getDataPoint}
+                            tooltip={tooltip}
                         />;
                 break;
             case 'line':
@@ -53,6 +54,7 @@ export class ChartContainer extends Component {
                             dataKey={data.xAxis.key}
                             labels={[data.xAxis.label, data.yAxis.label]}
                             getDataPoint={getDataPoint}
+                            tooltip={tooltip}
                         />;
                 break;
             case 'pie':
