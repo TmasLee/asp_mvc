@@ -31,33 +31,6 @@ export class Home extends Component {
                 label: 'Count'
             }
         },
-        fairingsData: {
-            data: [],
-            xAxis: {
-                key: 'date',
-                label: 'Launch Date'
-            },
-            yAxis: {
-                seriesKeys: {
-                    reuse: ['fairings_reuse_count'],
-                    nonReuse: ['fairings_non_reuse_count']
-                },
-                label: 'Count'
-            }
-        },
-        coreData: {
-            data: [],
-            xAxis: {
-                key: 'date',
-                label: 'Launch Date'
-            },
-            yAxis: {
-                seriesKeys: {
-                    core_reuse: ['core_reuse_count', 'core_non_reuse_count']
-                },
-                label: 'Count'
-            }
-        },
         covidData: {
             data: [],
             xAxis: {
@@ -105,18 +78,12 @@ export class Home extends Component {
         })
         .then((resp) => {
             let reuseDataset = this.state.reuseData;
-            let fairingsData = this.state.fairingsData;
-            let coreData = this.state.coreData;
 
             let data = DatasetParser.parseReuseOverTimeDataset(resp.data);
             reuseDataset.data = data;
-            fairingsData.data = data;
-            coreData.data = data;
 
             this.setState({
                 reuseData: reuseDataset,
-                fairingsData: fairingsData,
-                coreData: coreData,
                 loading: false
             });
         })
@@ -135,7 +102,7 @@ export class Home extends Component {
     setActivePanel = (panelId) => this.setState({ activePanel: panelId })
 
     render() {
-        const { reuseData, fairingsData, coreData, covidData, loading, activePanel } = this.state;
+        const { reuseData, covidData, loading, activePanel } = this.state;
         const { currentUser } = this.props;
 
         let makeFriendsBtn =  (
@@ -164,30 +131,6 @@ export class Home extends Component {
             </ChartContainerWithSidePanel>
         );
 
-        let fairingsLineChart = loading ? <Loading/> : (
-            <ChartContainer
-                title='Fairing reuse over time'
-                data={fairingsData}
-                chartTypes={[charts.LINE_WITH_ZOOM]}
-                panelId={1}
-                activePanel={activePanel}
-                setActivePanel={this.setActivePanel}
-            />
-        )
-
-        let coreBarChart = loading ? <Loading/> : (
-            <ChartContainerWithSidePanel
-                title='Core reuse over time'
-                data={coreData}
-                chartTypes={[charts.STACKED_BAR_WITH_ZOOM]}
-                panelId={2}
-                activePanel={activePanel}
-                setActivePanel={this.setActivePanel}
-            >
-                <LaunchDataSidePanel />
-            </ChartContainerWithSidePanel>
-        )
-
         let covidChart = loading ? <Loading/> : (
             <ChartContainerWithSidePanel
                 title='Covid Case Count in NYC'
@@ -212,8 +155,10 @@ export class Home extends Component {
                     This is a small project built with React and ASP.NET Core (MVC and WebApi) with a focus on writing more modular and extendable code.
                 </p>
                 <p>
-                    Interactive visualizations of some SpaceX launch data are shown below in different formats. Data fetched from the open-source
-                    api found here: <a href='https://github.com/r-spacex/SpaceX-API'>https://github.com/r-spacex/SpaceX-API</a> 🚀.
+                    Interactive visualizations of some data sets are shown below. SpaceX launch data is fetched from the open-source
+                    api found here: <a href='https://github.com/r-spacex/SpaceX-API'>https://github.com/r-spacex/SpaceX-API</a> 🚀 and Covid data is fetched
+                    from <a href='https://data.cityofnewyork.us/Health/COVID-19-Daily-Counts-of-Cases-Hospitalizations-an/rc75-m7u3'>
+                        https://data.cityofnewyork.us/Health/COVID-19-Daily-Counts-of-Cases-Hospitalizations-an/rc75-m7u3</a>.
                 </p>
                 <br/>
                 <p>
@@ -223,10 +168,6 @@ export class Home extends Component {
                 </p>
                 <br/>
                 { reuseChart }
-                <br/>
-                { fairingsLineChart }
-                <br/>
-                { coreBarChart }
                 <br/>
                 { covidChart }
                 <br/><br/>
@@ -315,7 +256,7 @@ function LaunchDataSidePanel({ data }) {
     }
 
     return (
-        <div style={{paddingBottom: '20px'}}>
+        <div>
             <h3>Launch #{payload.flight_number} ({formatTimestamp(payload.date)})</h3>
             <div>{launch_details.details}</div>
             <br/>
@@ -332,8 +273,7 @@ function CovidDataSidePanel() {
         <div style={{paddingBottom: '20px'}}>
             <h3>Custom Title Goes Here</h3>
             <div>Custom content for this new dataset goes here!</div>
-            <br/><br/><br/>
-            <div>Something something something</div>
+            <br/><br/>
         </div>
     )
 }

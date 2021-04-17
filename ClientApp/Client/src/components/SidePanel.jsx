@@ -1,6 +1,5 @@
 import React, { Component, cloneElement, Fragment } from 'react';
 
-// CALCULATE COST SAVINGS?
 export function WithSidePanel(ChartContainer) {
     return class extends Component {
         state = {
