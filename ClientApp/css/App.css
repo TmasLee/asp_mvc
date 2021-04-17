@@ -25,7 +25,7 @@ a.navbar-brand {
   }
 
   div.margins {
-      margin: 0 8% 10% 8%
+      margin: 0 10% 10% 10%
   }
   
   .btn-toggle {
@@ -39,6 +39,11 @@ a.navbar-brand {
 
   .btn-toggle.active {
     background-image: linear-gradient(rgb(12, 37, 175), rgb(17, 14, 138)) !important;
+  }
+
+  .btn-toggle-grp {
+      margin: 0 5px 0 5px;
+      z-index: 0;
   }
 
   /* Sticky footer styles
@@ -90,20 +95,21 @@ a.navbar-brand {
   }
   
   .side-panel {
+    bottom: 5%;
     overflow-y: auto;
+    overflow-x: hidden;
     position: fixed;
     display: block;
     right: 0;
     width: 0;
     z-index: 1;
-    height: 90vh;
+    height: 85vh;
     background-color: white;
     padding: 10px 0 10px 0;
-    transition: width .2s ease;
   }
 
   .side-panel.show {
-    width: 27vw;
+    width: 30vw;
   }
 
   .side-panel div {

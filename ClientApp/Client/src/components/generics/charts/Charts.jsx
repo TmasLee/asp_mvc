@@ -19,7 +19,7 @@ export function ChartWithAxes(ChartComponent) {
                 <ChartComponent
                     {...props}
                     style={style}
-                    onClick={(e) => { if (e) props.getDataPoint(e.activePayload)}}
+                    onClick={(e) => { if (props.getSidePanelData && e) props.getSidePanelData(e.activePayload)}}
                 >
                     {props.children}
                     <XAxis
@@ -34,7 +34,8 @@ export function ChartWithAxes(ChartComponent) {
                         label={{value: props.labels[1], offset: 20, angle: -90, position: 'insideLeft'}}
                     />
                     <Legend verticalAlign="top"/>
-                    { props.tooltip ? <Tooltip content={props.tooltip}/> : <Tooltip  /> }
+                    { props.tooltip ? <Tooltip content={props.tooltip}/>
+                        : <Tooltip labelFormatter={formatTimestamp}/> }
                 </ChartComponent>
             </ResponsiveContainer>
         )
@@ -72,29 +73,41 @@ export function ChartWithZoom(ChartComponent) {
             animation: true,
         }
 
-        baseState = this.state;
+        componentDidMount() {
+            let [ref, maxValue] = this.getSeriesMax(this.props.data);
+            this.setState({top: maxValue}, () => {
+                this.baseState = this.state;
+            });
+        }
 
-        getAxisYDomain = (from, to) => {
-            let { data, series, seriesKeys } = this.props;
-            let fromIndex = data.map(e => e.date).indexOf(from);
-            let toIndex = data.map(e => e.date).indexOf(to);
+        // Find data series key and maxValue in data
+        getSeriesMax = (data) => {
+            let { series, seriesKeys } = this.props;
 
-            const refData = data.slice(fromIndex - 1, toIndex + 1);
-
+            let maxValue = 0;
             let ref;
 
             // Find data series key for local dataMax in refData
             series.forEach(series => {
-                let maxValue = 0;
-                ref = seriesKeys[series][0];
                 for (let i = 0; i < seriesKeys[series].length; i++) {
-                    let value = Math.max(...refData.map(dp => dp[seriesKeys[series][i]]), 0)
+                    let value = Math.max(...data.map(dp => dp[seriesKeys[series][i]]), 0);
                     if (value > maxValue) {
                         maxValue = value;
                         ref = seriesKeys[series][i];
                     }
                 }
-            })
+            });
+
+            return [ref, maxValue];
+        }
+
+        getAxisYDomain = (from, to) => {
+            let { data, dataKey } = this.props;
+            let fromIndex = data.map(e => e[dataKey]).indexOf(from);
+            let toIndex = data.map(e => e[dataKey]).indexOf(to);
+            const refData = data.slice(fromIndex - 1, toIndex + 1);
+
+            let [ref, maxValue] = this.getSeriesMax(refData);
             let [bottom, top] = [refData[0][ref], refData[0][ref]];
 
             refData.forEach((d) => {
@@ -102,7 +115,7 @@ export function ChartWithZoom(ChartComponent) {
               if (d[ref] < bottom) bottom = d[ref];
             });
 
-            return [(bottom | 0), (top | 0)];
+            return [(bottom | 0), (maxValue | 0)];
         };
 
         zoom = () => {
@@ -152,7 +165,12 @@ export function ChartWithZoom(ChartComponent) {
             const { left, right, top, bottom, refAreaLeft, refAreaRight } = this.state;
             return (
                 <Fragment>
-                    <button onClick={this.resetZoom}>Reset Zoom</button>
+                    <button
+                        style={{margin: '0 5px 0 5px'}}
+                        onClick={this.resetZoom}
+                    >
+                        Reset Zoom
+                    </button>
                     <ChartComponent
                         {...this.props}
                         onMouseDown={(e) => this.setDataStart(e)}

@@ -5,6 +5,7 @@ import { BarChart } from 'recharts';
 import { ChartWithAxes, ChartWithZoomBrush, ChartWithZoom } from './Charts';
 import { StackedBarChart } from './BarCharts';
 import { CustomLineChart } from './LineCharts';
+import { charts } from '../../../utilities/chart-types';
 
 let BarChartWithAxes = ChartWithAxes(BarChart);
 let StackedBarChartWithAxes = ChartWithAxes(StackedBarChart);
@@ -12,12 +13,11 @@ let StackedBarChartWithZoom = ChartWithZoomBrush(StackedBarChartWithAxes);
 let LineChartWithAxes = ChartWithAxes(CustomLineChart);
 let LineChartWithZoom = ChartWithZoom(LineChartWithAxes);
 
-// Update so each series data point doesn't repeat data
 export class ChartContainer extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            series: [],
+            series: Object.keys(this.props.data.yAxis.seriesKeys),
             chartType: this.props.chartTypes[0]
         }
     }
@@ -26,38 +26,38 @@ export class ChartContainer extends Component {
     setChartType = (type) => this.setState({chartType: type});
 
     render() {
-        let { data, chartTypes, title, getDataPoint, tooltip } = this.props;
+        let { data, chartTypes, title, tooltip, getSidePanelData = null } = this.props;
         let { series, chartType } = this.state;
         let seriesKeys = data.yAxis.seriesKeys;
         let chart = null;
 
         switch (chartType) {
-            case 'bar-no-zoom':
+            case charts.BAR:
                 chart = <BarChartWithAxes />;
                 break;
-            case 'stacked-bar':
+            case charts.STACKED_BAR_WITH_ZOOM:
                 chart = <StackedBarChartWithZoom
                             data={data.data}
                             series={series}
                             seriesKeys={seriesKeys}
                             dataKey={data.xAxis.key}
                             labels={[data.xAxis.label, data.yAxis.label]}
-                            getDataPoint={getDataPoint}
+                            getSidePanelData={getSidePanelData}
                             tooltip={tooltip}
                         />;
                 break;
-            case 'line':
+            case charts.LINE_WITH_ZOOM:
                 chart = <LineChartWithZoom
                             data={data.data}
                             series={series}
                             seriesKeys={seriesKeys}
                             dataKey={data.xAxis.key}
                             labels={[data.xAxis.label, data.yAxis.label]}
-                            getDataPoint={getDataPoint}
+                            getSidePanelData={getSidePanelData}
                             tooltip={tooltip}
                         />;
                 break;
-            case 'pie':
+            case charts.PIE:
                 // chart = <CustomPieChart />;
                 break;
             default:
@@ -90,8 +90,13 @@ function SeriesToggle({ seriesKeys, setSeriesToRender }) {
         setSeriesToRender(series);
     }, [series])
 
+    if (seriesKeys.length === 1) {
+        return null;
+    }
+
     return (
         <ToggleButtonGroup
+            className='btn-toggle-grp'
             type='checkbox'
             value={series}
             onChange={handleSeriesToggle}
@@ -115,9 +120,13 @@ function ChartTypeToggle({ currentType, chartTypes, setChartType }) {
         setChartType(type);
     }, type)
 
+    if (chartTypes.length === 1) {
+        return null;
+    }
+
     return (
         <ToggleButtonGroup
-            style={{margin: '0 5px 0 5px'}}
+            className='btn-toggle-grp'
             type='radio'
             name='options'
             value={type}
@@ -128,8 +137,8 @@ function ChartTypeToggle({ currentType, chartTypes, setChartType }) {
                 chartTypes.map((type, i) => (
                     <ToggleButton className='btn-toggle' key={i} value={type}>
                         {
-                            (type === 'bar' || type === 'stacked-bar') ? <i className="fa fa-bar-chart" aria-hidden="true"></i> :
-                            (type === 'line') ? <i className="fa fa-line-chart" aria-hidden="true"></i> : null
+                            (type === charts.BAR || type === charts.STACKED_BAR_WITH_ZOOM) ? <i className="fa fa-bar-chart" aria-hidden="true"></i> :
+                            (type === charts.LINE_WITH_ZOOM) ? <i className="fa fa-line-chart" aria-hidden="true"></i> : null
                         }
                     </ToggleButton>
                 ))

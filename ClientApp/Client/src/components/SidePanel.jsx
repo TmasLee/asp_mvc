@@ -1,8 +1,8 @@
-import React, { Component, cloneElement, Fragment, useState, useEffect } from 'react';
-import { formatTimestamp, formatYoutubeLink } from '../utilities/utils';
+import React, { Component, cloneElement, Fragment } from 'react';
 
 // CALCULATE COST SAVINGS?
-export function PageWithSidePanel(Page) {
+// Side panel for different charts dont display in order they are opened
+export function WithSidePanel(ChartContainer) {
     return class extends Component {
         state = {
             hidden: true,
@@ -11,8 +11,7 @@ export function PageWithSidePanel(Page) {
 
         setHidden = () => this.setState({ hidden: !this.state.hidden });
 
-        // Probably passing this method down to Page components is bad
-        getDataPoint = (deets) => {
+        getSidePanelData = (deets) => {
             if (deets){
                 this.setState({
                     data: deets[0],
@@ -24,18 +23,18 @@ export function PageWithSidePanel(Page) {
         render() {
             let { hidden, data } = this.state;
             return (
-                <div>
+                <Fragment>
                     <SidePanel hidden={hidden} setHidden={this.setHidden}>
                         {cloneElement(this.props.children, {data: data})}
                     </SidePanel>
-                    <Page {...this.props} getDataPoint={this.getDataPoint}/>
-                </div>
+                    <ChartContainer {...this.props} getSidePanelData={this.getSidePanelData}/>
+                </Fragment>
             );
         }
     }
 }
 
-function SidePanel({ hidden, setHidden, children }) {
+export function SidePanel({ hidden, setHidden, children }) {
     let hide =  hidden ? 'hide' : 'show';
     return (
         <div className={'side-panel border-left border-bottom border-top box-shadow ' + hide}>
@@ -48,74 +47,6 @@ function SidePanel({ hidden, setHidden, children }) {
         </div>
     )
 }
-
-export function LaunchDataSidePanel({ data }) {
-    if (!data) {
-        return null;
-    }
-
-    let payload = data.payload
-    let launch_details = payload.launch_details;
-    let failureList = [];
-
-    if (launch_details.failures.length) {
-        failureList = (
-            <div>
-                <h5>Launch Failures</h5>
-                {
-                    launch_details.failures.map((failure, i) => <li key={i}>{failure.reason}</li>)
-                }
-            </div>
-        )
-    }
-
-    let video = launch_details.media.video ? (
-                    <div>
-                        <iframe
-                            src={formatYoutubeLink(launch_details.media.video)}
-                            frameBorder='0'
-                            allow='autoplay; encrypted-media'
-                            allowFullScreen
-                            height={275}
-                            width={365}
-                        />
-                    </div>
-                ) : null
-
-    let articleLinks = [];
-    let articleList = null;
-
-    if (launch_details.media.article) {
-        articleLinks.push(launch_details.media.article);
-    }
-    if (launch_details.media.wiki) {
-        articleLinks.push(launch_details.media.wiki);
-    }
-
-    if (articleLinks.length) {
-        articleList = (
-            <div>
-                <h5>Articles</h5>
-                {
-                    articleLinks.map((link, i) => <li key={i}><a href={link}>{link}</a></li>)
-                }
-            </div>
-        )
-    }
-
-    return (
-        <div>
-            <h3>Launch #{payload.flight_number} ({formatTimestamp(payload.date)})</h3>
-            <div>{launch_details.details}</div>
-            <br/>
-            {video}
-            {failureList}
-            <br/>
-            {articleList}
-        </div>
-    )
-}
-
 
 // HOC to add data fetching to components when needed
 export function WithDataFetcher(Component, url) {
