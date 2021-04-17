@@ -101,22 +101,18 @@ a.navbar-brand {
     position: fixed;
     display: block;
     right: 0;
-    width: 0;
+    width: 30vw;
     z-index: 1;
     height: 85vh;
     background-color: white;
     padding: 10px 0 10px 0;
   }
 
-  .side-panel.show {
-    width: 30vw;
-  }
-
   .side-panel div {
     padding: 0px 10px 0 10px;
   }
 
-  .close-btn.show {
+  .close-btn {
     right: 10px;
     position: absolute;
     display: block;
@@ -125,12 +121,6 @@ a.navbar-brand {
     border: none;
   }
 
-  .close-btn.hide {
-      visibility: hidden;
-  }
-
   .close-btn:hover {
-    background-color: transparent;
-    border: none;
     outline: none;
   }

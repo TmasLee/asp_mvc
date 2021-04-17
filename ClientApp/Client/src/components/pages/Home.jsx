@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Row, Button } from 'react-bootstrap';
 import axios from 'axios';
 
-import { WithSidePanel, SidePanel } from '../SidePanel';
+import { WithSidePanel } from '../SidePanel';
 import { charts } from '../../utilities/chart-types';
 import { removeUnderscore, formatTimestamp, formatYoutubeLink } from '../../utilities/utils';
 import DatasetParser from '../../utilities/dataset-parser';
@@ -11,11 +11,12 @@ import { Loading } from '../../components/generics/Loading';
 import sloth_astronaut from '../../../../assets/sloth_astronaut.jpg';
 import elon from '../../../../assets/elon.jpg';
 
-let ChartContainerWithSidePanel = WithSidePanel(ChartContainer, SidePanel)
+let ChartContainerWithSidePanel = WithSidePanel(ChartContainer);
 
 export class Home extends Component {
     state = {
         loading: true,
+        activePanel: null,
         reuseData: {
             data: [],
             xAxis: {
@@ -131,8 +132,10 @@ export class Home extends Component {
         .catch((err) => console.error(err));
     }
 
-    render (){
-        const { reuseData, fairingsData, coreData, covidData, loading } = this.state;
+    setActivePanel = (panelId) => this.setState({ activePanel: panelId })
+
+    render() {
+        const { reuseData, fairingsData, coreData, covidData, loading, activePanel } = this.state;
         const { currentUser } = this.props;
 
         let makeFriendsBtn =  (
@@ -153,6 +156,9 @@ export class Home extends Component {
                     charts.LINE_WITH_ZOOM
                 ]}
                 tooltip={ReuseChartTooltip}
+                panelId={0}
+                activePanel={activePanel}
+                setActivePanel={this.setActivePanel}
             >
                 <LaunchDataSidePanel />
             </ChartContainerWithSidePanel>
@@ -163,6 +169,9 @@ export class Home extends Component {
                 title='Fairing reuse over time'
                 data={fairingsData}
                 chartTypes={[charts.LINE_WITH_ZOOM]}
+                panelId={1}
+                activePanel={activePanel}
+                setActivePanel={this.setActivePanel}
             />
         )
 
@@ -171,6 +180,9 @@ export class Home extends Component {
                 title='Core reuse over time'
                 data={coreData}
                 chartTypes={[charts.STACKED_BAR_WITH_ZOOM]}
+                panelId={2}
+                activePanel={activePanel}
+                setActivePanel={this.setActivePanel}
             >
                 <LaunchDataSidePanel />
             </ChartContainerWithSidePanel>
@@ -184,6 +196,9 @@ export class Home extends Component {
                     charts.STACKED_BAR_WITH_ZOOM,
                     charts.LINE_WITH_ZOOM
                 ]}
+                panelId={3}
+                activePanel={activePanel}
+                setActivePanel={this.setActivePanel}
             >
                 <CovidDataSidePanel />
             </ChartContainerWithSidePanel>
@@ -250,7 +265,6 @@ function LaunchDataSidePanel({ data }) {
     if (!data) {
         return null;
     }
-
     let payload = data.payload
     let launch_details = payload.launch_details;
     let failureList = [];
