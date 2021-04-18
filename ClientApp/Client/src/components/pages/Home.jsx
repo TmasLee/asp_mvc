@@ -132,19 +132,14 @@ export class Home extends Component {
         );
 
         let covidChart = loading ? <Loading/> : (
-            <ChartContainerWithSidePanel
+            <ChartContainer
                 title='Covid Case Count in NYC'
                 data={covidData}
                 chartTypes={[
                     charts.STACKED_BAR_WITH_ZOOM,
                     charts.LINE_WITH_ZOOM
                 ]}
-                panelId={3}
-                activePanel={activePanel}
-                setActivePanel={this.setActivePanel}
-            >
-                <CovidDataSidePanel />
-            </ChartContainerWithSidePanel>
+            />
         );
 
         return (
@@ -155,10 +150,8 @@ export class Home extends Component {
                     This is a small project built with React and ASP.NET Core (MVC and WebApi) with a focus on writing more modular and extendable code.
                 </p>
                 <p>
-                    Interactive visualizations of some data sets are shown below. SpaceX launch data is fetched from the open-source
-                    api found here: <a href='https://github.com/r-spacex/SpaceX-API'>https://github.com/r-spacex/SpaceX-API</a> 🚀 and Covid data is fetched
-                    from <a href='https://data.cityofnewyork.us/Health/COVID-19-Daily-Counts-of-Cases-Hospitalizations-an/rc75-m7u3'>
-                        https://data.cityofnewyork.us/Health/COVID-19-Daily-Counts-of-Cases-Hospitalizations-an/rc75-m7u3</a>.
+                    Interactive visualizations of some data sets are shown below. SpaceX launch data is fetched from the <a href='https://github.com/r-spacex/SpaceX-API'>open-source api</a> and
+                    Covid data from the <a href='https://data.cityofnewyork.us/Health/COVID-19-Daily-Counts-of-Cases-Hospitalizations-an/rc75-m7u3'>NYC public data api</a>.
                 </p>
                 <br/>
                 <p>
